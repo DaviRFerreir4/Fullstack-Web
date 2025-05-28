@@ -15,6 +15,29 @@ h2 {
 
 h1, h2 {
   color: #291B1A;
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+ul, p {
+  margin: 0;
+}
+
+ul {
+  margin-top: 0.5rem;
+  padding-left: 24px;
+}
+
+#about p + p {
+  margin-top: 12px;
+}
+
+section + section {
+  margin-top: 24px;
+}
+
+p + p {
+  margin-top: 0.5rem;
 }
 
 body {
@@ -31,6 +54,11 @@ main {
   background-color: #F0E8C2;
   border-radius: 24px;
   margin: 48px auto;
+}
+
+#content {
+  padding: 24px;
+  box-sizing: border-box;
 }
 
 footer {
