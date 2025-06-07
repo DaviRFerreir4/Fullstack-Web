@@ -46,6 +46,10 @@ li {
   margin-left: 30px;
 }
 
+footer img {
+  vertical-align: middle;
+}
+
 /* Configurando texto */
 
 :root {
@@ -54,7 +58,7 @@ li {
 }
 
 body {
-  background-color: F5F4F0;
+  background-color: #F5F4F0;
 }
 
 h1 {
