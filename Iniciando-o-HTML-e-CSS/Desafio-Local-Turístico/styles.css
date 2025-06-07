@@ -1,6 +1,43 @@
+/* Configurando espaços */
 * {
   margin: 0;
+  padding: 0;
 }
+
+header, main, footer {
+  margin: 0 5%;
+}
+
+header, footer {
+  margin: 40px 5%;
+}
+
+hr {
+  margin: 40px 0;
+  border-color: hsla(98, 8%, 73%, 0.229);
+}
+
+header img, main img {
+  border-radius: 20px;
+  width: 100%;
+}
+
+header img {
+  margin: 40px 0 24px 0;
+}  
+
+main img {
+  margin: 48px 0 24px 0;
+}  
+
+#sctFirstPlace img {
+  margin-top: 63px;
+}
+
+li {
+  margin-left: 30px;
+}
+
 /* 
 color: #591B98;
 color: #E5245E;
