@@ -11,19 +11,45 @@
       <p>Documento referente a uma parte do módulo de Layout com CSS do curso de desenvolvimento FullStack da Rocketseat</p>
       <section id="position">
         <h2>Position</h2>
+        <div class="divPosition" id="sticky">S</div>
         <div class="divPosition" id="relative">R</div>
         <div class="divPosition" id="absolut">A</div>
         <div class="divPosition" id="fixed">F</div>
-        <div class="divPosition" id="sticky">S</div>
+      </section>
+      <section id="variables">
+        <h2>Variáveis</h2>
+        <div class="divVar" id="divChangeVar"><span>Var</span></div>
+        <div class="divVar"><span>iaveis</span></div>
+      </section>
+      <section id="pseudoClEl">
+        <h2>Pseudo-classes e Pseudo-elementos</h2>
+        <div class="divPseudoCl"></div>
+        <div class="divPseudoCl" id="not"></div>
+        <div class="divPseudoCl" id="nthChild">
+          <div class="divPseudoEl">pse</div>
+          <div class="divPseudoEl">udo</div>
+        </div>
+      </section>
+      <section id="content">
+        <h2>Conteúdo aleatório para que o scroll fique disponível</h2>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum similique dolores quis provident eius ex nostrum nesciunt odit sed quia, officiis quos sapiente rerum atque inventore voluptas! Cumque, illo a.</p>
+        <p>Autem minima quae fuga fugiat similique error tenetur, consectetur corporis, neque quis iusto eius ab ex. Tenetur officiis, repellat culpa, aliquid vitae, deleniti quas voluptas distinctio est at quod necessitatibus.</p>
+        <p>Quod dolorem enim veniam. Natus, in vitae, rerum, ab delectus necessitatibus repellat dolore unde nemo culpa laboriosam voluptas ad tenetur id aliquid dolorem fugiat voluptatum. Laudantium corporis commodi earum quos!</p>
+        <p>Rem quam magnam saepe cumque totam dolorem, aperiam fuga distinctio facilis a, repellendus, optio architecto. Architecto ad iure ducimus debitis error possimus dicta voluptate, consequatur, quod rem dolorum, facilis aliquid.</p>
+        <p>Error sequi eaque enim recusandae expedita ipsum nihil neque commodi sit odit nesciunt dolor, labore minus blanditiis odio quidem nisi excepturi est pariatur doloremque consequuntur aspernatur mollitia tempore. Nobis, quasi!</p>
       </section>
     </main>
   </body>
-  <style>
-    .divPosition {
+  <style id="general">
+    div {
       border: 1px solid black;
       width: 40px;
-      height: 40px;
       margin-bottom: 10px;
+      height: 40px;
+    }
+  </style>
+  <style id="positionStyle">
+    .divPosition {
       background-color: red;
       text-align: center;
     }
@@ -34,14 +60,14 @@
 
     #relative {
       position: relative;
-      top: 20px;
+      bottom: 20px;
       left: 20px;
     }
 
     #absolut {
       position: absolute;
       top: 20px;
-      left: 20px;
+      right: 20px;
     }
 
     #fixed {
@@ -51,8 +77,70 @@
 
     #sticky {
       position: sticky;
-      top: 80px;
+      top: 20px;
       left: 20px;
+      z-index: 1;
+    }
+  </style>
+
+  <style id="variables">
+    body {
+      --bgColor: lightblue;
+      --color: brown;
+    }
+
+    .divVar {
+      border: 1px solid black;
+      background-color: var(--bgColor);
+    }
+    
+    #divChangeVar {
+      --bgColor: blue;
+      --color: yellow;
+    }
+
+    .divVar span {
+      color: var(--color);
+    }
+  </style>
+
+  <style id="pseudoClElStyle">
+    .divPseudoCl:hover { /* pseudo-classe :not tem prioridade (aparentemente) */
+      background-color: aquamarine;
+    }
+
+    .divPseudoCl:not(#not) {
+      background-color: lightcoral;
+    }
+
+    section:has(div:hover) {
+      border: 1px solid black;
+    }
+
+    #nthChild {
+      width: 100px;
+      height: 100px;
+    }
+
+    div:nth-child(2) { /* pseudo-classe :not tem prioridade (aparentemente) */
+      background-color: blueviolet;
+    }
+
+    .divPseudoEl::first-letter {
+      text-transform: uppercase;
+      font-size: 20px;
+    }
+
+    .divPseudoEl::before {
+      content: "a";
+    }
+
+    .divPseudoEl::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      display: block;
     }
   </style>
 </html>
