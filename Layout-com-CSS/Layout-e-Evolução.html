@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout e Evolução</title>
+  </head>
+  <body>
+    <main>
+      <h1>Layout e Evolução</h1>
+      <p>Documento referente a uma parte do módulo de Layout com CSS do curso de desenvolvimento FullStack da Rocketseat</p>
+      <section id="position">
+        <h2>Position</h2>
+        <div class="divPosition" id="relative">R</div>
+        <div class="divPosition" id="absolut">A</div>
+        <div class="divPosition" id="fixed">F</div>
+        <div class="divPosition" id="sticky">S</div>
+      </section>
+    </main>
+  </body>
+  <style>
+    .divPosition {
+      border: 1px solid black;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+      background-color: red;
+      text-align: center;
+    }
+
+    #position {
+      position: relative;
+    }
+
+    #relative {
+      position: relative;
+      top: 20px;
+      left: 20px;
+    }
+
+    #absolut {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    #fixed {
+      position: fixed;
+      top: 80px;
+    }
+
+    #sticky {
+      position: sticky;
+      top: 80px;
+      left: 20px;
+    }
+  </style>
+</html>
