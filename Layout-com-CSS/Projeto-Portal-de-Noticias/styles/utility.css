@@ -1,0 +1,24 @@
+/* utility first */
+.grid {
+  display: grid;
+}
+
+.grid-col {
+  grid-auto-flow: column;
+}
+
+.padding-inline-32 {
+  padding-inline: 32px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gap-16 {
+  gap: 16px;
+}
