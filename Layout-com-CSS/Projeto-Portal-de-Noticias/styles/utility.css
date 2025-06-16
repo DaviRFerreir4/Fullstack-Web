@@ -34,3 +34,11 @@
 .text-sm {
   font: var(--text-sm);
 }
+
+.gap-32 {
+  gap: 32px;
+}
+
+.color-secondary {
+  color: var(--text-color-secondary);
+}

@@ -60,16 +60,12 @@ section header {
 
 #weekly {
   & > div {
-    grid-template-columns: repeat(4, 292px);
     justify-content: space-between;
   }
-
-  img {
-    height: 160px;
-  }
-
+  
   figure {
     position: relative;
+    width: 292px;
 
     .content-tag {
       position: absolute;
@@ -81,4 +77,9 @@ section header {
   p {
     margin-top: 8px;
   }
+}
+
+main > div {
+  grid-template-columns: 1fr 0.6fr;
+  gap: 32px;
 }
