@@ -47,6 +47,11 @@ h1, h2, h3 {
 
 main {
   margin-top: 40px;
+  gap: 80px;
+}
+
+img {
+  max-width: 100%;
 }
 
 .content-tag {
