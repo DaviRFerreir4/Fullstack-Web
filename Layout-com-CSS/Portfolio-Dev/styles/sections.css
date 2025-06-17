@@ -1,0 +1,78 @@
+#intro {
+  width: 1040px;
+  margin-block: 120px 180px;
+  margin-inline: auto;
+
+  p span {
+    color: var(--red);
+  }
+
+  div:nth-child(1) {
+    width: 680px;
+    margin-inline: auto;
+    text-align: center;
+
+    div {
+      width: 112px;
+      height: 112px;
+      margin-inline: auto;
+      margin-bottom: 56px;
+      /* gambiarra da imagem */
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: 3;
+        inset: 66%;
+        width: 32px;
+        height: 32px;
+        background-image: url(../assets/icons/Code.svg);
+        filter:
+        drop-shadow(1px 0px var(--gray-200))
+        drop-shadow(0px 1px var(--gray-200))
+        drop-shadow(-1px 0px var(--gray-200))
+        drop-shadow(0px -1px var(--gray-200));
+      }
+
+      img:nth-child(1) {
+        position: relative;
+        z-index: 2;
+      }
+
+      img:nth-child(2) {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        top: 4px;
+        left: 10px;
+        width: 92px;
+        border-radius: 50%;
+      }
+      /* fim da gambiarra */
+    }
+
+    h1 {
+      margin-block: 8px 20px;
+    }
+  }
+
+  div:nth-child(2) {
+    margin-block: 80px 94px;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .content-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--gray-300);
+    border-radius: 999px;
+    padding: 8px 16px;
+  }
+
+  & > img {
+    display: block;
+    margin-inline: auto;
+  }
+}

@@ -43,3 +43,14 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.container {
+  max-width: 1366;
+  margin-inline: auto;
+}
+
+header {
+  background-image: url(../assets/Background_Intro.png);
+  height: 750px;
+  background-size: cover;
+}
