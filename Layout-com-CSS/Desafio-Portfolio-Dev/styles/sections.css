@@ -17,26 +17,20 @@
       height: 112px;
       margin-inline: auto;
       margin-bottom: 56px;
-      /* gambiarra da imagem */
       position: relative;
-      &::before {
-        content: "";
+
+      svg {
+        stroke: var(--gray-200);
+        stroke-width: 12px;
         position: absolute;
-        z-index: 3;
-        inset: 66%;
-        width: 32px;
-        height: 32px;
-        background-image: url(../assets/icons/Code.svg);
-        filter:
-        drop-shadow(1px 0px var(--gray-200))
-        drop-shadow(0px 1px var(--gray-200))
-        drop-shadow(-1px 0px var(--gray-200))
-        drop-shadow(0px -1px var(--gray-200));
+        z-index: 2;
+        bottom: 12px;
+        right: 2px;
       }
 
       img:nth-child(1) {
         position: relative;
-        z-index: 2;
+        z-index: 1;
       }
 
       img:nth-child(2) {
@@ -48,7 +42,6 @@
         width: 92px;
         border-radius: 50%;
       }
-      /* fim da gambiarra */
     }
 
     h1 {
