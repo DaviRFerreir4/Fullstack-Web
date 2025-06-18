@@ -109,3 +109,23 @@ h2 {
     }
   }
 }
+
+#services {
+  background-color: var(--gray-100);
+  padding-block: 88px 120px;
+  & > div {
+    div {
+      justify-content: center;
+      gap: 24px;
+      .content-box-services {
+        width: 280px;
+        padding: 20px;
+        border: 2px solid var(--gray-200);
+        border-radius: 12px;
+        h3 {
+          margin-block: 20px 8px;
+        }
+      }
+    }
+  }
+}
