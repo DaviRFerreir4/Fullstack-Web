@@ -51,5 +51,12 @@ a {
 
 header {
   background-image: url(../assets/Background_Intro.png);
+  background-position-y: 100%;
+  background-size: cover;
+}
+
+footer {
+  background-image: url(../assets/Background_Contacts.png);
+  background-position-y: 100%;
   background-size: cover;
 }
