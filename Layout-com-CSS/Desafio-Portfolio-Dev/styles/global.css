@@ -45,12 +45,11 @@ a {
 }
 
 .container {
-  max-width: 1366;
+  max-width: 1366px;
   margin-inline: auto;
 }
 
 header {
   background-image: url(../assets/Background_Intro.png);
-  height: 750px;
   background-size: cover;
 }
