@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms em HTML</title>
+  </head>
+  <body>
+    <!-- <form action="" method="get">
+      <input type="text" name="nome" autofocus>
+      <button type="submit" name="botao" value="valorQualquer">Enviar (padrão)</button>
+      <button type="reset" disabled>Resetar</button>
+      <button type="button">Botão sem função</button>
+    </form> -->
+    <form action="" method="get" style="display: grid; width: 100px; gap: 20px;">
+      <!-- <input type="text" value="Davi" readonly required> -->
+      <!-- <input type="text" placeholder="Digite algo"> -->
+      <!-- <input type="number" name="numero" min="0" max="40" step="2"> -->
+      <!-- <input type="email" name="email" multiple minlength="20" max="40" pattern=".+@gmail\.com" title="Apenas gmail.com" required> -->
+      <!-- <input type="password" name="senha" minlength="8" max="20" pattern="[0-9a-fA-F]{4,12}"> -->
+      <!-- <input type="file" name="arquivo" multiple accept="image/*"> -->
+      <!-- <input type="range" name="valor" min="20" max="40" step="4" value="28"> -->
+      <!-- <datalist id="colorpicker">
+        <option value="#A342F6">
+        <option value="#33C26F">
+      </datalist>
+      <input type="color" name="cor" value="#F9E079" list="colorpicker"> -->
+      <!-- <input type="checkbox" name="checado" value="checado" checked>
+      <input type="checkbox" name="checado" value="naoChecado"> -->
+      <!-- <input type="radio" name="radio" value="radio1" checked>
+      <input type="radio" name="radio" value="radio2"> -->
+      <!-- <input type="hidden" name="escondido" value="valorPadrao"> -->
+      <!-- <input type="date" name="data"> -->
+      <!-- <label for="nomeId">Nome:</label>
+      <input type="text" id="nomeId" name="nome"> -->
+      <!-- <textarea name="areaDeTexto" minlength="10" maxlength="50" placeholder="Digite seu texto" required></textarea> -->
+      <!-- <select name="seletor" multiple>
+        <option label="Escolha:" value="">
+        <optgroup label="Frutas normais">
+          <option label="Banana" value="banana">
+          <option label="Maçã" value="maca">
+          <option label="Pera" value="pera">
+        </optgroup>
+        <optgroup label="Frutas cítricas">
+          <option label="Laranja" value="laranja">
+          <option label="Limão" value="limao">
+        </optgroup>
+      </select> -->
+      <fieldset>
+        <legend>Dados pessoais</legend>
+        <input type="text" name="nome" placeholder="Digite seu nome">
+        <input type="text" name="sobremome" placeholder="Digite seu sobrenome">
+      </fieldset>
+      <fieldset>
+        <legend>Contato</legend>
+        <input type="number" name="celular" placeholder="Digite seu celular">
+        <input type="email" name="email" placeholder="Digite seu email">
+      </fieldset>
+      <button style="width: 50px; justify-self: center;">Enviar</button>
+    </form>
+  </body>
+</html>
