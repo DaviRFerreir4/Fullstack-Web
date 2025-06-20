@@ -21,7 +21,7 @@
 }
 
 body {
-  /* overflow: hidden; */
+  overflow: hidden;
   font: var(--text);
   color: var(--text-secondary);
 }
@@ -32,5 +32,4 @@ h1, h2 {
 
 img {
   max-width: 100%;
-  /* max-height: 100%; */
 }

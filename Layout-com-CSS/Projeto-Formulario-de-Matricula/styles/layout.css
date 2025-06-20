@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 51.25% 48.75%;
   height: 100vh;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 main {
@@ -44,6 +44,9 @@ aside {
 
     & > img {
       margin-top: 2rem;
+      width: 80%;
+      display: block;
+      margin-inline: auto;
     }
   }
 }
