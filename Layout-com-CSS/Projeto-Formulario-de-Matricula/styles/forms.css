@@ -6,9 +6,9 @@ form {
 
 fieldset {
   border: none;
-
   display: grid;
   gap: 1.5rem;
+  margin-block: 3rem;
 }
 
 legend {
