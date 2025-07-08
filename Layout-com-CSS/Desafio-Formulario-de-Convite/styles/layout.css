@@ -9,25 +9,42 @@
 }
 
 aside {
-  padding: 2rem;
+  padding: 1.75rem;
   background-image: url(../assets/Background.png);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: .75rem;
-
+  
   img {
     display: block;
     width: 3rem;
     height: 3rem;
   }
-
+  
   span {
     display: block;
     margin-block: 1rem .25rem;
+    color: var(--pink);
+    font: var(--logo);
+  }
+  
+  h2 {
+    font: var(--title-sm);
+    font-weight: 300;
   }
 }
 
 main {
+  border-radius: .75rem;
+  padding: 5rem 8.125rem;
+  background-color: var(--shape-body);
   overflow: auto;
+  scrollbar-color: var(--shape-background) var(--shape-body);
+  scrollbar-width: thin;
+
+  h1 {
+    color: var(--text-heading);
+    font: var(--title-md);
+  }
 }
