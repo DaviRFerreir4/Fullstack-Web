@@ -16,7 +16,7 @@ fieldset {
     gap: .75rem;
     margin-bottom: .5rem;
 
-    span {
+    h3 {
       font: var(--title-sm);
       color: var(--text-heading);
     }

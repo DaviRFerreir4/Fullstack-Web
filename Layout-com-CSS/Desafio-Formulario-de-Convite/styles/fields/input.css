@@ -1,27 +1,34 @@
-input, textarea {
-  appearance: unset;
-
-
-
-  &[type=text], &[type=datetime-local] {
-    width: 100%;
-    padding: .8125rem 1rem;
-    border: 1px solid var(--input-stroke);
-    border-radius: .5rem;
-    background-color: var(--input-base);
-    color: var(--text-heading);
-
-    &::placeholder {
-      color: var(--input-placeholder);
-    }
-  }
+input[type=text], input[type=datetime-local], textarea {
+  outline: none;
+  resize: none;
+  width: 100%;
+  padding: .8125rem 1rem;
+  border: 1px solid var(--input-stroke);
+  border-radius: .5rem;
+  background-color: var(--input-base);
+  color: var(--text-heading);
+  font: var(--text-md);
 
   &:focus {
     border-color: var(--brand-light);
-    outline: none;
   }
 
   &:invalid {
-    border-color: red;
+    border-color: var(--danger);
+    
+    & + .error-wrapper {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+  }
+}
+
+.error-wrapper {
+  display: none;
+  margin-top: .5rem;
+  
+  span {
+    color: var(--danger);
   }
 }
