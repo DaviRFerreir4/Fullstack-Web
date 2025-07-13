@@ -15,11 +15,39 @@ input[type=text], input[type=datetime-local], textarea {
 
   &:invalid {
     border-color: var(--danger);
-    
-    & + .error-wrapper {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
+  }
+}
+
+.input-file-wrapper {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+
+  label {
+    padding: .75rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background-color: var(--shape-button);
+    border-radius: .5rem;
+    color: var(--text-heading);
+  }
+
+  &:hover label {
+    background-color: var(--shape-hover);
+  }
+
+  input {
+    width: 100%;
+    font: var(--text-md);
+    color: var(--input-placeholder);
+
+    &::file-selector-button {
+      display: none;
+    }
+
+    &:valid {
+      color: var(--text-heading);
     }
   }
 }

@@ -3,6 +3,7 @@ input[type=checkbox] {
 }
 
 .checkbox-style-wrapper {
+  margin-top: 1.125rem;
   display: flex;
   gap: .75rem;
   align-items: center;
@@ -12,7 +13,6 @@ input[type=checkbox] {
   }
 
   input {
-    box-sizing: inherit;
     position: relative;
     width: 4rem;
     height: 2rem;

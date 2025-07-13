@@ -20,10 +20,10 @@
         <h1>Crie seu convite</h1>
         <form>
           <fieldset id="about">
-            <div class="title column">
+            <legend class="column">
               <img src="assets/icons/calendar.svg" alt="">
               <h3>Sobre o evento</h3>
-            </div>
+            </legend>
             <div class="input-wrapper column">
               <label for="inviteTitle">Título</label>
               <input type="text" name="inviteTitle" id="inviteTitle" placeholder="Nome do evento">
@@ -73,24 +73,24 @@
             </div>
           </fieldset>
           <fieldset id="customization">
-            <div class="title column">
+            <legend class="column">
               <img src="assets/icons/paintbrush-vertical.svg" alt="">
               <h3>Personalização</h3>
-            </div>
+            </legend>
             <div class="input-wrapper column">
               <label>Cor principal</label>
               <div class="radio-color-wrapper">
-                <input type="radio" class="radio-color" name="color" id="color-light-blue" style="--color: var(--brand-light);">
-                <input type="radio" class="radio-color" name="color" id="color-navy" style="--color: #6A59FF;">
-                <input type="radio" class="radio-color" name="color" id="color-purple" style="--color: #B259FF;">
-                <input type="radio" class="radio-color" name="color" id="color-fuschia" style="--color: #FF59F9;">
-                <input type="radio" class="radio-color" name="color" id="color-pink" style="--color: #FF598B;">
-                <input type="radio" class="radio-color" name="color" id="color-red" style="--color: var(--danger);">
-                <input type="radio" class="radio-color" name="color" id="color-orange" style="--color: #FF8B59;">
-                <input type="radio" class="radio-color" name="color" id="color-yellow" style="--color: #FFCD59;">
-                <input type="radio" class="radio-color" name="color" id="color-lime" style="--color: #E1FF59;">
-                <input type="radio" class="radio-color" name="color" id="color-green" style="--color: #59FF91;">
-                <input type="radio" class="radio-color" name="color" id="color-cyan" style="--color: #59FFF9;">
+                <input type="radio" class="radio-color" name="color" id="color-light-blue" title="Azul claro" style="--color: var(--brand-light);">
+                <input type="radio" class="radio-color" name="color" id="color-navy" title="Naval (Azul marinho)" style="--color: #6A59FF;">
+                <input type="radio" class="radio-color" name="color" id="color-purple" title="Roxo" style="--color: #B259FF;">
+                <input type="radio" class="radio-color" name="color" id="color-fuschia" title="Fúcsia" style="--color: #FF59F9;">
+                <input type="radio" class="radio-color" name="color" id="color-pink" title="Rosa" style="--color: #FF598B;">
+                <input type="radio" class="radio-color" name="color" id="color-red" title="Vermelho" style="--color: var(--danger);">
+                <input type="radio" class="radio-color" name="color" id="color-orange" title="Laranja" style="--color: #FF8B59;">
+                <input type="radio" class="radio-color" name="color" id="color-yellow" title="Amarelo" style="--color: #FFCD59;">
+                <input type="radio" class="radio-color" name="color" id="color-lime" title="Lima" style="--color: #E1FF59;">
+                <input type="radio" class="radio-color" name="color" id="color-green" title="Verde" style="--color: #59FF91;">
+                <input type="radio" class="radio-color" name="color" id="color-cyan" title="Ciano" style="--color: #59FFF9;">
               </div>
             </div>
             <div class="input-wrapper column">
@@ -159,11 +159,25 @@
               </div>
             </div>
             <div class="input-wrapper">
-              <label>Estilo</label>
+              <label for="style">Estilo</label>
               <div class="checkbox-style-wrapper">
                 <input type="checkbox" name="style" id="style">
                 <label for="style">Escuro</label>
                 <label for="style">Claro</label>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <label for="coverPic">Foto de capa</label>
+              <div class="input-file-wrapper">
+                <label for="coverPic">
+                  <img src="assets/icons/upload.svg" alt="Icone de upload">
+                  <span>Selecionar</span>
+                </label>
+                <input type="file" name="coverPic" id="coverPic" accept="image/*" required>
+              </div>
+              <div class="error-wrapper">
+                <img src="assets/icons/circle-alert.svg" alt="Icone de alerta">
+                <span>Insira uma foto de capa do evento</span>
               </div>
             </div>
           </fieldset>

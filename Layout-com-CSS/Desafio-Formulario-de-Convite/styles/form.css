@@ -7,14 +7,25 @@ form {
 fieldset {
   border: none;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
 
-  .title {
+  &#about {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  &#customization {
+    grid-template-columns: .6fr 1fr;
+    row-gap: 1.75rem;
+    column-gap: 1rem;
+  }
+
+  legend {
     display: flex;
     align-items: center;
     gap: .75rem;
-    margin-bottom: .5rem;
+    & + .input-wrapper {
+      margin-top: 1.5rem;
+    }
 
     h3 {
       font: var(--title-sm);
@@ -30,6 +41,14 @@ fieldset {
     & > label {
       display: block;
       margin-bottom: .75rem;
+    }
+
+    &:has(input:invalid), &:has(textarea:invalid) {
+      .error-wrapper {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+      }
     }
   }
 }
