@@ -47,10 +47,6 @@ input[type=radio] {
     justify-content: center;
     gap: .5rem;
 
-    label {
-      margin: 0;
-    }
-
     label, svg {
       position: relative;
       z-index: 1;
