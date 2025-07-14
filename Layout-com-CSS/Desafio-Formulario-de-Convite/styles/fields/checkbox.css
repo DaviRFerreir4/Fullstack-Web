@@ -54,3 +54,23 @@ input[type=checkbox] {
     }
   }
 }
+
+.terms-wrapper {
+  display: flex;
+  gap: .75rem;
+
+  input {
+    background-image: url(../../assets/icons/checkbox.svg);
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: inherit;
+
+    &:checked {
+      background-image: url(../../assets/icons/checkbox-checked.svg);
+    }
+  }
+
+  & + & {
+    margin-top: .53125rem;
+  }
+}
