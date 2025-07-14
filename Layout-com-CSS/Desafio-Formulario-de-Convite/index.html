@@ -68,7 +68,7 @@
               <textarea name="description" id="description" cols="30" rows="5" placeholder="Escreva sobre os detalhes do evento" required></textarea>
               <div class="error-wrapper">
                 <img src="assets/icons/circle-alert.svg" alt="Icone de alerta">
-                <span>Insira os detalhes do evento</span>
+                <span>Campo obrigatório</span>
               </div>
             </div>
           </fieldset>
@@ -177,8 +177,30 @@
               </div>
               <div class="error-wrapper">
                 <img src="assets/icons/circle-alert.svg" alt="Icone de alerta">
-                <span>Insira uma foto de capa do evento</span>
+                <span>Campo obrigatório</span>
               </div>
+            </div>
+          </fieldset>
+          <fieldset id="contact-data">
+            <legend>
+              <img src="assets/icons/contact.svg" alt="Icone de contato">
+              <h3>Dados para contato</h3>
+            </legend>
+            <div class="input-wrapper column">
+              <label for="name">Nome</label>
+              <input type="text" name="name" id="name" placeholder="Nome completo" required>
+              <div class="error-wrapper">
+                <img src="assets/icons/circle-alert.svg" alt="Icone de alerta">
+                <span>Campo obrigatório</span>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" placeholder="exemplo@email.com">
+            </div>
+            <div class="input-wrapper">
+              <label for="email">Telefone</label>
+              <input type="tel" name="phone" id="phone" placeholder="(99) 99999-9999">
             </div>
           </fieldset>
         </form>

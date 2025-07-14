@@ -8,7 +8,7 @@ fieldset {
   border: none;
   display: grid;
 
-  &#about {
+  &#about, &#contact-data {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
