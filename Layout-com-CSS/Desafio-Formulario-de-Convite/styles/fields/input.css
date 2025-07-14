@@ -1,62 +1,76 @@
-input[type=text], input[type=datetime-local], input[type=tel], input[type=email], textarea {
-  outline: none;
-  resize: none;
-  width: 100%;
-  padding: .8125rem 1rem;
-  border: 1px solid var(--input-stroke);
-  border-radius: .5rem;
-  background-color: var(--input-base);
-  color: var(--text-heading);
-  font: var(--text-md);
-
-  &:focus {
-    border-color: var(--brand-light);
-  }
-
-  &:invalid {
-    border-color: var(--danger);
-  }
+input[type=checkbox] {
+  all: unset;
 }
 
-.input-file-wrapper {
+.checkbox-style-wrapper {
+  margin-top: 1.125rem;
   display: flex;
-  align-items: center;
   gap: .75rem;
+  align-items: center;
 
-  label {
-    padding: .75rem;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    background-color: var(--shape-button);
-    border-radius: .5rem;
-    color: var(--text-heading);
-  }
-
-  &:hover label {
-    background-color: var(--shape-hover);
+  label:nth-child(3) {
+    display: none;
   }
 
   input {
-    width: 100%;
-    font: var(--text-md);
-    color: var(--input-placeholder);
+    position: relative;
+    width: 4rem;
+    height: 2rem;
+    background-color: var(--input-base);
+    border: 1px solid var(--input-stroke);
+    border-radius: 999px;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background-color: var(--input-stroke);
+      top: 50%;
+      transform: translate(0, -50%);
+      left: 5%;
+      transition: all 200ms linear;
+    }
+  }
 
-    &::file-selector-button {
-      display: none;
+  &:has(input:checked) {
+    input {
+      background-color: var(--brand-light);
+
+      &::before {
+        left: 95%;
+        transform: translate(-100%, -50%);
+        background-color: var(--text-heading);
+      }
     }
 
-    &:valid {
-      color: var(--text-heading);
+    label:nth-child(3) {
+      display: inline-flex;
+    }
+
+    label:nth-child(2) {
+      display: none;
     }
   }
 }
 
-.error-wrapper {
-  display: none;
-  margin-top: .5rem;
-  
-  span {
-    color: var(--danger);
+.terms-wrapper {
+  display: flex;
+  gap: .75rem;
+
+  input {
+    background-image: url(../../assets/icons/checkbox.svg);
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: inherit;
+
+    &:checked {
+      background-image: url(../../assets/icons/checkbox-checked.svg);
+    }
+  }
+
+  & + & {
+    margin-top: .53125rem;
   }
 }

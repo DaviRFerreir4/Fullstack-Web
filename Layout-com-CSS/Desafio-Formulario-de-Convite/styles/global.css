@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: all 200ms;
 }
 
 :root {
@@ -19,7 +20,6 @@
   --text-heading: #F9F9F9;
   --danger: #FF5959;
   --pink: #FF598B;
-  /* --: ; */
 
   --font-family-heading: "Baloo 2", sans-serif;
   --font-family-text: "Open Sans", sans-serif;
@@ -36,4 +36,8 @@ body {
   font: var(--text-sm);
   overflow: hidden;
   background-color: var(--shape-background);
+}
+
+a {
+  color: var(--brand-light);
 }
