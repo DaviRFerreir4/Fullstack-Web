@@ -12,6 +12,30 @@ input[type=radio] {
   position: relative;
 }
 
+#about {
+  .radio-inner {
+    position: relative;
+    &::before {
+      content: "";
+      width: 48%;
+      height: 85%;
+      border-radius: .25rem;
+      position: absolute;
+      z-index: 1;
+      left: 1.5%;
+      background-color: var(--input-stroke);
+      transition: inherit;
+    }
+
+    &:has(input#online:checked) {
+      &::before {
+        left: 98.5%;
+        transform: translateX(-100%);
+      }
+    }
+  }
+}
+
 .radio-option {
   position: relative;
   border-radius: .25rem;
@@ -25,23 +49,21 @@ input[type=radio] {
     height: 100%;
     background-color: var(--input-base);
 
-    &:checked {
-      background-color: var(--input-stroke);
+    &:checked + .event-type-details {
+      svg path {
+        fill: var(--brand-light);
+      }
 
-      & + .event-type-details {
-        svg path {
-          fill: var(--brand-light);
-        }
-
-        label {
-          color: var(--text-heading);
-        }
+      label {
+        color: var(--text-heading);
       }
     }
   }
 
   .event-type-details {
     padding: .6875rem 1.125rem;
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
