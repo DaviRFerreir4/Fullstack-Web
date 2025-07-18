@@ -20,6 +20,10 @@
 .btn:hover {
   --btn-bg-color: linear-gradient(90deg, var(--brand-color-secondary), var(--brand-color-primary));
   --btn-color: var(--surface-color);
+
+  color: var(--btn-color);
+  background-clip: initial;
+  -webkit-background-clip: initial;
 }
 
 .btn-sm {
@@ -59,5 +63,17 @@
 
     position: relative;
     z-index: 1;
+  }
+}
+
+@media (width >= 80em) {
+  .btn-sm {
+    padding: .75rem 1.5rem;
+    font-size: var(--fs-base);
+  }
+
+  .btn-md {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
   }
 }
