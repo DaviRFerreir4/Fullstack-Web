@@ -50,7 +50,7 @@
     border-radius: inherit;
     
     position: absolute;
-    inset: 1.5px;
+    inset: 1px;
   }
 
   &::after {

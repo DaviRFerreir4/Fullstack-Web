@@ -42,12 +42,23 @@ section {
 }
 
 #smartphone-img {
-  background: url(../assets/bg-hero-mobile.svg) 50% 150%/cover no-repeat, linear-gradient(var(--bg-color) 50%, var(--surface-color));
-  padding-top: 3rem;
+  background: url(../assets/bg-hero-mobile.svg) center/cover;
+  padding-top: 5rem;
 }
 
 #about {
   background-color: var(--surface-color);
+}
+
+#pricing {
+  header {
+    text-align: center;
+    
+    @media (width >= 80em) {
+      max-width: 50rem;
+      margin-inline: auto;
+    }
+  }
 }
 
 @media (width >= 80em) {
