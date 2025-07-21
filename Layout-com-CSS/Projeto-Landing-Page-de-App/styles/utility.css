@@ -49,6 +49,10 @@
   gap: 1.5rem;
 }
 
+.gap-2 {
+  gap: 2rem;
+}
+
 .grid {
   display: grid;
 }

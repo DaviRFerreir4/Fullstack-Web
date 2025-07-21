@@ -95,3 +95,8 @@ a:hover {
 ul[role="list"] {
   list-style: none;
 }
+
+img {
+  max-width: 100%;
+  display: inline-block;
+}
