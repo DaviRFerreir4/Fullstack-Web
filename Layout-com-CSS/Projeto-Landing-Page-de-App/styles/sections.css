@@ -39,11 +39,37 @@ section {
   .buttons {
     margin-top: 2rem;
   }
+
+  @media (width >= 80em) {
+    background: url(../assets/bg-hero.svg) bottom center/contain no-repeat;
+    padding-bottom: 15rem;
+
+    img[src*="music-bars"] {
+      width: 25.75rem;
+    }
+
+    h1 {
+      margin-top: 1.5rem;
+    }
+    
+    p {
+      margin-top: 1rem;
+      --fs-lg: 2.5rem;
+    }
+    
+    .buttons {
+      margin-top: 3rem;
+    }
+  }
 }
 
 #smartphone-img {
   background: url(../assets/bg-hero-mobile.svg) center/cover;
   padding-top: 5rem;
+
+  @media (width >= 80em) {
+    display: none;
+  }
 }
 
 #about {
@@ -136,8 +162,8 @@ section {
           color: var(--bg-color);
         }
       }
+    }
   }
-}
 
   @media (width >= 80em) {
     --fs-price: 2.5rem;
@@ -161,30 +187,35 @@ section {
   }
 }
 
-@media (width >= 80em) {
-  #hero {
-    background: url(../assets/bg-hero.svg) bottom center/contain no-repeat;
-    padding-bottom: 15rem;
+#download {
+  .card {
+    padding: 3rem 1.5rem 15rem;
+    position: relative;
 
-    img[src*="music-bars"] {
-      width: 25.75rem;
+    & > img {
+      width: 14.5rem;
+      position: absolute;
+      bottom: 0;
+      right: -3.5rem;
     }
 
-    h1 {
-      margin-top: 1.5rem;
-    }
-    
-    p {
-      margin-top: 1rem;
-      --fs-lg: 2.5rem;
-    }
-    
     .buttons {
-      margin-top: 3rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
     }
   }
 
-  #smartphone-img {
-    display: none;
+  @media (width >= 80em) {
+    .card {
+      padding: 8.75rem 5rem;
+
+      & > div {
+        max-width: 40rem;
+      }
+
+      & > img {
+        width: 29.125rem;
+      }
+    }
   }
 }
