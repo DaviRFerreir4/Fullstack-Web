@@ -7,4 +7,5 @@ Aqui estão alguns projetos e desafios que acompanham o curso<br><br>
 [Projeto Portal de Notícias](https://davirferreir4.github.io/Fullstack-Web/Layout-com-CSS/Projeto-Portal-de-Noticias) 📰<br>
 [Desafio Portfolio Dev](https://davirferreir4.github.io/Fullstack-Web/Layout-com-CSS/Desafio-Portfolio-Dev) 📁<br>
 [Projeto Formulário de Matrícula](https://davirferreir4.github.io/Fullstack-Web/Layout-com-CSS/Projeto-Formulario-de-Matricula)📝<br>
-[Desafio Formulário de Convite](https://davirferreir4.github.io/Fullstack-Web/Layout-com-CSS/Desafio-Formulario-de-Convite)🎊
+[Desafio Formulário de Convite](https://davirferreir4.github.io/Fullstack-Web/Layout-com-CSS/Desafio-Formulario-de-Convite)🎊<br>
+[Projeto Landing Page de Aplicativo](https://davirferreir4.github.io/Fullstack-Web/Layout-com-CSS/Projeto-Landing-Page-de-App)🎤
