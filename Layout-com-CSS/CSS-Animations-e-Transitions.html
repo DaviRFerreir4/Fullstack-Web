@@ -7,7 +7,29 @@
   </head>
   <body>
     <!-- <div></div> -->
-     <button>Fala, Dev!</button>
+    <!-- <button>Fala, Dev!</button> -->
+    <h1>Title goes here</h1>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <article>
+      <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </h2>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+      <img src="https://images.unsplash.com/photo-1749738155703-b4650f21387b?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    </article>
+    <h3>Lorem ipsum dolor sit amet.</h3>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil distinctio facilis amet consectetur sequi quos illum placeat? Qui debitis accusantium similique tempora consequatur. Fugiat qui possimus consequuntur reprehenderit vel cumque!</p>
   </body>
   <style>
     body {
@@ -92,6 +114,47 @@
 
     @keyframes fade {
       50% {
+        opacity: 0;
+      }
+    }
+
+    /* ---------------------------------------- */
+
+    body {
+      max-width: 80%;
+      margin-inline: auto;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    article img, h1, h2, h3, p {
+      animation: fades linear both, out linear;
+      /* animation-timeline: scroll(); */
+      animation-timeline: view(), view();
+      /* animation-range-start: 100px;
+      animation-range-end: 500px; */
+      /* animation-range: entry, exit; */
+      animation-range: contain 100px, exit;
+    }
+
+    @keyframes fades {
+      0% {
+        opacity: 0;
+        scale: .8;
+      }
+
+      100% {
+        opacity: 1;
+        scale: 1;
+      }
+    }
+
+    @keyframes out {
+      100% {
+        scale: 1.1;
         opacity: 0;
       }
     }
