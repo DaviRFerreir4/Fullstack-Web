@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Animations e Transitions</title>
+  </head>
+  <body>
+    <!-- <div></div> -->
+     <button>Fala, Dev!</button>
+  </body>
+  <style>
+    body {
+      background-color: mediumpurple;
+    }
+
+    div {
+      background-color: white;
+      width: 4rem;
+      height: 4rem;
+      opacity: .6;
+      /* transition-property: all; */
+      /* transition-duration: 1000ms; */
+      /* transition-delay: 1s, 500ms; */
+      /* transition-timing-function: ease-in-out; */
+      /* transition-timing-function: steps(4); */
+      /*  */
+      transition: opacity 500ms 500ms ease-in, transform 1000ms ease-in-out;
+    }
+
+    @media (prefers-reduced-motion) {
+      div {
+        transition: none;
+      }
+    }
+
+    div:hover {
+      opacity: 1;
+      transform: translateX(20px);
+      transition: all 100ms;
+    }
+
+    /* ---------------------------------------- */
+
+    button {
+      background-color: deeppink;
+      color: white;
+      width: 4rem;
+      height: 4rem;
+      border: none;
+      border-radius: 50%;
+
+      /* animation-name: move;
+      animation-duration: 500ms;
+      animation-delay: 200ms;
+      animation-fill-mode: both;
+      animation-direction: alternate-reverse;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear; */
+      animation: move 1s 200ms both infinite alternate, fade 1s both 10;
+    }
+
+    button:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes move {
+      /* from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(300px);
+      } */
+
+      /* 25%, 50%, 80% {
+        transform: translateY(300px);
+      }
+
+      30%, 60%, 90% {
+        transform: translateY(0);
+      } */
+
+      0% {
+        background-color: blue;
+      }
+      
+      100% {
+        transform: translateX(300px);
+      }
+    }
+
+    @keyframes fade {
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
+</html>
