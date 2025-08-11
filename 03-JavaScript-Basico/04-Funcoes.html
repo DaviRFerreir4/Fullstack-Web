@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funções</title>
+  </head>
+  <body>
+    <script>
+      // criando a primeira função
+      /*function message() {
+        console.log("Olá, é bom ter você aqui!");
+      }
+      message();
+      message();*/
+
+      // entendendo argumentos e parâmetros
+      /*let username = "João"
+      function message(username) {
+        console.log("Olá", username);
+      }
+      message("Davi");
+      message("Ana");
+      console.log(username);
+      function sum(a, b) {
+        console.log(a + b);
+      }
+      sum(5, 7);
+      function joinText(text1, text2 = "", text3 = "") {
+        console.log(text1, text2, text3);
+      }
+      joinText("Davi", "Rodrigues", "Ferreira");
+      joinText("Ferreira", "Davi", "Rodrigues");
+      joinText("Paulo", "José")*/
+
+      // retornando valores de funções
+      /*function sum(a, b) {
+        let result = a + b;
+        // console.log(result);
+        return result;
+      }
+      let response = sum(9, 3);
+      console.log(response);
+      console.log(sum(5, 2));*/
+
+      // entendendo o escopo da função
+      /*showMessage("Eae");
+      function showMessage(message) {
+        console.log(message);
+        endLine();
+        function endLine() {
+          console.log("-------------");
+        }
+      }
+      showMessage("Davi");
+      // endLine()*/
+
+      // criando comentários de documentação para minhas funções
+      /**
+       * @param {String} email user email
+       * @param {String} password user password
+       * @returns {Number} user id
+       */
+      /*
+      function signIn(email, password) {
+        // fluxo de autenticação de usuário
+        return 7;
+      }
+      signIn("davi@email.com", "drowssap")*/
+
+      // criando funções anônimas
+      /*const showMessage = function(username = "Davi") {
+        return "Olá " + username;
+      }
+      console.log(showMessage());*/
+
+      // criando funções anônimas utilizando arrow functions
+      /*const showMessage = (username = "Davi") => {
+        return `Olá ${username}!`;
+      }
+      console.log(showMessage());*/
+
+      // utilizando callback functions
+      /*function execute(taskName, callback) {
+        console.log("Executando a tarefa:", taskName);
+        callback();
+      }
+      function callbackFunc() {
+        console.log("Tarefa finalizada!");
+      }
+      execute("Download do arquivo", callbackFunc);
+      execute("Upload de arquivo", function() {
+        console.log("Função de callback com função anônima");
+      });
+      execute("Salvando arquivo", () => {
+        console.log("Função de callback com arrow function");
+      });
+      execute("Excluindo arquivo", () => console.log("Arquivo excluído"));*/
+    </script>
+  </body>
+</html>
