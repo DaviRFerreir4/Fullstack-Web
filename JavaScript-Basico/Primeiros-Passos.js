@@ -1,2 +1,9 @@
 console.log("Esse script está sendo importado de outro arquivo");
-console.log("Hello World");
+
+// Esse é um comentário
+console.log("Hello World") // Comentário ao lado do código (código sem ; no final funciona mesmo assim)
+
+/*
+  Comentário de
+  múltiplas linhas
+*/
