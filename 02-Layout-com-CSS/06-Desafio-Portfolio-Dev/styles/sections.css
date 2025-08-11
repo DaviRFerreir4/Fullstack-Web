@@ -1,0 +1,173 @@
+h2 {
+  margin-block: 8px 56px;
+}
+
+#intro {
+  margin-top: 120px;
+  margin-inline: auto;
+
+  p span {
+    color: var(--red);
+  }
+
+  div:nth-child(1) {
+    width: 680px;
+    margin-inline: auto;
+
+    div {
+      width: 112px;
+      height: 112px;
+      margin-inline: auto;
+      margin-bottom: 56px;
+      position: relative;
+
+      svg {
+        stroke: var(--gray-200);
+        stroke-width: 12px;
+        position: absolute;
+        z-index: 2;
+        bottom: 12px;
+        right: 8px;
+      }
+
+      img:nth-child(1) {
+        position: relative;
+        z-index: 1;
+      }
+
+      img:nth-child(2) {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        top: 4px;
+        left: 4px;
+        width: 92px;
+        border-radius: 50%;
+      }
+    }
+
+    h1 {
+      margin-block: 8px 20px;
+    }
+  }
+
+  div:nth-child(2) {
+    margin-block: 80px 94px;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .content-box-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--gray-300);
+    border-radius: 999px;
+    padding: 8px 16px;
+  }
+
+  & > img {
+    display: block;
+    margin-inline: auto;
+    margin-bottom: 129px;
+  }
+}
+
+#projects {  
+  & > div {
+    width: 1040px;
+    margin-inline: auto;
+    margin-bottom: 144px;
+    gap: 24px;
+    justify-content: center;
+  }
+
+
+  .content-box-projects {
+    width: 330px;
+    padding: 12px;
+    background-color: var(--gray-300);
+    border: 2px solid var(--gray-300);
+    border-radius: 12px;
+    
+    img {
+      width: 308px;
+      border-radius: 8px;
+    }
+    
+    h3 {
+      margin-block: 24px 8px;
+    }
+    
+    p {
+      margin-bottom: 5px;
+    }
+    
+    &:hover {
+      transition: 300ms;
+      border: 2px solid var(--gray-400);
+    }
+  }
+}
+
+#services {
+  background-color: var(--gray-100);
+  padding-block: 88px 120px;
+  & > div {
+    div {
+      justify-content: center;
+      gap: 24px;
+      .content-box-services {
+        width: 280px;
+        padding: 20px;
+        border: 2px solid var(--gray-200);
+        border-radius: 12px;
+        h3 {
+          margin-block: 20px 8px;
+        }
+      }
+    }
+  }
+}
+
+#contact {
+  padding-bottom: 200px;
+  
+  p:nth-child(1) {
+    margin-top: 128px;
+  }
+
+  h2 {
+    margin-block: 8px;
+  }
+
+  & > div {
+    width: 400px;
+    margin-top: 48px;
+    margin-inline: auto;
+    gap: 16px;
+
+    .content-box-contact {
+      background-color: var(--gray-300);
+      padding: 20px;
+      border: 2px solid var(--gray-300);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      &:hover {
+        border-color: var(--blue);
+        transition: 300ms;
+        color: var(--blue);
+        svg {
+          fill: var(--blue);
+        }
+      }
+
+      svg:nth-child(3) {
+        margin-left: auto;
+      }
+    }
+  }
+}

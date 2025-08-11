@@ -1,0 +1,11 @@
+footer {
+  padding-block: 24px;
+  font: var(--text-md);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+footer span:nth-child(1) {
+  margin-right: auto;
+}

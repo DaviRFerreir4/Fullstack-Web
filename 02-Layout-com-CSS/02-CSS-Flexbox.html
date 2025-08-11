@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Flexbox</title>
+  </head>
+  <body>
+    <main>
+      <h1>Flexbox em CSS</h1>
+      <p>Flex-grow está ativo</p>
+      <div class="container ">
+        <div class="itens" style="--hue: 0; font-size: 20px;">1</div>
+        <div class="itens" style="--hue: 100;" id="diff">2</div>
+        <div class="itens" style="--hue: 200; font-size: 30px">3</div>
+        <div class="itens" style="--hue: 300;">4</div>
+        <div class="itens" style="--hue: 40; font-size: 8px;">5</div>
+        <div class="itens" style="--hue: 500;" id="diff2">6</div>
+        <div class="itens" style="--hue: 600; font-size: 14px">7</div>
+        <div class="itens" style="--hue: 700;">8</div>
+      </div>
+    </main>
+  </body>
+  <style>
+    .container {
+      border: 2px dashed black;
+      padding: 2px;
+      display: flex;
+      /* height: 100px; */
+        /* indica a justificação dos elementos */
+      /* flex-direction: column; */
+        /* distribuição no eixo principal */
+      /* justify-content: space-evenly; */
+        /* alinhamento no eixo cruzado */
+      /* align-items: center; */
+        /* espaço entre elementos */
+      /* gap: 20px; */
+        /* trabalha com multiplas linhas */
+      /* flex-wrap: wrap; */
+        /* shorthand para flex-direction e flex-wrap */
+      /* flex-flow: column-reverse wrap-reverse; */
+        /* versões especificas do gap */
+      /* row-gap: 20px; */
+      /* column-gap: 20px; */
+    }
+
+    #diff {
+      color: white;
+      font-weight: bold;
+        /* empurra o elemento e os elementos que estão na frente para a direção indicada*/
+      /* margin-bottom: auto; */
+      /* margin-left: auto; */
+        /* ordena o item antes ou depois de todos os itens */
+        /* é uma prática ruim tendo em vista a acessibilidade */
+        /* porque muda a visibilidade, não a estrutura HTML */
+      /* order: -1; */
+        /* alinha apenas este item */
+      /* align-self: center; */
+    }
+
+    #diff2 {
+      color: gray;
+      font-weight: bold;
+    }
+
+    .itens {
+      border: 1px solid red;
+      text-align: center;
+      background-color: hsl(var(--hue), 100%, 70%);
+        /* tamanho dos itens em relação ao eixo principal */
+      /* flex-basis: 200px; */
+        /* crescimento automatico do item conforme os espaços vazios */
+      flex-grow: 1;
+        /* encolhimento automatico do item conforme os espaços vazios */
+      /* flex-shrink: 0; */
+        /* shorthand para todos acima */
+      /* flex: 1 0 120px; */
+    }
+  </style>
+</html>
