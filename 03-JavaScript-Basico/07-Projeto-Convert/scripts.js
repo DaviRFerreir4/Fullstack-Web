@@ -9,6 +9,7 @@ const amount = document.querySelector("input#amount");
 const currency = document.querySelector("select#currency");
 const footer = document.querySelector("main footer");
 const description = document.querySelector("span#description");
+const result = document.querySelector("h1#result");
 
 // Manipulando o input amount para receber somente números
 amount.addEventListener("input", () => {
@@ -38,6 +39,8 @@ form.onsubmit = (event) => {
 function convertCurrency(amount, price, symbol) {
   try {
     description.textContent = `${symbol} 1 = ${formatCurrencyBRL(price)}`;
+    let total = formatCurrencyBRL(amount * price).replace("R$", "");
+    result.textContent = `${total} Reais`;
     footer.classList.add("show-result");
   } catch (error) {
     console.log(error);
@@ -51,5 +54,5 @@ function formatCurrencyBRL (value) {
   return Number(value).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
-  })
+  });
 }
