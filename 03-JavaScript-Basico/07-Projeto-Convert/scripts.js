@@ -37,11 +37,19 @@ form.onsubmit = (event) => {
 // Função para converter a moeda
 function convertCurrency(amount, price, symbol) {
   try {
-    description.textContent = `${symbol} 1 = ${price}`;
+    description.textContent = `${symbol} 1 = ${formatCurrencyBRL(price)}`;
     footer.classList.add("show-result");
   } catch (error) {
     console.log(error);
     alert("Não foi possível converter, tente mais tarde.");
     footer.classList.remove("show-result");
   }
+}
+
+// Formata valores em reais
+function formatCurrencyBRL (value) {
+  return Number(value).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  })
 }
