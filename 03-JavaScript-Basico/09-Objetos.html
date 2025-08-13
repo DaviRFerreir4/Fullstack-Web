@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objetos</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Criando e acessando um objeto e acessando propriedades no contexto do objeto
+      /*// const obj = {};
+      // console.log(obj);
+      // console.log(typeof obj);
+      const user = {
+        name: {
+          first_name: "Davi",
+          surname: "Ferreira",
+        },
+        email: "davi@email.com",
+        age: 22,
+        has_CNH: false,
+        CNH: null,
+        address: {
+          street: "Rua X",
+          number: 23,
+          city: "Saltinho",
+          postal_code: "13444-899",
+        },
+        message: () => {
+          // Não funciona em arrow functions, somente em funções anônimas padrões
+          // console.log(`Olá, eu me chamo ${this.name.first_name}`); 
+          console.log(`Olá, eu me chamo ${user.name.first_name}`); 
+        },
+      };
+      console.log(user.email);
+      console.log(user.name.surname);
+      user.message();
+      console.log(user["has_CNH"]);
+      console.log(user["address"]["city"]);
+      user["message"]();*/
+
+      // Atualizando um objeto
+      /*const product = {
+        name: "Teclado",
+        quantity: 100,
+      };
+      console.log(product.name);
+      console.log(product.quantity);
+      product.name = "Mouse"
+      product.quantity = 76;
+      console.log(product.name);
+      console.log(product.quantity);
+      product["quantity"] = 43;
+      console.log(product);*/
+
+      // Encadeamento opcional
+      /*const user = {
+        id: 1,
+        name: "Davi",
+        address: {
+          street: "Avenida Brasil",
+          city: "São Paulo",
+          number: "485",
+          geo: {
+            latitude: 47.808, 
+            latitude: 17.5674, 
+          },
+        },
+        message: () => {
+          console.log(`Olá, ${user.name}`);
+        },
+      }
+      // console.log(user);
+      // console.log(user.name);
+      // user.message();
+      console.log(user?.address?.street);
+      console.log(user?.address ? "Usuário possui um endereço" : "Usuário não possui um endereço");
+      console.log(user.address?.number ? `O número do usuário é ${user.address.number}` : "Endereço do usuário não possui um número");*/
+
+      // Conhecendo o operador de coalescência nula
+      /*let content = null;
+      let nothing;
+      console.log(content ?? "Conteúdo padrão");
+      console.log(nothing ?? "Conteúdo padrão");
+      const user = {
+        name: "Davi",
+        picture: undefined,
+      };
+      console.log(user.picture ?? "default-profile-picture.png");*/
+
+      // Entendendo funções construtoras
+      /*function createProduct(name) {
+        const product = {};
+        product.name = name;
+        product.details = () => {
+          console.log(`O nome do produto é ${product.name}`);
+        }
+        return product;
+      }
+      const product1 = new createProduct("Teclado");
+      console.log(product1.name);
+      product1.details();
+      const product2 = new createProduct("Teclado");
+      console.log(product2.name);
+      product2.details();
+      console.log("O resultado da comparação de dois objetos idênticos instânciados é: " + (product1 == product2));
+      let myName = new String("Davi");
+      let myNameAgain = new String("Davi");
+      console.log("O resultado da comparação de duas strings idênticas instânciadas é: " + (myName == myNameAgain));
+      let myName1 = "Davi";
+      let myNameAgain1 = "Davi";
+      console.log("O resultado da comparação de duas strings idênticas é: " + (myName1 === myNameAgain1));
+      function Person(name) {
+        this.name = name;
+        this.message = () => {
+          // this funciona com arrow functions 
+          console.log(`Meu nome é ${this.name}`);
+        };
+      }
+      let person1 = new Person("Davi");
+      console.log(person1);
+      person1.message();*/
+    </script>
+  </body>
+</html>
