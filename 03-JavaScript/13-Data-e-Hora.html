@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data e Hora</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Obtendo data e hora
+      /*console.log(new Date());
+      console.log(new Date(0)); // data inicial
+      console.log(new Date().getTime()); // milisegundos desde a data inicial*/
+
+      // Definindo uma data e hora específicas
+      /*console.log(new Date(2024, 6, 3)); // mês (0 - 11)
+      console.log(new Date(2024, 12, 3, 14, 30, 0));
+      console.log(new Date("2024-07-03T14:30:00"));
+      console.log(new Date("July 3, 2032 11:30:00"));*/
+
+      // Métodos para trabalhar com data e hora
+      /*let date = new Date("2024-07-02T14:30:10");
+      console.log(date);
+      console.log(date.getDay()); // domingo = 0 | sábado = 6
+      console.log(date.getDate()); // dia = 0 - 30 !(talvez esteja errado)
+      console.log(date.getMonth()); // mês = 0 - 11
+      console.log(date.getFullYear());
+      console.log(date.getHours());
+      console.log(date.getMinutes());
+      console.log(date.getSeconds());*/
+
+      // Modificando data e hora
+      /*let date = new Date("July 3, 2024 14:30:00");
+      console.log(date);
+      date.setFullYear(2030);
+      date.setMonth(7);
+      date.setDate(5);
+      date.setHours(3);
+      date.setMinutes(50);
+      date.setSeconds(53);
+      console.log(date);*/
+      
+      // Formatando data e hora
+      /*let date = new Date("2024-07-03T14:30:30");
+      console.log(date);
+      let day = date.getDate().toString().padStart(2, "0"); // dia sempre com 2 dígitos
+      let month = (date.getMonth() + 1).toString().padStart(2, "0"); // dia sempre com 2 dígitos
+      let year = date.getFullYear();
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      let seconds = date.getSeconds();
+      console.log(`${day}/${month}/${year}\n${hours}:${minutes}:${seconds}`);*/
+      
+      // Convertendo uma data para string
+      /*let date = new Date(2024, 6, 2, 14, 30, 0);
+      console.log(date.toString());
+      console.log(date.toDateString());
+      console.log(date.toTimeString());*/
+
+      // Exibindo data e hora formatadas de acordo com a localidade
+      /*let date = new Date("2024-07-02T14:30:06");
+      console.log(date);
+      console.log(date.toLocaleDateString());
+      console.log(date.toLocaleTimeString());
+      console.log(date.toLocaleDateString("pt-BR"));
+      console.log(date.toLocaleTimeString("pt-BR"));*/
+      
+      // Usando o toLocaleString()
+      /*let date = new Date("2024-07-02T14:30:00");
+      console.log(date.toLocaleString());
+      console.log(date.toLocaleString("pt-BR"));
+      console.log(date.toLocaleString("pt-BR", {
+        dateStyle: "short"
+      }));
+      console.log(date.toLocaleString("pt-BR", {
+        dateStyle: "medium"
+      }));
+      console.log(date.toLocaleString("pt-BR", {
+        dateStyle: "long"
+      }));
+      console.log(date.toLocaleString("pt-BR", {
+        dateStyle: "full"
+      }));
+      console.log(date.toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      }));
+      let amount = 12.5;
+      console.log(amount.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }));*/
+      
+      // Conhecendo a Intl
+      /*const currentLocale = Intl.DateTimeFormat().resolvedOptions();
+      console.log(currentLocale);
+      console.log(new Intl.DateTimeFormat("pt-BR").format(new Date()));
+      console.log(new Intl.DateTimeFormat("en-US").format(new Date()));
+      const date = new Date();
+      // obtem a diferença em minutos da timezone oficial (UTC)
+      console.log(date.getTimezoneOffset());
+      console.log(date.getTimezoneOffset() / 60);*/
+
+      // Criando data e hora a partir do fuso horario
+      // UTC = GMT
+      const dateWithTimezone = new Date("2025-08-13T14:56:47.296-00:00"); // horário do GMT
+      // console.log(dateWithTimezone.toISOString());
+      console.log("Data UTC: " + new Date("2025-08-13T14:56:47.296").toLocaleString());
+      console.log("Data GMT-3 (Brasil): " + dateWithTimezone.toLocaleString());
+      
+    </script>
+  </body>
+</html>
