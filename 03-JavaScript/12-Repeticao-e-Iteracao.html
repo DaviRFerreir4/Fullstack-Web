@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repetições e Iterações</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // While
+      /*let execute = true;
+      while(execute) {
+        let response = window.prompt("Deseja continuar?\n\n1 - Sim\n2 - Não");
+        if (response === "2") {
+          execute = false;
+        }
+      }
+      console.log("Segue o fluxo");*/
+
+      // Loop infinito
+      /*let value = true;
+      // while (value) {
+      //   console.log("Executando while");
+      // }*/
+
+      // Do While
+      /*let value = 0;
+      do {
+        value++;
+        console.log(value);
+      } while(value < 10);
+      console.log("Fluxo...");
+      do {
+        value++;
+        console.log(value);
+      } while(value < 10);
+      console.log("Segue o fluxo...");*/
+      
+      // For
+      /*// for (step = 0; step < 10; step++) {
+      //   console.log(step);
+      // }
+      // console.log("# Tabuada #");
+      // console.log(`7 x 1 = ${7 * 1}`);
+      // console.log(`7 x 2 = ${7 * 2}`);
+      // console.log(`7 x 3 = ${7 * 3}`);
+      // console.log(`7 x 4 = ${7 * 4}`);
+      // console.log(`7 x 5 = ${7 * 5}`);
+      // console.log(`7 x 6 = ${7 * 6}`);
+      // console.log(`7 x 7 = ${7 * 7}`);
+      // console.log(`7 x 8 = ${7 * 8}`);
+      // console.log(`7 x 9 = ${7 * 9}`);
+      // console.log(`7 x 10 = ${7 * 10}`);
+      let number = 7;
+      for (step = 0; step <= 10; step++) {
+        console.log(`${number} x ${step} = ${number * step}`);
+      }*/
+
+      // For in
+      /*let person = {
+        name: "Davi",
+        surname: "Ferreira",
+        email: "davi@email.com",
+      };
+      for(let property in person) {
+        console.log(property);
+        // console.log(person.property);
+        console.log(person[property]);
+      }
+      console.log("-----------");
+      let students = ["Davi", "Rodrigo", "Roberto"];
+      for(let index in students) {
+        console.log(students[index]);
+      }*/
+       
+      // For of
+      /*let students = ["Davi", "Ana", "João"];
+      for(let student in students) {
+        console.log(student);
+      }
+      console.log("-----------");
+      for(let student of students) {
+        console.log(student);
+      }
+      console.log("-----------");
+      // let user = {
+      //   name: "Davi",
+      //   email: "davi@email.com",
+      // }; // não é iterável
+      let user = [{
+        name: "Davi",
+        email: "davi@email.com",
+      }];
+      for(let field of user) {
+        console.log(field);
+        console.log(field.name);
+        console.log(field.email);
+      }*/
+
+      // Break
+      /*// let option = 1;
+      // switch(option) {
+      //   case 1:
+      //     console.log("Opção 1");
+      //     // break;
+      //   case 2:
+      //     console.log("Opção 2");
+      //     // break;
+      //   case 3:
+      //     console.log("Opção 3");
+      //     // break;
+      //   default:
+      //     console.log("Opção x");
+      // }
+      for(let i = 0; i < 10; i++) {
+        console.log(i);
+        if (i === 5) {
+          break;
+        }
+      }*/
+
+      // Continue
+      /*for(let i = 0; i < 10; i++) {
+        if(i === 5) {
+          continue;
+        }
+        console.log(i);
+      }*/
+    </script>
+  </body>
+</html>
