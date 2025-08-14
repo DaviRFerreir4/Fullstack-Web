@@ -4,6 +4,8 @@ const expense = document.querySelector("input#expense");
 const category = document.querySelector("select#category");
 const amount = document.querySelector("input#amount");
 const expenseList = document.querySelector("ul");
+const expensesQuantity = document.querySelector("aside header p span");
+const expensesTotal = document.querySelector("aside header h2");
 
 // capturando evento de input para formatar o valor
 amount.oninput = () => {
@@ -37,6 +39,7 @@ form.onsubmit = (event) => {
   addExpense(newExpense);
 }
 
+// adiciona uma nova despesa na lista
 function addExpense(newExpense) {
   try {
     const expenseItem = document.createElement("li");
@@ -66,13 +69,40 @@ function addExpense(newExpense) {
     removeInput.setAttribute("alt", "Remover");
     removeInput.classList.add("remove-icon");
     removeInput.onclick = () => {
-      expenseItem.remove()
+      expenseItem.remove();
+      updateTotals();
     };
 
     expenseItem.append(expenseIcon, expenseInfo, expenseAmount, removeInput);
     expenseList.append(expenseItem);
+    
+    updateTotals();
   } catch(error) {
     alert("Não foi possível adicionar a despesa a lista, tente novamente");
+    console.log(error);
+  }
+}
+
+// atualiza o total de despesas da lista
+function updateTotals() {
+  try {
+    const items = expenseList.children;
+    expensesQuantity.textContent = `${items.length} ${items.length === 1 ? "despesa" : "despesas"}`;
+
+    let total = 0;
+    for(let item = 0; item < items.length; item++) {
+      const itemAmount = items[item].querySelector(".expense-amount").textContent.slice(2, items[item].querySelector(".expense-amount").textContent.length);
+      let value = Number(itemAmount.replace(".", "").replace(",", "."))
+      if (isNaN(value)) {
+        alert("Não foi possível calcular o total. O valor não parece ser um número");
+        throw new Error("Valor digitado não é um número");
+      }
+      total += value;
+    }
+    total = formatCurrencyBRL(total).toUpperCase().replace("R$", "").trim();
+    expensesTotal.innerHTML = `<small>R$</small>${total}`;
+  } catch(error) {
+    alert(error.message);
     console.log(error);
   }
 }
