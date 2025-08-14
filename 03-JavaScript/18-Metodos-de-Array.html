@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métodos de Array</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Método map()
+      /*const products = ["Teclado", "Mouse", "Monitor"];
+      products.map((product) => {
+        console.log(product);
+      });
+      const formatted = products.map((product) => {
+        // product.toUpperCase();
+        return {
+          id: Math.ceil(Math.random()*100),
+          description: product,
+          price: 100,
+        }
+      });
+      console.log(formatted);*/
+
+      // Método filter()
+      /*const words = ["JavaScript", "HTML", "CSS", "Web"];
+      console.log(words);
+      const result = words.filter((word) => {
+        return word.length > 3;
+      });
+      console.log(result);
+      const products = [
+        { description: "Teclado", price: 150, promotion: true},
+        { description: "Mouse", price: 70, promotion: false},
+        { description: "Monitor", price: 750, promotion: true},
+      ]
+      console.log(products);
+      const promotion = products.filter((product) => product.promotion === true );
+      const lowPrice = products.filter((product) => product.price <= 100 );
+      console.log(promotion);
+      console.log(lowPrice);*/
+
+      // Método findIndex()
+      /*const values = [4, 6, 8, 12];
+      let index = values.findIndex((value) => value > 5)
+      console.log(values[index]);
+      console.log(values.findIndex((value) => value === "Como assim?")); // se nenhum item satisfaz a condição retorna -1*/
+
+      // Método find()
+      /*const values = [5, 12, 8, 130, 44];
+      const found = values.find((value) => value > 10);
+      console.log(found);
+      const fruits = [
+        { name: "Apples", quantity: 24 },
+        { name: "Bananas", quantity: 8 },
+        { name: "Pineapples", quantity: 13 },
+      ];
+      let result = fruits.find((fruit) => fruit.name === "Bananas");
+      console.log(result);
+      result = fruits.find((fruit) => fruit.name === "Watermelons"); // retorna undefined quando não encontra
+      console.log(result);*/
+
+      // Método every()
+      /*const ages = [15, 30, 39, 24];
+      let result = ages.every((age) => age >= 18);
+      console.log(result);
+      ages[0] = 19;
+      result = ages.every((age) => age >= 18);
+      console.log(result);*/
+      
+      // Método some()
+      /*const ages = [15, 30, 39, 24];
+      let result = ages.some((age) => age < 18);
+      console.log(result);
+      ages[0] = 19;
+      result = ages.some((age) => age < 18);
+      console.log(result);*/
+
+      // Método reduce()
+      /*const values = [1, 2, 3, 4, 5];
+      const sum = values.reduce((accumulator, currentValue, index) => {
+        console.log("Accumulator:", accumulator);
+        console.log("Current value:", currentValue);
+        console.log("Index:", index);
+        console.log("Soma:", accumulator + currentValue);
+        console.log("-----------------");
+        return accumulator + currentValue;
+      }, 10);
+      console.log("Resultado final da soma:", sum);*/
+    </script>
+  </body>
+</html>
