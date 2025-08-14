@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Moderno</title>
+  <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+</head>
+<body>
+  <script>
+    // Conhecendo o strict mode
+    /*"use strict";
+    function showMessage() {
+      // "use strict";
+      // personName = "Davi Ferreira";
+      let personName = "Davi Ferreira";
+      console.log("Olá", personName);
+    }
+    showMessage();
+    class Student {
+      get point() {
+        return 7;
+      }
+    }
+    let student = new Student();
+    // student.point = 10;
+    console.log(student.point);
+    // delete window.document;
+    // function sum(a, a, c) {
+    //   return a + a + c;
+    // }
+    // console.log(sum(5, 4, 3));*/
+
+    // Desestruturação de array
+    /*const data = ["Davi Ferreira", "davi@email.com", "Flávia", "flavia@email.com"];
+    const [username, email] = data;
+    console.log(username);
+    console.log(email);
+    const fruits = ["Banana", "Maçã", "Laranja"];
+    const [banana, apple] = fruits;
+    console.log(banana);
+    console.log(apple);
+    const [,, orange] = fruits;
+    console.log(orange);*/
+
+    // Desestruturando objetos
+    /*const product = {
+      description: "Teclado",
+      price: 150,
+    }
+    const {description, price} = product;
+    console.log(description);
+    console.log(price);
+    function newProduct({description, price}) {
+      console.log("# Novo Produto #");
+      console.log("Descrição:", description);
+      console.log("Preço: R$", price);
+    }
+    newProduct({
+      price: price,
+      description: description,
+    });
+    newProduct(description, price);*/
+
+    // Conhecendo rest params
+    /*function values(a, ...rest) {
+      // também é utilizado como ...args
+      console.log(a);
+      console.log("Tamanho do rest", rest.length);
+      console.log(...rest);
+      console.log(rest);
+      console.log(rest[0]);
+    }
+    values(2, 3, 1, 4);*/
+
+    // Conhecendo o operador spread
+    /*const numbers = [1, 2, 3];
+    console.log(numbers);
+    console.log(...numbers);
+    const data = [
+      {
+        name: "Davi",
+        email: "davi@email.com",
+        avatar: "d.png",
+      },
+      {
+        name: "Roberto",
+        email: "roberto@email.com",
+        avatar: "r.png",
+      },
+    ]
+    console.log(data);
+    console.log(...data);*/
+  </script>
+</body>
+</html>
