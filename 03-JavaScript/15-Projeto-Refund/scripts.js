@@ -7,6 +7,9 @@ const expenseList = document.querySelector("ul");
 const expensesQuantity = document.querySelector("aside header p span");
 const expensesTotal = document.querySelector("aside header h2");
 
+// colocando o foco no primeiro input
+expense.focus();
+
 // capturando evento de input para formatar o valor
 amount.oninput = () => {
   let value = amount.value.replace(/\D/g, "");
@@ -71,11 +74,14 @@ function addExpense(newExpense) {
     removeInput.onclick = () => {
       expenseItem.remove();
       updateTotals();
+      expense.focus();
     };
 
     expenseItem.append(expenseIcon, expenseInfo, expenseAmount, removeInput);
     expenseList.append(expenseItem);
     
+    clearFields();
+
     updateTotals();
   } catch(error) {
     alert("Não foi possível adicionar a despesa a lista, tente novamente");
@@ -105,6 +111,13 @@ function updateTotals() {
     alert(error.message);
     console.log(error);
   }
+}
+
+function clearFields() {
+  expense.value = "";
+  category.value = "";
+  amount.value = "";
+  expense.focus();
 }
 
 // Modo de remover itens apresentado pelo curso
