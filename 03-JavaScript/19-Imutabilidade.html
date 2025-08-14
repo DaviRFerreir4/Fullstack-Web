@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imutabilidade</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Aplicando imutabilidade
+      /*const address1 = {
+        street: "Av. Brasil",
+        number: 20,
+      }
+      const address2 = address1; // cria uma referência, não um objeto novo
+      console.log(address1, address2);
+      address2.street = "Rua do limoeiro";
+      console.log(address1, address2); // os dois foram alterados por 2 ser uma referência de 1
+      const address3 = {...address1}; // cria uma cópia do 1
+      console.log(address1, address3);
+      address3.number = 50;
+      console.log(address1, address3); // só o 3 foi alterado por ser uma cópia do 1
+      address4 = {...address1, number: 30}; // cria uma cópia do 1 e sobreescreve o atributo direto
+      console.log(address1, address4);
+      const list1 = ["Apple", "Banana"];
+      const list2 = list1; // cria uma referência, não um array novo
+      console.log(list1, list2);
+      list2.push("Melon");
+      console.log(list1, list2); // os dois foram alterados por 2 ser uma referência de 1
+      const list3 = [...list1];
+      list3.pop();
+      console.log(list1, list3); // só o 3 foi alterado por ser uma cópia do 1
+      const list4 = [...list1, "Orange"]; // já cria uma cópia adicionando um elemento a mais
+      console.log(list1, list4);*/
+
+      // Shallow e Deep Cody
+      /*const htmlCourse = {
+        course: "HTML",
+        students: [{name: "Davi", email: "davi@email.com"}],
+        periods: [8, 12],
+      }
+      const cssCourse = { ...htmlCourse, course: "CSS" } // criou uma cópia rasa (só copiou propriedades simples de primeiro nível)
+      console.log(htmlCourse, cssCourse);
+      cssCourse.students.push({name: "Roberto", email: "roberto@email.com"});
+      cssCourse.periods.pop();
+      console.log(htmlCourse, cssCourse);
+      const jsCourse = { ...htmlCourse, students: [...htmlCourse.students, {name: "Ana", email: "ana@email.com"}] } // criou uma cópia profunda (copiou propriedades indicadas)
+      jsCourse.students.push({name: "Maria", email: "maria@email.com"});
+      console.log(htmlCourse, jsCourse);
+      nodeCourse = { ...htmlCourse };
+      nodeCourse.students = [ // cópia profunda feita de outra maneira
+        ...htmlCourse.students,
+        {name: "Benjamin", email: "ben@email.com"}
+      ]
+      console.log(htmlCourse, nodeCourse);*/
+
+      // Shallow freeze
+      /*const book = {
+        title: "Objetos Imutáveis",
+        category: "JavaScript",
+        author: {
+          name: "Rodrigo",
+          email: "rodrigo@email.com",
+        },
+      }
+      console.log(book);
+      book.title = "Imutáveis Objetos";
+      console.log(book);
+      Object.freeze(book); // impede que modificações sejam feitas num objeto, mas somente num nível raso (Shallow freezing)
+      book.category = "HTML";
+      console.log(book);
+      console.log(book.author);
+      book.author.name = "Davi" // funciona pois foi utilizado um congelamento raso
+      console.log(book.author);*/
+
+      // Deep freeze
+      /*const book = {
+        title: "Objetos imutáveis",
+        category: "JavaScript",
+        author: {
+          name: "Rodrigo",
+          email: "rodrigo@email.com",
+        },
+      };
+      Object.freeze(book); // congelamento raso
+      book.category = "CSS";
+      console.log(book);
+      book.author.name = "Davi";
+      console.log(book.author);
+      console.log("---------------------");
+      function deepFreeze(object) {
+        const props = Reflect.ownKeys(object); // obtendo um array com as propriedades de primeiro nível do objeto
+        // console.log(props);
+        for(const prop of props) {
+          const value = object[prop]; // obtem o valor associado a propriedade atual do loop
+          console.log(value);
+          // verificando se o valor é um objeto ou função para continuar aplicando o freeze em objetos aninhados
+          if(value && typeof value === "object" || typeof value === "function") {
+            deepFreeze(value);
+          }
+        }
+        return Object.freeze(object);
+      }
+      deepFreeze(book);
+      book.category = "HTML";
+      book.author.name = "Roberto";
+      console.log("--------------------");
+      console.log(book, book.author);*/
+
+      // Manipulando objetos imutáveis
+      /*const book = {
+        title: "Objetos imutáveis",
+        category: "JavaScript",
+        author: {
+          name: "Rodrigo",
+          email: "rodrigo@email.com",
+        },
+      };
+      const updatedBook = {
+        ...book,
+        title: "Criando um Front-end moderno com HTML",
+        category: "HTML",
+        type: "Markup Language",
+      };
+      console.log(book); // original intacto
+      console.log(updatedBook); // cópia modificada com campos diferentes e campos a mais que a original
+      const { category, ...bookWithoutCategory} = { ...book, pages: 125, title: "Não sei mais o que está acontecendo" }; // cópia modificada com campos diferentes, campos a mais e campos a menos que a original
+      console.log(bookWithoutCategory);*/
+      </script>
+  </body>
+</html>
