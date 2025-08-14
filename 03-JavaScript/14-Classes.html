@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Criando uma classe com método construtor
+      /*class Person {
+        constructor(name) {
+          console.log("Classe instânciada");
+          console.log("Olá", name);
+        }
+      }
+      const person = new Person("Davi");*/
+
+      // Criando propriedades dentro das classes
+      /*class Product {
+        constructor(name) {
+          this.name = name
+        }
+      }
+      const product1 = new Product("Mouse");
+      console.log(product1.name);
+      const product2 = new Product("Teclado");
+      console.log(product2.name);*/
+
+      // Adicionando métodos nas classes
+      /*class User {
+        constructor(name, email) {
+          this.name = name;
+          this.email = email;
+        }
+
+        sendEmail() {
+          console.log("E-mail enviado para", this.name, "no endereço", this.email);
+        }
+      }
+      const user = new User("Davi", "davi@email.com");
+      user.sendEmail();*/
+
+      // Métodos estáticos em classes
+      /*class User {
+        constructor(message) {
+          this.message = message;
+        }
+
+        static showMessage(message) {
+          console.log("Essa é uma mensagem");
+          console.log(message);
+          console.log(this.message);
+        }
+      }
+      const user = new User();
+      // user.showMessage(); // static não permite a utilização dessa maneira
+      User.showMessage("Mensagem como parâmetro do método estático");*/
+
+      // Herança em classes e sobrescrevendo métodos
+      /*class Animal {
+        constructor(name) {
+          this.name = name;
+        }
+
+        makeNoise() {
+          console.log("Som genérico");
+        }
+      }
+      class Dog extends Animal {
+        makeNoise() {
+          console.log("Au! Au! Au!");
+        }
+        
+        track() {
+          console.log("Sniff... Sniff... Sniff...");
+        }
+      }
+      class Cat extends Animal {
+        makeNoise() {
+          console.log("Miau... Miau... Miau...");
+        }
+      }
+      const dog = new Dog("Rex");
+      const cat = new Cat("Banguela");
+      console.log(dog.name);
+      dog.makeNoise();
+      console.log(cat.name);
+      cat.makeNoise();
+      dog.track();
+      // cat.track(); // não existe*/
+
+      // Entendendo o conceito de prototype chain em JavaScript
+      /*const address = {
+        city: "Saltinho",
+        state: "São Paulo", 
+        country: "Brasil",
+      };
+      console.log(address);
+      const users = ["Davi", "Rodrigo", "Roberto"];
+      console.log(users);
+      const fullName = "Davi Rodrigues Ferreira";
+      console.log(fullName.__proto__);*/
+
+      // Usando classes para lidar com exceções
+      /*let obj = [17];
+      let index = 300;
+      try {
+        // obj.execute();
+        if(!obj.includes(17)) {
+          throw new Error("O número 17 não está disponível");
+        }
+        if(index > 99) {
+          throw new RangeError("O número está fora do intervalo. Escolha um número de 0 a 99");
+        }
+      } catch(error) {
+        if(error instanceof TypeError) {
+          console.log("Método indisponível");
+        }
+        if(error instanceof RangeError) {
+          console.log(error.message);
+        } else {
+          console.log("Não foi possível realizar a ação");
+        }
+      }*/
+
+      // Utilizando classes para criar erros personalizados
+      /*class MyCustomError {
+        constructor(message) {
+          this.message = "Classe de erro customizada: " + message;
+        }
+      }
+      try {
+        // throw new Error("Erro genérico");
+        throw new MyCustomError("Erro personalizado lançado!");
+      } catch(error) {
+        if (error instanceof MyCustomError) {
+          console.log(error.message);
+        } else {
+          console.log("Não foi possível executar");
+        }
+      }*/
+    </script>
+  </body>
+</html>
