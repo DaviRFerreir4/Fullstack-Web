@@ -106,3 +106,12 @@ function updateTotals() {
     console.log(error);
   }
 }
+
+// Modo de remover itens apresentado pelo curso
+// expenseList.addEventListener("click", (event) => {
+//   if (event.target.classList.contains("remove-icon")) {
+//     const item = event.target.closest(".expense");
+//     item.remove();
+//     updateTotals();
+//   }
+// });
