@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "webpack ./src/js/index.js"
+    "build": "webpack"
   },
   "devDependencies": {
     "webpack": "^5.101.2",
