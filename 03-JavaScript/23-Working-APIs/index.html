@@ -8,9 +8,37 @@
       body {
         background-color: rgb(27, 26, 26);
       }
+      form {
+        display: grid;
+        justify-items: center;
+        gap: 1rem;
+      }
+      input, button {
+        width: max(30%, 10rem);
+        padding: .5rem;
+        overflow: hidden;
+        border: none;
+        background-color: rgb(78, 78, 78);
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.806);
+          text-align: center;
+        }
+      }
+      button {
+        color: rgb(97, 69, 255);
+      }
+      input {
+        color: rgba(255, 255, 255, 0.806);
+      }
     </style>
   </head>
   <body>
+    <form action="">
+      <input type="text" id="name" placeholder="Nome do produto" required>
+      <input type="text" id="price" placeholder="Preço do produto" required>
+      <button type="submit">Cadastrar</button>
+      <button type="button">Ver produtos cadastrados</button>
+    </form>
     <script src="main.js"></script>
   </body>
 </html>
