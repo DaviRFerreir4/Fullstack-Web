@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funções Assíncronas</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Conhecendo o setTimeout()
+      /*setTimeout(() => {
+        console.log("Olá, tudo bem?");
+      }, 3000); // tempo em milissegundos*/
+
+      // Conhecendo o setInterval()
+      /*let value = 10;
+      const interval = setInterval(() => {
+        console.log("Oi, faltam", value--, "segundos para a contagem terminar");
+        if (value < 0) {
+          console.log("Feliz ano novo!");
+          clearInterval(interval); // interrompe o intervalo de execuções
+        }
+      }, 1000);*/
+
+      // Conhecendo promises
+      /*function asyncFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const isSuccess = true;
+            // const isSuccess = false;
+            if(isSuccess) {
+              resolve("A operação foi concluída com sucesso");
+            } else {
+              reject("Algo deu errado");
+            }
+          }, 3000); // simula uma operação que leva 3 segundos
+        })
+      }
+      // console.log(asyncFunction()); // mostra que é uma promise
+      console.log("Executando função assíncrona...");
+      asyncFunction().then((response) => {
+        console.log("Sucesso:", response);
+      }).catch((error) => {
+        console.log("Erro:", error);
+      }).finally(() => {
+        console.log("Fim da execução");
+      });
+      console.log("Executando ainda...");
+      // const response = asyncFunction();
+      // console.log(response); // retorna a promise pendente pois a mesma não foi concluída quando executou essa linha*/
+
+      // Conhecendo async e await
+      /*function asyncFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const isSuccess = true;
+            // const isSuccess = false;
+            if(isSuccess) {
+              resolve("A operação foi concluída com sucesso");
+            } else {
+              reject("Algo deu errado");
+            }
+          }, 3000); // simula uma operação que leva 3 segundos
+        })
+      }
+      // const fetch = async () => { // utilizando a notação de arrow function
+      async function fetch() {
+        try {
+          const response = await asyncFunction();
+          console.log("Sucesso:", response);
+        } catch(error) {
+          console.log("Erro:", error);
+        } finally {
+          console.log("Fim da execução");
+        }
+      }
+      fetch();*/
+
+      // Prioridade e ordem de execução
+      /*console.log(1); // (1) executa o código de forma síncrona e 1 é impresso imediatamente no console
+      queueMicrotask(() => console.log(2)); // (3) microtasks são executadas antes de temporizadores e promises
+      setTimeout(() => console.log(3), 1000); // (5) macrotask que aguarda o evento de temporizador ser acionado
+      console.log(4); // (2) execução síncrona
+      Promise.resolve(true).then(() => console.log(5)); // (4) adiciona uma microtask quando a promise é resolvida*/
+    </script>
+  </body>
+</html>
