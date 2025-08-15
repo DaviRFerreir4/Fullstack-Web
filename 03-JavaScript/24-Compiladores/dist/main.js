@@ -15,7 +15,7 @@ var User = /*#__PURE__*/function () {
   return _createClass(User, [{
     key: "sendMessage",
     value: function sendMessage() {
-      console.log("Mensagem enviada!");
+      console.log("Mensagem enviada para:", this.email); // se quiser que reflita no código, devo recompilar o arquivo com o script criado ("npm run build")
     }
   }]);
 }();
