@@ -126,7 +126,7 @@ eval("{\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleEle
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   title: () => (/* binding */ title)\n/* harmony export */ });\nfunction title(title) {\r\n  const element = document.createElement(\"h1\");\r\n  element.textContent = title;\r\n  document.body.append(element);\r\n}\n\n//# sourceURL=webpack:///./src/js/components.js?\n}");
+eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   title: () => (/* binding */ title)\n/* harmony export */ });\nfunction title(title) {\n  const element = document.createElement(\"h1\");\n  element.textContent = title;\n  document.body.append(element);\n}\n\n//# sourceURL=webpack:///./src/js/components.js?\n}");
 
 /***/ }),
 
@@ -136,7 +136,7 @@ eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpa
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/index.css */ \"./src/styles/index.css\");\n/* harmony import */ var _components_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components.js */ \"./src/js/components.js\");\n\r\n\r\n\r\n\r\n(0,_components_js__WEBPACK_IMPORTED_MODULE_1__.title)(\"Olá mundo!\");\n\n//# sourceURL=webpack:///./src/js/index.js?\n}");
+eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/index.css */ \"./src/styles/index.css\");\n/* harmony import */ var _components_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components.js */ \"./src/js/components.js\");\n\n\n(0,_components_js__WEBPACK_IMPORTED_MODULE_1__.title)(\"Olá mundo!\");\n\n//# sourceURL=webpack:///./src/js/index.js?\n}");
 
 /***/ }),
 
