@@ -4,9 +4,17 @@
 .then((data) => console.log(data))));*/
 
 // Utilizando o async e await
-async function fetchProducts() {
+/*async function fetchProducts() {
   const response = await fetch("http://localhost:3333/products");
   const data = await response.json();
   console.log(data);
 }
-fetchProducts();
+fetchProducts();*/
+
+// Passando parâmetros na requisição
+async function fetchProductById(id) {
+  const response = await fetch(`http://localhost:3333/products/${id}`);
+  const data = await response.json();
+  console.log(data);
+}
+fetchProductById(2);
