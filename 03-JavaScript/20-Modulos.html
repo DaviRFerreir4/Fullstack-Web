@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulos</title>
+    <style>
+      body {
+        background-color: rgb(27, 26, 26);
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      // Criando módulos
+      /*import { sum, multiply } from "./20-Modulos-calcJs.js";
+      console.log("Soma de 4 e 6:", sum(4, 6));
+      console.log("Multiplicação de 4 e 6:", multiply(4, 6));*/
+      
+      // Importando tudo
+      /*import * as calc from "./20-Modulos-calcJs.js";
+      console.log("Soma de 4 e 6:", calc.sum(4, 6));
+      console.log("Multiplicação de 4 e 6:", calc.multiply(4, 6));*/
+      
+      // Exportação padrão ou nomeada
+      /*import batata, { multiply } from "./20-Modulos-calcJs.js";
+      console.log("Soma de 4 e 6:", batata(4, 6));
+      console.log("Multiplicação de 4 e 6:", multiply(4, 6));*/
+      
+      // Renomeando as exportações
+      /*import { sumTwoNumbers, multiplyTwoNumbers } from "./20-Modulos-calcJs.js";
+      console.log("Soma de 4 e 6:", sumTwoNumbers(4, 6));
+      console.log("Multiplicação de 4 e 6:", multiplyTwoNumbers(4, 6));*/
+
+      // Renomeando as importações
+      /*import { sum as s, multiply as m } from "./20-Modulos-calcJs.js";
+      console.log("Soma de 4 e 6:", s(4, 6));
+      console.log("Multiplicação de 4 e 6:", m(4, 6));*/
+
+      // Usando classes nos módulos
+      /*import { Calc } from "./20-Modulos-calcJs.js";
+      const calc = new Calc();
+      console.log("Soma de 4 e 6:", calc.sum(4, 6));
+      console.log("Multiplicação de 4 e 6:", calc.multiply(4, 6));
+      console.log(calc.name);*/
+    </script>
+  </body>
+</html>
