@@ -1,3 +1,9 @@
 {
-  "schedules": []
+  "schedules": [
+    {
+      "id": 1755536479900,
+      "name": "Davi Ferreira",
+      "when": "2025-08-18T21:00:00.000Z"
+    }
+  ]
 }
