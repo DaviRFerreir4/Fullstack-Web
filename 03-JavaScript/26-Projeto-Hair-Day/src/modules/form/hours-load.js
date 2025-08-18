@@ -1,5 +1,6 @@
 import dayjs from "dayjs"
 import { openingHours } from "../../utils/opening-hours.js"
+import { hoursClick } from "./hours-click.js"
 
 // Captura a lista do formulário
 const hours = document.querySelector("ul#hours")
@@ -40,6 +41,8 @@ export function hoursLoad({ date }) {
     li.textContent = `${hour}`
     hours.append(li);
   })
+
+  hoursClick()
 }
 
 function hourHeaderAdd(title) {
