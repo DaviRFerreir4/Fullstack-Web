@@ -21,6 +21,17 @@ export function hoursLoad({ date }) {
 
   // Renderizar os horários
   opening.forEach(({ hour, avaiable }) => {
+    switch(hour) {
+      case "9:00":
+        hourHeaderAdd("Manhã")
+        break;
+      case "13:00":
+        hourHeaderAdd("Tarde")
+        break;
+      case "19:00":
+        hourHeaderAdd("Noite")
+        break;
+    }
     const li = document.createElement("li")
     li.classList.add(
       "hour",
@@ -29,4 +40,12 @@ export function hoursLoad({ date }) {
     li.textContent = `${hour}`
     hours.append(li);
   })
+}
+
+function hourHeaderAdd(title) {
+  const header = document.createElement("li")
+  header.classList.add("hour-period")
+  header.textContent = title
+
+  hours.append(header)
 }
