@@ -10,4 +10,6 @@ import "./styles/schedule.css"
 
 // JS
 import "./modules/form/submit.js"
-import "./modules/load.js"
+import "./modules/page-load.js"
+
+console.clear()
