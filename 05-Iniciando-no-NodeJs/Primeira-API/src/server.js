@@ -2,9 +2,9 @@ import http from "node:http"
 import { jsonBodyHandler } from "./middlewares/jsonBodyHandler.js"
 
 const server = http.createServer(async (request, response) => {
-  // Identificando o método HTTP
+  // Utilizando Status Code
   const { method } = request
-  return response.end("Método: " + method)
+  return response.writeHead(200).end("Método: " + method)
 })
 
 server.listen(3333)
