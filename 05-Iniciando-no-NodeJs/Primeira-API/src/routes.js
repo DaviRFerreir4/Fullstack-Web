@@ -1,4 +1,5 @@
-// Separando rotas
+// Route Params
+import { parseRoutePath } from "./utils/parseRoutePaths.js"
 export const routes = [
   {
     method: "GET",
@@ -14,4 +15,14 @@ export const routes = [
       return response.writeHead(201).end(JSON.stringify(request.body))
     },
   },
-]
+  {
+    method: "DELETE",
+    path: "/products/:id",
+    controller: (request, response) => {
+      return response.end("Produto removido com o ID: " + request.params.id)
+    },
+  },
+].map((route) => ({
+  ...route,
+  path: parseRoutePath(route.path),
+}))
