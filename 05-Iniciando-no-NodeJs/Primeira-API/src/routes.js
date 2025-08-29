@@ -1,10 +1,13 @@
-// Route Params
+// Obtendo parâmetros nomeados e separando eles
 import { parseRoutePath } from "./utils/parseRoutePaths.js"
 export const routes = [
   {
     method: "GET",
     path: "/products",
     controller: (request, response) => {
+      if (Object.keys(request.query).length !== 0) {
+        return response.end(JSON.stringify(request.query))
+      }
       return response.end("Lista de produtos: ...")
     },
   },
