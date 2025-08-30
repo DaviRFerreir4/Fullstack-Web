@@ -1,7 +1,10 @@
+.header-background-color {
+  background-color: var(--surface-color);
+}
+
 header {
   nav {
     padding-block: 1rem;
-    gap: 1rem;
 
     svg {
       transition: fill 0.35s;
@@ -18,10 +21,51 @@ header {
       border-radius: 50%;
     }
   }
+
+  section#profile-details {
+    padding: 2rem 1rem;
+
+    & > div:nth-child(1) {
+      img {
+        width: 7.5rem;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        color: var(--text-color-primary);
+        font: var(--text-lg);
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
 }
 
 @media (width >= 80em) {
-  nav {
-    padding-block: 1.25rem;
+  header {
+    nav {
+      padding-block: 1.25rem;
+    }
+
+    section#profile-details {
+      padding-inline: 0;
+      grid-auto-flow: column;
+      grid-template-columns: 37rem 17.5rem;
+      justify-content: space-between;
+
+      & > div:nth-child(1) {
+        display: flex;
+        gap: 2rem;
+
+        img {
+          width: 11rem;
+        }
+      }
+
+      & > div:nth-child(2) {
+        height: 6.5rem;
+        align-self: center;
+      }
+    }
   }
 }
