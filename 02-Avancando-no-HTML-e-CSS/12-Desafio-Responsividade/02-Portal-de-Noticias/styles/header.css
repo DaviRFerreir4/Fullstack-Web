@@ -1,0 +1,37 @@
+header.page-header {
+  & > nav:nth-child(1) {
+    padding-block: 1rem;
+    font: var(--fw-bd) var(--fs-md) / 140% var(--ff);
+    color: var(--text-color-primary);
+
+    * {
+      cursor: pointer;
+    }
+  }
+
+  & > div {
+    border-block: 1px solid var(--stroke-color);
+
+    nav:nth-child(1) {
+      padding-block: 0.875rem;
+      font: var(--fw-sb) var(--fs-sm) / 145% var(--ff);
+      overflow: scroll;
+      gap: 2rem;
+      white-space: nowrap;
+    }
+  }
+}
+
+@media (width >= 80em) {
+  header.page-header {
+    & > nav:nth-child(1) {
+      padding-block: 1.25rem;
+    }
+
+    & > div nav:nth-child(1) {
+      overflow: visible;
+      gap: 0rem;
+      justify-content: space-between;
+    }
+  }
+}
