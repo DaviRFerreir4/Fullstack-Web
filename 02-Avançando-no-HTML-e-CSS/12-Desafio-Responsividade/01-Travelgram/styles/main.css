@@ -1,0 +1,19 @@
+main {
+  padding-block: 1rem;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(17.875rem, 1fr)
+  ); /* O valor 17.875 é assumido até que os elementos sejam menor que isso, daí o valor 1fr passa a valer */
+  gap: 1rem;
+
+  img {
+    width: 100%;
+  }
+}
+
+@media (width >= 80em) {
+  main {
+    padding-block: 1.5rem;
+    gap: 1.5rem;
+  }
+}
