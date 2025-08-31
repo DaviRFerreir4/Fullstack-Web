@@ -1,0 +1,27 @@
+footer {
+  padding-block: 1rem;
+
+  nav {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  nav > div {
+    gap: 1.75rem;
+  }
+}
+
+@media (width >= 80em) {
+  footer {
+    padding-block: 1.5rem;
+
+    nav {
+      justify-content: flex-start;
+      gap: 1.75rem;
+      & > span {
+        margin-right: auto;
+      }
+    }
+  }
+}

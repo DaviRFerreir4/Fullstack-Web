@@ -16,7 +16,6 @@
   --ff-all: "Poppins", sans-serif;
   --text-lg: 700 2rem/1.25 var(--ff-all);
   --text-md: 400 0.875rem/1.7 var(--ff-all);
-  --text-sm: 400 0.75rem/1.7 var(--ff-all);
 }
 
 body {
