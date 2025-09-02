@@ -1,29 +1,29 @@
-// Criando um arquivo para salvar os dados e lendo dados salvos do arquivo
+// Propriedades e métodos privados
 import fs from "node:fs/promises"
 const DATABASE_PATH = new URL("db.json", import.meta.url)
 export class Database {
   constructor() {
     fs.readFile(DATABASE_PATH, "utf-8")
       .then((data) => {
-        this.database = JSON.parse(data)
+        this.#database = JSON.parse(data)
       })
       .catch(() => {
-        this.persist()
+        this.#persist()
       })
   }
-  database = {}
-  persist() {
-    fs.writeFile(DATABASE_PATH, JSON.stringify(this.database))
+  #database = {}
+  #persist() {
+    fs.writeFile(DATABASE_PATH, JSON.stringify(this.#database))
   }
   insert(table, data) {
-    if (Array.isArray(this.database[table])) {
-      this.database[table].push(data)
+    if (Array.isArray(this.#database[table])) {
+      this.#database[table].push(data)
     } else {
-      this.database[table] = [data]
+      this.#database[table] = [data]
     }
-    this.persist()
+    this.#persist()
   }
   select(table) {
-    return this.database[table]
+    return this.#database[table] ?? []
   }
 }
