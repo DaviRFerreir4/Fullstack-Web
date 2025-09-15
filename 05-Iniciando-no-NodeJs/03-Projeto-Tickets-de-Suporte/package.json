@@ -1,5 +1,5 @@
 {
-  "name": "02-projeto-tickets-de-suporte",
+  "name": "03-projeto-tickets-de-suporte",
   "version": "1.0.0",
   "main": "./src/server.js",
   "type": "module",
