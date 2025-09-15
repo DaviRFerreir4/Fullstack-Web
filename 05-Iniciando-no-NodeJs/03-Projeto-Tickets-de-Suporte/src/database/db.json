@@ -1,1 +1,22 @@
-{}
+{
+  "tickets": [
+    {
+      "id": "9d6d8645-e404-4acb-82cd-8910b318207d",
+      "equipment": "Notebook",
+      "description": "Atualização do Windows deu errado",
+      "user_name": "Davi Ferreira",
+      "status": "open",
+      "createdAt": "2025-09-15T16:37:48.463Z",
+      "updatedAt": "2025-09-15T16:37:48.463Z"
+    },
+    {
+      "id": "405a8f2a-fd45-4057-94dd-d63444588d2c",
+      "equipment": "Monitor",
+      "description": "Monitor queimou",
+      "user_name": "Stivi",
+      "status": "closed",
+      "createdAt": "2025-09-15T16:44:12.740Z",
+      "updatedAt": "2025-09-15T16:44:12.740Z"
+    }
+  ]
+}
