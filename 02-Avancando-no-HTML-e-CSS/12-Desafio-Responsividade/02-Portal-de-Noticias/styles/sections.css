@@ -1,0 +1,123 @@
+main {
+  margin-bottom: 20rem;
+  gap: 2rem;
+
+  .card {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.25rem;
+
+    img {
+      width: 100%;
+    }
+
+    figcaption {
+      z-index: 1;
+      display: grid;
+      gap: 0.5rem;
+      align-self: end;
+      font: var(--fw-xb) var(--fs-sm) / 140% var(--ff);
+      color: var(--text-color-primary);
+
+      span {
+        width: fit-content;
+        margin-left: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        background-color: var(--brand-color-dark);
+        font: var(--fw-rg) var(--fs-xs) / 120% var(--ff);
+        text-transform: uppercase;
+        color: var(--text-color-primary);
+      }
+
+      div {
+        margin: 0rem 0.75rem 0.75rem;
+
+        p {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+          line-clamp: 3;
+          overflow: hidden;
+        }
+      }
+
+      &::after {
+        content: "";
+        grid-column: 1/2;
+        grid-row: 1/2;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, transparent, var(--bg-color));
+        opacity: 0.8;
+      }
+    }
+  }
+
+  #highlights {
+    padding-top: 1rem;
+    grid-template-columns: 100%;
+
+    figure:nth-child(1) {
+      overflow: hidden;
+
+      img {
+        height: 26rem;
+        object-fit: cover;
+      }
+
+      figcaption {
+        font: var(--fw-xb) var(--fs-lg) / 135% var(--ff);
+      }
+      &::after {
+        height: 50%;
+        align-self: end;
+      }
+    }
+  }
+}
+
+@media (width >= 80em) {
+  main {
+    #highlights {
+      padding-top: 2.5rem;
+      grid-template-columns: none;
+      grid-template-rows: none;
+      grid-auto-rows: 12.5rem;
+      grid-auto-columns: 1fr;
+      grid-template-areas:
+        "news-1 news-1 news-2 news-3"
+        "news-1 news-1 news-4 news-5";
+
+      img {
+        height: 100%;
+      }
+
+      figure:nth-child(1) {
+        overflow: visible;
+        grid-area: news-1;
+
+        img {
+          transform: translateX(0);
+          width: 100%;
+        }
+      }
+
+      figure:nth-child(2) {
+        grid-area: news-2;
+      }
+
+      figure:nth-child(3) {
+        grid-area: news-3;
+      }
+
+      figure:nth-child(4) {
+        grid-area: news-4;
+      }
+
+      figure:nth-child(5) {
+        grid-area: news-5;
+      }
+    }
+  }
+}
