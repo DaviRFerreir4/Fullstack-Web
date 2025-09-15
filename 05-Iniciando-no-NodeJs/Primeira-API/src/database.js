@@ -1,4 +1,4 @@
-// Criando o arquivo de dados
+// Salvando dados no arquivo
 import fs from 'node:fs/promises'
 
 const DATABASE_PATH = new URL('db.json', import.meta.url)
@@ -20,6 +20,7 @@ export class Database {
     } else {
       this.database[table] = [data]
     }
+    this.persist()
   }
 
   select(table) {
