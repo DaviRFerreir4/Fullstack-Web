@@ -1,5 +1,5 @@
 {
-  "name": "primeira-api",
+  "name": "01-primeira-api",
   "version": "1.0.0",
   "main": "./src/server.js",
   "type": "module",
@@ -7,7 +7,7 @@
     "dev": "node --watch ./src/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Davi Ferreira",
   "license": "ISC",
   "description": "Primeiro projeto do curso utilizando Node.Js"
 }

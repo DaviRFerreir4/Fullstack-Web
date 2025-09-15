@@ -1,7 +1,7 @@
 {
   "name": "02-projeto-tickets-de-suporte",
   "version": "1.0.0",
-  "main": "src/server.js",
+  "main": "./src/server.js",
   "type": "module",
   "scripts": {
     "dev": "node --watch src/server.js"
