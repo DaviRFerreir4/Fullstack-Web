@@ -1,4 +1,5 @@
 import express from 'express'
+import myMiddleware from './middlewares/my-middleware.js'
 
 const PORT = 3333
 
@@ -6,8 +7,8 @@ const app = express()
 
 app.use(express.json())
 
-// GET simples
-app.get('/', (request, response) => {
+// GET simples e utilizando um middleware local em uma rota específica
+app.get('/', myMiddleware, (request, response) => {
   response.send('Hello World Express')
 })
 
@@ -17,6 +18,9 @@ app.get('/products/:id', (request, response) => {
 
   response.send(`Hello World Express. Seu ID é ${id}`)
 })
+
+// Middleware global (precisa vir antes das rotas, senão será ignorado, como na rota acima)
+app.use(myMiddleware)
 
 app.get('/products/:id/:user', (request, response) => {
   const { id, user } = request.params
