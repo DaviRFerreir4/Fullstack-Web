@@ -7,8 +7,8 @@ const app = express()
 
 app.use(express.json())
 
-// GET simples e utilizando um middleware local em uma rota específica
-app.get('/', myMiddleware, (request, response) => {
+// GET simples
+app.get('/', (request, response) => {
   response.send('Hello World Express')
 })
 
@@ -20,7 +20,7 @@ app.get('/products/:id', (request, response) => {
 })
 
 // Middleware global (precisa vir antes das rotas, senão será ignorado, como na rota acima)
-app.use(myMiddleware)
+// app.use(myMiddleware)
 
 app.get('/products/:id/:user', (request, response) => {
   const { id, user } = request.params
@@ -39,14 +39,15 @@ app.get('/products', (request, response) => {
   response.send('Listando produtos...')
 })
 
-// Recuperando dados do corpo da requisição POST
-app.post('/products', (request, response) => {
+// Recuperando dados do corpo da requisição POST e utilizando um middleware local em uma rota específica
+app.post('/products', myMiddleware, (request, response) => {
   const { name, price } = request.body
 
   // response.send(`Produto ${name} custa $${price}`)
   response.status(201).json({
     name,
     price,
+    user_id: request.user_id,
   })
 })
 
