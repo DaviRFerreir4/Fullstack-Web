@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { AppError } from '../utils/app-error.js'
 
 class ProductController {
   /**
@@ -22,7 +23,29 @@ class ProductController {
   create(request: Request, response: Response) {
     const { name, price } = request.body
 
-    throw new Error('Erro ao tentar criar um produto')
+    // Exceção muito abrangente
+    // if (!name || !price) {
+    //   throw new AppError('Nome e preço do produto são obrigatórios')
+    // }
+
+    if (!name) {
+      throw new AppError('Nome do produto é obrigatório')
+    }
+
+    if (name.trim().length < 5) {
+      throw new AppError('Nome do produto deve conter mais que 5 caracteres')
+    }
+
+    if (!price) {
+      throw new AppError('Preço do produto é obrigatório')
+    }
+
+    if (price < 0) {
+      throw new AppError('Preço do produto deve ser maior que 0')
+    }
+
+    // throw new AppError('Erro ao tentar criar um produto')
+    // throw new Error('Erro ao tentar criar um produto')
 
     // response.send(`Produto ${name} custa $${price}`)
     response.status(201).json({

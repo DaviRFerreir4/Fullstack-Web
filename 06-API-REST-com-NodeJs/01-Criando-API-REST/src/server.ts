@@ -1,5 +1,6 @@
 import express, { NextFunction } from 'express'
 import { routes } from './routes/index.js'
+import { AppError } from './utils/app-error.js'
 
 const PORT = 3333
 
@@ -15,7 +16,11 @@ app.use(routes)
 
 app.use(
   (error: any, request: Request, response: Response, next: NextFunction) => {
-    response.status(500).json({ message: error.message })
+    if (error instanceof AppError) {
+      response.status(error.statusCode).json({ message: error.message })
+    } else {
+      response.status(500).json({ message: `Erro genérico: ${error.message}` })
+    }
   }
 )
 
