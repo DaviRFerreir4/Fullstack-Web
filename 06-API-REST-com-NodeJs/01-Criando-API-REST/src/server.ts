@@ -4,6 +4,8 @@ const PORT = 3333
 
 const app = express()
 
+app.use(express.json())
+
 // GET simples
 app.get('/', (request, response) => {
   response.send('Hello World Express')
@@ -31,6 +33,13 @@ app.get('/products', (request, response) => {
   }
 
   response.send('Listando produtos...')
+})
+
+// Recuperando dados do corpo da requisição POST
+app.post('/products', (request, response) => {
+  const { name, price } = request.body
+
+  response.send(`Produto ${name} custa $${price}`)
 })
 
 app.listen(PORT, () => {
