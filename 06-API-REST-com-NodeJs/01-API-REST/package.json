@@ -1,0 +1,11 @@
+{
+  "name": "01-api-rest",
+  "version": "1.0.0",
+  "description": "Estudos sobre API RESTfuls",
+  "main": "./src/server.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Davi Ferreira",
+  "license": "ISC",
+  "type": "module"
+}
