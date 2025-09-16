@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "Estudos sobre API RESTfuls",
   "main": "./src/server.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
   "keywords": [],
   "author": "Davi Ferreira",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
     "@types/node": "^20.14.12",
+    "tsx": "^4.16.2",
     "typescript": "^5.5.4"
   }
 }
