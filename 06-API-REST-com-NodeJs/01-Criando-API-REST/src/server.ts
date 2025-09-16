@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction } from 'express'
 import { routes } from './routes/index.js'
 
 const PORT = 3333
@@ -12,6 +12,12 @@ app.use(express.json())
 
 // Utilizando rotas separadas em outros arquivos
 app.use(routes)
+
+app.use(
+  (error: any, request: Request, response: Response, next: NextFunction) => {
+    response.status(500).json({ message: error.message })
+  }
+)
 
 app.listen(PORT, () => {
   console.log(`Server is runing on port ${PORT}`)
