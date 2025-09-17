@@ -25,9 +25,10 @@ class ProductController {
     const bodySchema = z.object({
       name: z.string(),
       price: z.number(),
+      description: z.string().nullish(),
     })
 
-    const { name, price } = bodySchema.parse(request.body)
+    const { name, price, description } = bodySchema.parse(request.body)
     // Exceção muito abrangente
     // if (!name || !price) {
     //   throw new AppError('Nome e preço do produto são obrigatórios')
@@ -52,6 +53,7 @@ class ProductController {
       name,
       price,
       user_id: request.user_id,
+      description: description ?? null,
     })
   }
 }
