@@ -1,4 +1,4 @@
-import express, { NextFunction } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import { routes } from './routes/index.js'
 import { AppError } from './utils/app-error.js'
 import { ZodError } from 'zod'
