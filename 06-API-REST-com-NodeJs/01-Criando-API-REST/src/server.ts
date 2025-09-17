@@ -1,6 +1,7 @@
 import express, { NextFunction } from 'express'
 import { routes } from './routes/index.js'
 import { AppError } from './utils/app-error.js'
+import { ZodError } from 'zod'
 
 const PORT = 3333
 
@@ -17,10 +18,15 @@ app.use(routes)
 app.use(
   (error: any, request: Request, response: Response, next: NextFunction) => {
     if (error instanceof AppError) {
-      response.status(error.statusCode).json({ message: error.message })
-    } else {
-      response.status(500).json({ message: `Erro genérico: ${error.message}` })
+      return response.status(error.statusCode).json({ message: error.message })
+    } else if (error instanceof ZodError) {
+      return response
+        .status(400)
+        .json({ message: `Validation error`, issues: error.format() })
     }
+    return response
+      .status(500)
+      .json({ message: `Erro genérico: ${error.message}` })
   }
 )
 
