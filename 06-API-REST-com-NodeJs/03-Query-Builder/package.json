@@ -4,7 +4,8 @@
   "description": "Estudos sobre Query Builders utilizando Knex",
   "main": "server.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "knex": "node --import tsx ./node_modules/knex/bin/cli"
   },
   "keywords": [],
   "author": "Davi Ferreira",
@@ -17,6 +18,8 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.1.7",
     "tsx": "^4.17.0"
   }
 }
