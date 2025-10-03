@@ -1,4 +1,4 @@
-// npm run knex -- migrate:make create-courses
+// npm run knex -- migrate:make create-courses (cria uma migration nova)
 import type { Knex } from 'knex'
 
 // Executa o comando - npm run knex -- migrate:latest (roda todas as migrations)

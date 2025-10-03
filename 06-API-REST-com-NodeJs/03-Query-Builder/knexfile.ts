@@ -8,4 +8,8 @@ export default {
     extensitons: 'ts',
     directory: './src/database/migrations',
   },
+  seeds: {
+    extensitons: 'ts',
+    directory: './src/database/seeds',
+  },
 }
