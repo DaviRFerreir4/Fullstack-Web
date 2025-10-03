@@ -1,0 +1,22 @@
+{
+  "name": "03-query-builder",
+  "version": "1.0.0",
+  "description": "Estudos sobre Query Builders utilizando Knex",
+  "main": "server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "keywords": [],
+  "author": "Davi Ferreira",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.2.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "tsx": "^4.17.0"
+  }
+}
