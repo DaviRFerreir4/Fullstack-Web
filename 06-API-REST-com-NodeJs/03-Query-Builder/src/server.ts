@@ -7,15 +7,19 @@ const PORT = 3333
 const app = express()
 app.use(express.json())
 
-app.get('/', (request: Request, response: Response) => {
-  response.json({ message: 'Eae' })
+app.get('/', async (request: Request, response: Response) => {
+  // const courses = await knex.raw('SELECT * FROM courses')
+  // const courses = await knex('courses').select().where('id', 1)
+  const courses = await knex('courses').select().orderBy('name', 'asc')
+
+  response.json(courses)
 })
 
 app.post('/courses', async (request: Request, response: Response) => {
   const { name } = request.body
 
-  // await knex('courses').insert({ name })
-  await knex.raw('INSERT INTO courses (name) VALUES (?)', [name])
+  await knex('courses').insert({ name })
+  // await knex.raw('INSERT INTO courses (name) VALUES (?)', [name])
 
   response.status(201).json()
 })
