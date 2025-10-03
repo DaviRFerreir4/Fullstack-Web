@@ -1,6 +1,16 @@
 // npm run knex -- migration:make create-courses
 import type { Knex } from 'knex'
 
-export async function up(knex: Knex): Promise<void> {}
+// Executa o comando - npm run knex -- migration:latest (roda todas as migrations)
+export async function up(knex: Knex): Promise<void> {
+  await knex.schema.createTable('courses', (table) => {
+    table.increments('id').primary(),
+      table.text('name').notNullable(),
+      table.timestamp('created_at').defaultTo(knex.fn.now())
+  })
+}
 
-export async function down(knex: Knex): Promise<void> {}
+// Cancela a execução do comando
+export async function down(knex: Knex): Promise<void> {
+  await knex.schema.dropTable('courses')
+}
