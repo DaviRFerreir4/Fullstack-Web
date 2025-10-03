@@ -7,7 +7,7 @@ const PORT = 3333
 const app = express()
 app.use(express.json())
 
-app.get('/', async (request: Request, response: Response) => {
+app.get('/courses', async (request: Request, response: Response) => {
   // const courses = await knex.raw('SELECT * FROM courses')
   // const courses = await knex('courses').select().where('id', 1)
   const courses = await knex('courses').select().orderBy('name', 'asc')
@@ -37,6 +37,30 @@ app.delete('/courses/:id', async (request: Request, response: Response) => {
   const { id } = request.params
 
   await knex('courses').delete().where({ id })
+
+  return response.send()
+})
+
+// Rotas de módulos
+
+app.get('/modules', async (request: Request, response: Response) => {
+  const modules = await knex('course_modules').select().orderBy('name', 'asc')
+
+  return response.json(modules)
+})
+
+app.post('/modules', async (request: Request, response: Response) => {
+  const { name, course_id } = request.body
+
+  await knex('course_modules').insert({ name, course_id })
+
+  return response.status(201).json()
+})
+
+app.delete('/modules/:id', async (request: Request, response: Response) => {
+  const { id } = request.params
+
+  await knex('course_modules').delete().where({ id })
 
   return response.send()
 })
