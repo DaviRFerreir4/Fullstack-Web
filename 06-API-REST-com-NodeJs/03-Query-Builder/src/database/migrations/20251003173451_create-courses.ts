@@ -1,7 +1,7 @@
-// npm run knex -- migration:make create-courses
+// npm run knex -- migrate:make create-courses
 import type { Knex } from 'knex'
 
-// Executa o comando - npm run knex -- migration:latest (roda todas as migrations)
+// Executa o comando - npm run knex -- migrate:latest (roda todas as migrations)
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('courses', (table) => {
     table.increments('id').primary(),
