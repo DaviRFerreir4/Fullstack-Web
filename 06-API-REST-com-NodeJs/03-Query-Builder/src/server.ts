@@ -12,7 +12,7 @@ app.get('/', async (request: Request, response: Response) => {
   // const courses = await knex('courses').select().where('id', 1)
   const courses = await knex('courses').select().orderBy('name', 'asc')
 
-  response.json(courses)
+  return response.json(courses)
 })
 
 app.post('/courses', async (request: Request, response: Response) => {
@@ -21,7 +21,16 @@ app.post('/courses', async (request: Request, response: Response) => {
   await knex('courses').insert({ name })
   // await knex.raw('INSERT INTO courses (name) VALUES (?)', [name])
 
-  response.status(201).json()
+  return response.status(201).json()
+})
+
+app.put('/courses/:id', async (request: Request, response: Response) => {
+  const { name } = request.body
+  const { id } = request.params
+
+  await knex('courses').update({ name }).where({ id })
+
+  return response.send()
 })
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
