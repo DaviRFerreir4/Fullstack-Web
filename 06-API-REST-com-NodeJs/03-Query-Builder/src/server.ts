@@ -33,4 +33,12 @@ app.put('/courses/:id', async (request: Request, response: Response) => {
   return response.send()
 })
 
+app.delete('/courses/:id', async (request: Request, response: Response) => {
+  const { id } = request.params
+
+  await knex('courses').delete().where({ id })
+
+  return response.send()
+})
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
