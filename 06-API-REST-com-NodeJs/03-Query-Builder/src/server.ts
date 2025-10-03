@@ -1,13 +1,22 @@
 import express from 'express'
 import type { Request, Response } from 'express'
+import { knex } from './database/knex.js'
 
 const PORT = 3333
 
 const app = express()
 app.use(express.json())
 
-app.get('/', async (request: Request, response: Response) => {
+app.get('/', (request: Request, response: Response) => {
   response.json({ message: 'Eae' })
+})
+
+app.post('/courses', async (request: Request, response: Response) => {
+  const { name } = request.body
+
+  await knex('courses').insert({ name })
+
+  response.status(201).json()
 })
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
