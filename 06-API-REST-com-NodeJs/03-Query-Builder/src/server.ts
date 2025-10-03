@@ -65,4 +65,23 @@ app.delete('/modules/:id', async (request: Request, response: Response) => {
   return response.send()
 })
 
+app.get(
+  '/courses/:id/modules',
+  async (request: Request, response: Response) => {
+    const { id } = request.params
+
+    const course_modules = await knex('courses')
+      .select(
+        'course_modules.id AS module_id',
+        'course_modules.name AS module',
+        'courses.id AS course_id',
+        'courses.name AS course'
+      )
+      .where('courses.id', id)
+      .join('course_modules', 'courses.id', 'course_modules.course_id')
+
+    return response.json(course_modules)
+  }
+)
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
