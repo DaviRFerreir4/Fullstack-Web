@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { z } from 'zod'
+import { knex } from '@/database/knex'
 
 class ProductController {
   async index(request: Request, response: Response, next: NextFunction) {
@@ -18,6 +19,9 @@ class ProductController {
       })
 
       const { name, price } = bodySchema.parse(request.body)
+
+      await knex<ProductRepository>('products').insert({ name, price })
+
       response.status(201).json({
         message: 'Product created succesfully!',
         product: {
