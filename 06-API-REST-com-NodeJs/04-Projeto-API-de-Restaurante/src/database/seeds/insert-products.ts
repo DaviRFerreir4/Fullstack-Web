@@ -1,6 +1,8 @@
 import { Knex } from 'knex'
 
 export async function seed(knex: Knex): Promise<void> {
+  await knex('products').del()
+
   await knex('products').insert([
     { name: 'Nhoque quatro queijos', price: 45 },
     { name: 'Isca de frango', price: 60 },
