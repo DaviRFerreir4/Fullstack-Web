@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { z } from 'zod'
 import { knex } from '@/database/knex'
+import { AppError } from '@/utils/app-error'
 
 class ProductController {
   async index(request: Request, response: Response, next: NextFunction) {
@@ -55,15 +56,48 @@ class ProductController {
       })
 
       const { name, price } = bodySchema.parse(request.body)
+
+      // Maneira que eu descobri de lidar com queries que atualizam nada
       const updatedRows = await knex<ProductRepository>('products')
         .update({ name, price, updated_at: knex.fn.now() })
         .where({ id })
 
+      if (!updatedRows) {
+        throw new AppError('product not found')
+      }
+
       return response.json({
-        message: updatedRows
-          ? 'product updated successfully'
-          : 'there are no products with that id',
-        product: updatedRows ? { id: id, name, price } : undefined,
+        message: 'product updated successfully',
+        product: { id: id, name, price },
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async remove(request: Request, response: Response, next: NextFunction) {
+    try {
+      const id = z
+        .string()
+        .transform((value) => Number(value))
+        .refine((value) => !isNaN(value), { message: 'id must be a number' })
+        .parse(request.params.id)
+
+      // Maneira ensinada no curso de lidar com queries que atualizam nada
+      const product = await knex<ProductRepository>('products')
+        .select()
+        .where({ id })
+        .first()
+
+      if (!product) {
+        throw new AppError('product not found')
+      }
+
+      await knex<ProductRepository>('products').delete().where({ id })
+
+      return response.json({
+        message: 'product deleted successfully',
+        product: { id: id },
       })
     } catch (error) {
       next(error)
