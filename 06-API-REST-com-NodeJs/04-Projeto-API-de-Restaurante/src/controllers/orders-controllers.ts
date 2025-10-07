@@ -4,8 +4,27 @@ import { z } from 'zod'
 import { AppError } from '@/utils/app-error'
 
 class OrdersControllers {
-  async index(request: Request, response: Response, next: NextFunction) {
-    return response.json()
+  async indexByTableSession(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const table_session_id = z
+        .string()
+        .transform((value) => Number(value))
+        .refine((value) => !isNaN(value))
+        .parse(request.params.table_session_id)
+
+      const orders = await knex<OrdersRepository>('orders')
+        .select("orders.id as order_id", "orders.table_session_id", "orders.product_id", "products.name", "orders.price", "orders.quantity")
+        .join("products", "products.id", "orders.product_id")
+        .where({ table_session_id })
+
+      return response.json(orders)
+    } catch (error) {
+      next(error)
+    }
   }
 
   async create(request: Request, response: Response, next: NextFunction) {
@@ -40,7 +59,14 @@ class OrdersControllers {
         throw new AppError('product not found')
       }
 
-      return response.status(201).json(product)
+      await knex<OrdersRepository>('orders').insert({
+        table_session_id,
+        product_id,
+        quantity,
+        price: product.price,
+      })
+
+      return response.status(201).json()
     } catch (error) {
       next(error)
     }
