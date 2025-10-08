@@ -38,6 +38,38 @@ class OrdersControllers {
     }
   }
 
+  async show(request: Request, response: Response, next: NextFunction) {
+    try {
+      const table_session_id = z
+        .string()
+        .transform((value) => Number(value))
+        .refine((value) => !isNaN(value))
+        .parse(request.params.table_session_id)
+
+      const table_session = await knex<TablesSessionsRepository>(
+        'tables_sessions'
+      )
+        .where({ id: table_session_id })
+        .first()
+
+      if (!table_session) {
+        throw new AppError('table session not found')
+      }
+
+      const orders = await knex<OrdersRepository>('orders')
+        .select(
+          knex.raw('COALESCE(SUM(orders.price * orders.quantity), 0) AS total'),
+          knex.raw('COALESCE(SUM(orders.quantity), 0) AS quantity')
+        )
+        .where({ table_session_id })
+        .first()
+
+      return response.json(orders)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async create(request: Request, response: Response, next: NextFunction) {
     try {
       const bodySchema = z.object({
