@@ -62,4 +62,10 @@ docker volume rm volume_name -> Remove o volume caso não haja containers depend
 
 ## Criando containers com imagens remotas de banco de dados
 
-docker run --name container_name -e enviroment_var=value (ex: POSTGRES_USER e POSTGRES_PASSWORD) -e enviroment_var=value -p docker_port:host_port -d remote_image -> Cria um container (como um banco de dados, onde é necessário passar varíaveis de ambiente) baseado numa imagem remota (a qual é puxada para a máquina e fica disponível localmente após a operação)l
+docker run --name container_name -e enviroment_var=value (ex: POSTGRES_USER e POSTGRES_PASSWORD) -e enviroment_var=value -p docker_port:host_port -d remote_image -> Cria um container (como um banco de dados, onde é necessário passar varíaveis de ambiente) baseado numa imagem remota (a qual é puxada para a máquina e fica disponível localmente após a operação)
+
+# Comando do Docker-compose
+
+## Rodando um arquivo docker-compose.yml
+
+docker-compose up -d -> Roda as especificações do arquivo docker-compose.yml

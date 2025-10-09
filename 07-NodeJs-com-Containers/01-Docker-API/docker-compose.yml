@@ -1,0 +1,43 @@
+# versão a ser utilizada
+version: "3.9"
+
+services:
+  # container da api
+  api:
+    build:
+      # build dela leva em consideração o contexto atual e o arquivo Dockerfile
+      context: .
+      dockerfile: Dockerfile
+    # nome da imagem é nodejs
+    image: nodejs
+    # nome do container é api
+    container_name: api
+    # portas do container e do host são ambas 3333
+    ports:
+      - "3333:3333"
+    # este container depende de outro serviço (postgres)
+    depends_on:
+      - postgres
+
+  # container do banco de dados
+  postgres:
+    # imagem remota
+    image: "bitnami/postgresql:latest"
+    # nome do container
+    container_name: postgres
+    # portas do container e do host
+    ports:
+      - "5432:5432"
+    # variáveis de ambiente do container incluem as seguintes
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: api
+    # container utiliza o volume declarado
+    volumes:
+      - database:/var/lib/postgresql/data
+
+# volumes a serem utilizados
+volumes:
+  # neste volume não colocamos nada pois o mapeamento dele é automatico
+  database:
