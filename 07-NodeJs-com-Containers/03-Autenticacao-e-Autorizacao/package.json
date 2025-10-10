@@ -1,0 +1,24 @@
+{
+  "name": "03-autenticacao-e-autorizacao",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "author": "Davi Ferreira",
+  "license": "ISC",
+  "description": "API para estudos de autenticação e autorização",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.21.0",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "tsx": "^4.19.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^22.5.4",
+    "typescript": "^5.6.2"
+  }
+}
