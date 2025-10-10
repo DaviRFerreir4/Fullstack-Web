@@ -4,7 +4,7 @@ import { usersRoutes } from './users-routes.js'
 
 const routes = Router()
 
-routes.use(questionsRoutes)
-routes.use(usersRoutes)
+routes.use('/questions', questionsRoutes)
+routes.use('/users', usersRoutes)
 
 export { routes }
