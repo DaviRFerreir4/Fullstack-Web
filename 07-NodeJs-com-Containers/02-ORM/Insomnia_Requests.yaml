@@ -1,0 +1,255 @@
+type: collection.insomnia.rest/5.0
+name: Prisma
+meta:
+  id: wrk_026de468d8b44e95b5bca0d10b4627e0
+  created: 1760103233906
+  modified: 1760103233906
+  description: ""
+collection:
+  - name: Users
+    meta:
+      id: fld_8ac48b3cae604101a7fbaf12533bb1a2
+      created: 1760103278453
+      modified: 1760103291951
+      sortKey: -1760103278453
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create
+        meta:
+          id: req_129047454d714b20a8662f2c9e8471b3
+          created: 1760103295830
+          modified: 1760103666414
+          isPrivate: false
+          description: ""
+          sortKey: -1760103295830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "João",
+            	"email": "joao@email.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Index
+        meta:
+          id: req_c025444ea6464e379f71482c530b38ca
+          created: 1760103822376
+          modified: 1760103838101
+          isPrivate: false
+          description: ""
+          sortKey: -1759810697221
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/838d5cba-9bef-41cf-b25c-20b263398dd8"
+        name: Show
+        meta:
+          id: req_e0b80f29fd534b52941642fdeb723ee6
+          created: 1760103913884
+          modified: 1760103935436
+          isPrivate: false
+          description: ""
+          sortKey: -1759664397916.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: users
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+  - name: Questions
+    meta:
+      id: fld_a3119509beff4842bb4b580ce03fb941
+      created: 1760104331113
+      modified: 1760104352225
+      sortKey: -1760104331113
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Index
+        meta:
+          id: req_1c25077093df4e96bd724f58db3c9d8e
+          created: 1760104353943
+          modified: 1760114530763
+          isPrivate: false
+          description: ""
+          sortKey: -1760104353943
+        method: GET
+        parameters:
+          - id: pair_cd2980fe2ad04b3d9664ecaa155b39cf
+            name: title
+            value: ORm
+            description: ""
+            disabled: true
+          - id: pair_ed3043be6ca54555a4e29d396998b5f5
+            name: content
+            value: prisma
+            description: ""
+            disabled: true
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create
+        meta:
+          id: req_ac8423d4776641c3bd7bc7f987971c3f
+          created: 1760104359532
+          modified: 1760112461644
+          isPrivate: false
+          description: ""
+          sortKey: -1760104359532
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"title": "CSS",
+            	"content": "Como criar uma sidebar responsiva?",
+            	"user_id": "838d5cba-9bef-41cf-b25c-20b263398dd8"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/184e94c9-51f5-45a9-b1cd-ebfb37d4a5e0"
+        name: Update
+        meta:
+          id: req_d8d0a27bd10448019d5b375db27cceb0
+          created: 1760114000214
+          modified: 1760114516986
+          isPrivate: false
+          description: ""
+          sortKey: -1760103824886.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"title": "Prisma ORM"
+            }
+        parameters:
+          - id: pair_0b737cef68d543e284d5e64a0714f347
+            name: ""
+            value: ""
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}/d38f1e86-1c40-4abd-b4c6-a00d51dd6d98"
+        name: Remove
+        meta:
+          id: req_aa376849a01b47f69c27a36e42d5863c
+          created: 1760114502848
+          modified: 1760114541072
+          isPrivate: false
+          description: ""
+          sortKey: -1760103560358.25
+        method: DELETE
+        parameters:
+          - id: pair_dc729c520dfe4ecaadfeb5a867aba86d
+            name: ""
+            value: ""
+            description: ""
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: questions
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_839d84dc2956fb8aca30966e63d349d52d2b8b31
+    created: 1760103233914
+    modified: 1760103233914
+environments:
+  name: Base Environment
+  meta:
+    id: env_839d84dc2956fb8aca30966e63d349d52d2b8b31
+    created: 1760103233909
+    modified: 1760103233909
+    isPrivate: false
+  subEnvironments:
+    - name: Dev
+      meta:
+        id: env_995a722ad5ed4b7bb9dc9c523f6ff91c
+        created: 1760103240969
+        modified: 1760103266864
+        isPrivate: false
+        sortKey: 1760103240969
+      data:
+        BASE_URL: localhost:3333
+      color: "#2bff00"
