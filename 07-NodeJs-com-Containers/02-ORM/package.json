@@ -8,6 +8,9 @@
     "start": "node dist/server.js",
     "prisma": "./node_modules/prisma/index"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "author": "Davi Ferreira",
   "license": "ISC",
   "description": "API utilizando containers com Docker",
