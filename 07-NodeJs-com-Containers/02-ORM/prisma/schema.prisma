@@ -1,0 +1,20 @@
+// Para criar este arquivo, rodar o comando npx prisma init --datasource-provider postgresql
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+
+  @@map("users")
+}
+
+// Para gerar a tabela de acordo com o model, rodar o comando npx prisma migrate dev
