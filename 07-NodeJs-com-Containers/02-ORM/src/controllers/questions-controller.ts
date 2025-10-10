@@ -6,6 +6,14 @@ class QuestionsController {
     const { title, content } = request.query
 
     const questions = await prisma.question.findMany({
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        user: true,
+        createdAt: true,
+        updatedAt: true,
+      },
       where: {
         title: {
           contains: title?.toString(),
