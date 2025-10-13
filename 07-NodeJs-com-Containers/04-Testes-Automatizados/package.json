@@ -1,0 +1,20 @@
+{
+  "name": "04-testes-automatizados",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "author": "Davi Ferreira",
+  "license": "ISC",
+  "description": "API para estudos de testes automatizados usando Jest",
+  "dependencies": {
+    "tsx": "^4.19.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.13",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2"
+  }
+}
