@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 class SessionsControllers {
   async create(request: Request, response: Response) {
     const fakeUser = {
-      id: 1,
+      id: '1',
       username: 'Davi',
       password: '123456',
     }
