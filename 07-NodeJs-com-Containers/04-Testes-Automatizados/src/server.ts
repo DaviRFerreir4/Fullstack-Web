@@ -1,1 +1,3 @@
-console.log('Hello Wold')
+export function sum(a: number, b: number) {
+  return a + b
+}
