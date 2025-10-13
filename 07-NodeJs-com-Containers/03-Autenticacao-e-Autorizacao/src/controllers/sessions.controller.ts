@@ -9,6 +9,7 @@ class SessionsControllers {
       id: '1',
       username: 'Davi',
       password: '123456',
+      role: 'customer',
     }
 
     const { username, password } = request.body
@@ -19,7 +20,7 @@ class SessionsControllers {
 
     const { secret, expiresIn } = authConfig.jwt
 
-    const token = jwt.sign({}, secret, {
+    const token = jwt.sign({ role: fakeUser.role }, secret, {
       expiresIn,
       subject: String(fakeUser.id),
     })
