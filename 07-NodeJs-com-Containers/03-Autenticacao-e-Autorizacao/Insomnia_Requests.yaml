@@ -1,0 +1,134 @@
+type: collection.insomnia.rest/5.0
+name: Auth
+meta:
+  id: wrk_bcf88b5b86b844ecb1d139bf5cca2f6a
+  created: 1760354266382
+  modified: 1760354266382
+  description: ""
+collection:
+  - name: Sessions
+    meta:
+      id: fld_f52abeea9f164008a20c16ba2607c521
+      created: 1760354324935
+      modified: 1760354372369
+      sortKey: -1760354324935
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create
+        meta:
+          id: req_5cf7f32c3f864aff99f0df970eb5b657
+          created: 1760354337057
+          modified: 1760358229710
+          isPrivate: false
+          description: ""
+          sortKey: -1760354337057
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"username": "Davi",
+            	"password": "123456"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: sessions
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+  - name: Products
+    meta:
+      id: fld_36de5c65b44a4238b79285596c50e669
+      created: 1760354334016
+      modified: 1760354397868
+      sortKey: -1760354334016
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Create
+        meta:
+          id: req_b46f6da776bc4503a4ed59faaf865cea
+          created: 1760354456882
+          modified: 1760360727327
+          isPrivate: false
+          description: ""
+          sortKey: -1760354456882
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_5cf7f32c3f864aff99f0df970eb5b657',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL }}/{{ _.RESOURCE }}"
+        name: Index
+        meta:
+          id: req_8359c4eca7a54ee8a61f105c8fbe58b4
+          created: 1760361238719
+          modified: 1760361247069
+          isPrivate: false
+          description: ""
+          sortKey: -1760361238719
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+    environment:
+      RESOURCE: products
+    environmentPropertyOrder:
+      "&":
+        - RESOURCE
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_2ab5f963609f6a4a8851f2ad435d0f65deeb4742
+    created: 1760354266389
+    modified: 1760354266389
+environments:
+  name: Base Environment
+  meta:
+    id: env_2ab5f963609f6a4a8851f2ad435d0f65deeb4742
+    created: 1760354266386
+    modified: 1760354266386
+    isPrivate: false
+  subEnvironments:
+    - name: Dev
+      meta:
+        id: env_618cbc83afce4f0aa5ef597113795368
+        created: 1760354274889
+        modified: 1760354314124
+        isPrivate: false
+        sortKey: 1760354274889
+      data:
+        BASE_URL: localhost:3333
+      color: "#ff6161"
