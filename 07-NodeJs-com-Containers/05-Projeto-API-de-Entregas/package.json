@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
-    "test:dev": "npx jest --watchAll --runInBand"
+    "test": "npx jest --runInBand"
   },
   "author": "Davi Ferreira",
   "license": "ISC",
