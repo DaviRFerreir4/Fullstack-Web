@@ -8,8 +8,9 @@ const deliveriesRoutes = Router()
 const deliveriesController = new DeliveriesController()
 const deliveriesStatusController = new DeliveriesStatusController()
 
-deliveriesRoutes.use(ensureAuthenticated, verifyUserAuthorization(['sale']))
+deliveriesRoutes.use(ensureAuthenticated)
 deliveriesRoutes.get('/', deliveriesController.index)
+deliveriesRoutes.use(verifyUserAuthorization(['sale']))
 deliveriesRoutes.post('/', deliveriesController.create)
 deliveriesRoutes.patch('/:id/status', deliveriesStatusController.update)
 

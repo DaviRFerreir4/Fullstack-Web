@@ -5,6 +5,9 @@ import { z } from 'zod'
 class DeliveriesController {
   async index(request: Request, response: Response) {
     const deliveries = await prisma.delivery.findMany({
+      where: {
+        userId: request.user?.role === 'customer' ? request.user.id : undefined,
+      },
       include: {
         user: { select: { name: true, email: true } },
       },
