@@ -1,0 +1,1 @@
+type TRoles = 'customer' | 'sale'

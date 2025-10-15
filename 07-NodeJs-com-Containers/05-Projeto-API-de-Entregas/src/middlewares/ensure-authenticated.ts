@@ -4,7 +4,7 @@ import { authConfig } from '@/configs/auth'
 import { AppError } from '@/utils/app-error'
 
 interface TokenPayload {
-  role: string
+  role: TRoles
   sub: string
 }
 
