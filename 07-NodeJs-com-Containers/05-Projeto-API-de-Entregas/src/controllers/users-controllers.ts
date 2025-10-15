@@ -10,9 +10,10 @@ class UserControllers {
       name: z.string().trim(),
       email: z.string().trim().email(),
       password: z.string().trim().min(6),
+      role: z.enum(['customer', 'sale']).nullish(),
     })
 
-    const { name, email, password } = bodySchema.parse(request.body)
+    const { name, email, password, role } = bodySchema.parse(request.body)
 
     const userWithSameEmail = await prisma.user.findFirst({ where: { email } })
 
@@ -23,7 +24,7 @@ class UserControllers {
     const hashedPassword = await hash(password, 8)
 
     const { password: _, ...userWithoutPassword } = await prisma.user.create({
-      data: { name, email, password: hashedPassword },
+      data: { name, email, password: hashedPassword, role: role ?? undefined },
     })
 
     return response.status(201).json(userWithoutPassword)
