@@ -1,7 +1,7 @@
 import { app } from '@/app'
+import { env } from './env'
+import 'express-async-errors'
 
-const PORT = 3333
-
-app.listen(PORT, () => {
-  console.log(`Server is runing on port ${PORT}`)
+app.listen(env.PORT, () => {
+  console.log(`Server is runing on port ${env.PORT}`)
 })
