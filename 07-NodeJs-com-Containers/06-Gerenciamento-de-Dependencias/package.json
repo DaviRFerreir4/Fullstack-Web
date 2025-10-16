@@ -1,0 +1,11 @@
+{
+  "name": "06-gerenciamento-de-dependencias",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
