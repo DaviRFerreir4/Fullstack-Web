@@ -6,9 +6,34 @@ import { Input } from './components/Input'
 import { Button } from './components/Button'
 import { LettersUsed } from './components/LettersUsed'
 
+import { useEffect, useState } from 'react'
+
+import { WORDS } from './utils/words'
+import type { Challenge } from './utils/words'
+
 export function App() {
+  const [challenge, setChallenge] = useState<Challenge | null>(null)
+  const [letter, setLetter] = useState<string>('')
+  const [attempts, setAttempts] = useState<number>(0)
+
+  function startGame() {
+    const index = Math.floor(Math.random() * 5)
+    setChallenge(WORDS[index])
+  }
+
   function handleGameRestart() {
+    setAttempts(0)
+    setLetter('')
+    startGame()
     alert('jogo reiniciado')
+  }
+
+  useEffect(() => {
+    startGame()
+  }, [])
+
+  if (!challenge) {
+    return
   }
 
   return (
@@ -17,11 +42,9 @@ export function App() {
         <Header current={5} max={10} onRestart={handleGameRestart} />
         <Tip tipText="Biblioteca para criar interfaces Web com Javascript." />
         <div className={styles.word}>
-          <Letter value="r" />
-          <Letter value="e" />
-          <Letter value="a" />
-          <Letter value="c" />
-          <Letter value="t" />
+          {challenge.word.split('').map((_, index) => {
+            return <Letter key={`letter-${index}`} />
+          })}
         </div>
         <h4>Palpite</h4>
         <div>
