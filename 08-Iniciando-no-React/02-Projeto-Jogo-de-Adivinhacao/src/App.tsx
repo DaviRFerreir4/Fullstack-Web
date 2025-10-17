@@ -4,16 +4,16 @@ import { Tip } from './components/Tip'
 import { Letter } from './components/Letter'
 import { Input } from './components/Input'
 import { Button } from './components/Button'
-import { LettersUsed } from './components/LettersUsed'
+import { LettersUsed, type LettersUsedProps } from './components/LettersUsed'
 
 import { useEffect, useState } from 'react'
 
-import { WORDS } from './utils/words'
-import type { Challenge } from './utils/words'
+import { WORDS, type Challenge } from './utils/words'
 
 export function App() {
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [letter, setLetter] = useState<string>('')
+  const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([])
   const [attempts, setAttempts] = useState<number>(0)
 
   function startGame() {
@@ -39,7 +39,7 @@ export function App() {
   return (
     <div className={styles.container}>
       <main>
-        <Header current={5} max={10} onRestart={handleGameRestart} />
+        <Header current={attempts} max={10} onRestart={handleGameRestart} />
         <Tip tipText="Biblioteca para criar interfaces Web com Javascript." />
         <div className={styles.word}>
           {challenge.word.split('').map((_, index) => {
@@ -51,7 +51,7 @@ export function App() {
           <Input autoFocus maxLength={1} placeholder="?" />
           <Button title="Confirmar" />
         </div>
-        <LettersUsed />
+        <LettersUsed data={lettersUsed} />
       </main>
     </div>
   )
