@@ -7,8 +7,18 @@
   align-items: center;
 
   main {
+    width: 35rem;
     padding: 4.5rem 2rem 4rem;
 
     background-color: var(--main-bg-color);
+  }
+
+  .word {
+    width: 100%;
+    margin: 2.5rem 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 }
