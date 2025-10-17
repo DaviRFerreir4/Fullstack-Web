@@ -1,16 +1,15 @@
+import './global.css'
+
 import { Button } from './components/Button'
+
+import styles from './app.module.css'
 
 export function App() {
   return (
-    <>
-      <Button
-        name="Teste"
-        onClick={() => {
-          alert('teste')
-        }}
-      />
-      <Button name="etseT" />
-      <Button name="Clique aqui" />
-    </>
+    <div className={styles.container}>
+      <Button name="Adicionar" />
+      <span>0</span>
+      <Button name="Remover" />
+    </div>
   )
 }
