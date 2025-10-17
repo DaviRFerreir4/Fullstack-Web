@@ -14,10 +14,11 @@ export function App() {
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [letter, setLetter] = useState('')
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([])
-  const [attempts, setAttempts] = useState(0)
   const [score, setScore] = useState(0)
 
   function startGame() {
+    setLetter('')
+    setLettersUsed([])
     const index = Math.floor(Math.random() * 5)
     setChallenge(WORDS[index])
   }
@@ -62,8 +63,6 @@ export function App() {
   }
 
   function handleGameRestart() {
-    setAttempts(0)
-    setLetter('')
     startGame()
     alert('jogo reiniciado')
   }
@@ -79,11 +78,25 @@ export function App() {
   return (
     <div className={styles.container}>
       <main>
-        <Header current={attempts} max={10} onRestart={handleGameRestart} />
+        <Header
+          current={lettersUsed.length}
+          max={10}
+          onRestart={handleGameRestart}
+        />
         <Tip tipText={challenge.tip} />
         <div className={styles.word}>
-          {challenge.word.split('').map((_, index) => {
-            return <Letter key={`letter-${index}`} />
+          {challenge.word.split('').map((letter, index) => {
+            const letterUsed = lettersUsed.find(
+              (used) =>
+                used.value.toLocaleUpperCase() === letter.toLocaleUpperCase()
+            )
+            return (
+              <Letter
+                key={`letter-${index}`}
+                value={letterUsed?.value}
+                color={letterUsed?.correct ? 'correct' : 'default'}
+              />
+            )
           })}
         </div>
         <h4>Palpite</h4>
