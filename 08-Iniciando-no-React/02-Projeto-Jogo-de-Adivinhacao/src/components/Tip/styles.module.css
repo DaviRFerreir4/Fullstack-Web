@@ -20,7 +20,7 @@
 
     color: var(--stroke);
 
-    span:nth-child(1) {
+    h3 {
       font: var(--fw-bd) var(--fs-lg) / 100% var(--ff);
     }
   }

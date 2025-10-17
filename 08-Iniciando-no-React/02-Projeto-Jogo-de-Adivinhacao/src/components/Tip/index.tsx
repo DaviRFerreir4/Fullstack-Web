@@ -10,8 +10,8 @@ export function Tip({ tipText }: Props) {
     <div className={styles.tip}>
       <img src={tipIcon} alt="Icone de dica" />
       <div>
-        <span>Dica</span>
-        <span>{tipText}</span>
+        <h3>Dica</h3>
+        <p>{tipText}</p>
       </div>
     </div>
   )

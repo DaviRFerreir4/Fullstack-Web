@@ -11,6 +11,12 @@
     padding: 4.5rem 2rem 4rem;
 
     background-color: var(--main-bg-color);
+
+    h4 {
+      font: var(--fw-md) var(--fs-xd) / 100% var(--ff);
+      color: var(--stroke-dark);
+      margin-bottom: 0.75rem;
+    }
   }
 
   .word {
