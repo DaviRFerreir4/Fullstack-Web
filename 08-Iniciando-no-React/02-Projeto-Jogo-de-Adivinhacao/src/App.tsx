@@ -21,6 +21,34 @@ export function App() {
     setChallenge(WORDS[index])
   }
 
+  function handleConfirm() {
+    if (!challenge) {
+      return
+    }
+
+    if (!letter.trim()) {
+      return alert('Digite uma letra')
+    }
+
+    if (
+      lettersUsed.find(({ value: letterUsed }) => {
+        return letterUsed.toLocaleUpperCase() === letter.toLocaleUpperCase()
+      })
+    ) {
+      return alert('Digite uma letra que ainda não foi utilizada')
+    }
+
+    setLettersUsed((prevState) => [
+      ...prevState,
+      {
+        value: letter,
+        correct: Math.random() > 0.5 ? true : false,
+      },
+    ])
+
+    setLetter('')
+  }
+
   function handleGameRestart() {
     setAttempts(0)
     setLetter('')
@@ -48,8 +76,16 @@ export function App() {
         </div>
         <h4>Palpite</h4>
         <div>
-          <Input autoFocus maxLength={1} placeholder="?" />
-          <Button title="Confirmar" />
+          <Input
+            autoFocus
+            maxLength={1}
+            placeholder="?"
+            onChange={(event) => {
+              setLetter(event.target.value)
+            }}
+            value={letter}
+          />
+          <Button title="Confirmar" onClick={handleConfirm} />
         </div>
         <LettersUsed data={lettersUsed} />
       </main>
