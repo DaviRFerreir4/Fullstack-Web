@@ -11,7 +11,7 @@ type Props = {
 }
 
 export function LettersUsed({ data }: Props) {
-  console.log('carregou o lettersUsed')
+  // console.log('carregou o lettersUsed')
   return (
     <div className={styles['letters-used']}>
       <h5>Letras utilizadas</h5>

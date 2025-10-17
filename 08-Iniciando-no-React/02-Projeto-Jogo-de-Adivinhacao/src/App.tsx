@@ -16,11 +16,22 @@ export function App() {
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([])
   const [score, setScore] = useState(0)
 
+  const attemptMargin = 5
+
   function startGame() {
     setLetter('')
     setLettersUsed([])
+    setScore(0)
     const index = Math.floor(Math.random() * 5)
-    setChallenge(WORDS[index])
+    setChallenge((prevState) => {
+      if (!prevState) {
+        return WORDS[index]
+      }
+      if (prevState.word === WORDS[index].word) {
+        return WORDS[index === 0 ? index + 1 : index - 1]
+      }
+      return WORDS[index]
+    })
   }
 
   function handleConfirm() {
@@ -37,6 +48,7 @@ export function App() {
         return letterUsed.toLocaleUpperCase() === letter.toLocaleUpperCase()
       })
     ) {
+      setLetter('')
       return alert('Digite uma letra que ainda não foi utilizada')
     }
 
@@ -64,12 +76,30 @@ export function App() {
 
   function handleGameRestart() {
     startGame()
-    alert('jogo reiniciado')
+  }
+
+  function gameEnd(message: string) {
+    alert(message)
+    startGame()
   }
 
   useEffect(() => {
     startGame()
   }, [])
+
+  useEffect(() => {
+    if (!challenge) {
+      return
+    }
+    setTimeout(() => {
+      if (score === challenge.word.length) {
+        gameEnd('Parabéns, você descobriu a palavra! :D')
+      }
+      if (lettersUsed.length === challenge.word.length + attemptMargin) {
+        gameEnd('Que pena, você usou todas suas tentativas :(')
+      }
+    }, 200)
+  }, [score, lettersUsed.length])
 
   if (!challenge) {
     return
@@ -80,7 +110,7 @@ export function App() {
       <main>
         <Header
           current={lettersUsed.length}
-          max={10}
+          max={challenge.word.length + attemptMargin}
           onRestart={handleGameRestart}
         />
         <Tip tipText={challenge.tip} />

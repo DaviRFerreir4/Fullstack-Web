@@ -6,7 +6,7 @@ type Props = {
 }
 
 export function Tip({ tipText }: Props) {
-  console.log('carregou o tip')
+  // console.log('carregou o tip')
   return (
     <div className={styles.tip}>
       <img src={tipIcon} alt="Icone de dica" />

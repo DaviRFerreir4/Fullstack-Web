@@ -5,7 +5,7 @@ type Props = React.ComponentProps<'button'> & {
 }
 
 export function Button({ title, ...rest }: Props) {
-  console.log('carregou o button')
+  // console.log('carregou o button')
   return (
     <button type="button" className={styles.button} {...rest}>
       {title}
