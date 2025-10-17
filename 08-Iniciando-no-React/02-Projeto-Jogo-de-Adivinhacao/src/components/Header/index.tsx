@@ -1,4 +1,4 @@
-import styles from './style.module.css'
+import styles from './styles.module.css'
 import logo from '../../assets/logo.png'
 import resetIcon from '../../assets/restart.svg'
 

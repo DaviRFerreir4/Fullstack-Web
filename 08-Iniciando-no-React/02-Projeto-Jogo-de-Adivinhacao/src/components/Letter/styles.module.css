@@ -1,0 +1,14 @@
+.letter {
+  width: 3.375rem;
+  height: 3.375rem;
+  border-radius: 0.625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font: var(--fw-bd) var(--fs-xl) / 100% var(--ff);
+  text-transform: uppercase;
+  color: var(--stroke);
+
+  background-color: var(--card-bg-color);
+}
