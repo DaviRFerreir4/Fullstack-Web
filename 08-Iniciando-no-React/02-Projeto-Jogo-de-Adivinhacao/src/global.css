@@ -5,12 +5,11 @@
   --button-bg-color: #6363db;
   --stroke: #4f4fb9;
   --stroke-dark: #32325f;
-  --stroke-success: #03ab4f;
-  --success-bg: #e1f5ec;
-  --stroke-failed: #691b0a;
-  --failed-bg: #ffcf62;
-  --font-color: #000000;
-  --font-light-color: #9b9b9b;
+  --stroke-correct: #03ab4f;
+  --correct-bg: #e1f5ec;
+  --stroke-wrong: #691b0a;
+  --wrong-bg: #ffcf62;
+  --font-color-light: #9b9b9b;
   --tentatives: #e8891c;
 
   --ff: 'Noto Sans', sans-serif;

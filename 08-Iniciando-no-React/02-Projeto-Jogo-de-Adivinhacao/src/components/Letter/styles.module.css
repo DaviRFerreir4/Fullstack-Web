@@ -12,3 +12,24 @@
 
   background-color: var(--card-bg-color);
 }
+
+.letter-small {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.375rem;
+
+  font: var(--fw-md) var(--fs-lg) / 100% var(--ff);
+  border: 1px solid var(--stroke);
+}
+
+.letter-correct {
+  background-color: var(--correct-bg);
+  border-color: var(--stroke-correct);
+  color: var(--stroke-correct);
+}
+
+.letter-wrong {
+  background-color: var(--wrong-bg);
+  border-color: var(--stroke-wrong);
+  color: var(--stroke-wrong);
+}

@@ -1,0 +1,17 @@
+.letters-used {
+  width: 100%;
+  margin-top: 3.25rem;
+  border-top: 1.5px solid hsl(from var(--font-light-color) h s calc(l + 20));
+
+  h5 {
+    margin: 0.75rem 0;
+
+    font-weight: var(--fw-md);
+    color: var(--stroke-dark);
+  }
+
+  & > div {
+    display: flex;
+    gap: 0.75rem;
+  }
+}
