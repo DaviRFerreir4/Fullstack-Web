@@ -12,9 +12,10 @@ import { WORDS, type Challenge } from './utils/words'
 
 export function App() {
   const [challenge, setChallenge] = useState<Challenge | null>(null)
-  const [letter, setLetter] = useState<string>('')
+  const [letter, setLetter] = useState('')
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([])
-  const [attempts, setAttempts] = useState<number>(0)
+  const [attempts, setAttempts] = useState(0)
+  const [score, setScore] = useState(0)
 
   function startGame() {
     const index = Math.floor(Math.random() * 5)
@@ -38,11 +39,22 @@ export function App() {
       return alert('Digite uma letra que ainda não foi utilizada')
     }
 
+    const hits = challenge.word
+      .toLocaleUpperCase()
+      .split('')
+      .filter((char) => {
+        return char === letter.toLocaleUpperCase()
+      })
+
+    const result = hits.length > 0
+
+    setScore((prevState) => prevState + hits.length)
+
     setLettersUsed((prevState) => [
       ...prevState,
       {
         value: letter,
-        correct: Math.random() > 0.5 ? true : false,
+        correct: result,
       },
     ])
 
@@ -68,7 +80,7 @@ export function App() {
     <div className={styles.container}>
       <main>
         <Header current={attempts} max={10} onRestart={handleGameRestart} />
-        <Tip tipText="Biblioteca para criar interfaces Web com Javascript." />
+        <Tip tipText={challenge.tip} />
         <div className={styles.word}>
           {challenge.word.split('').map((_, index) => {
             return <Letter key={`letter-${index}`} />
