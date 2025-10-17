@@ -18,6 +18,8 @@ export function App() {
 
   const attemptMargin = 5
 
+  const letterRegex = /^[a-zA-Z]+$/
+
   function startGame() {
     setLetter('')
     setLettersUsed([])
@@ -75,7 +77,10 @@ export function App() {
   }
 
   function handleGameRestart() {
-    startGame()
+    const isConfirmed = window.confirm('Você tem certeza que deseja reiniciar?')
+    if (isConfirmed) {
+      startGame()
+    }
   }
 
   function gameEnd(message: string) {
@@ -136,7 +141,11 @@ export function App() {
             maxLength={1}
             placeholder="?"
             onChange={(event) => {
-              setLetter(event.target.value)
+              if (letterRegex.test(event.target.value)) {
+                setLetter(event.target.value)
+              } else {
+                setLetter('')
+              }
             }}
             value={letter}
           />
