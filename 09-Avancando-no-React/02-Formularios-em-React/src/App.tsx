@@ -1,4 +1,6 @@
 import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 import './App.css'
 
@@ -9,6 +11,16 @@ type FormData = {
   description: string
 }
 
+const schema = yup.object({
+  name: yup.string().required('Nome é obrigatório'),
+  date: yup.string().required('Data é obrigatório'),
+  subject: yup.string().required('Selecione um assunto'),
+  description: yup
+    .string()
+    .required('Descrição é obrigatória')
+    .min(10, 'Descrição deve conter no mínimo 10 digitos'),
+})
+
 export default function App() {
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
@@ -17,6 +29,7 @@ export default function App() {
       subject: '',
       description: '',
     },
+    resolver: yupResolver(schema),
   })
 
   function submit(data: FormData) {
