@@ -2,10 +2,18 @@ import { Controller, useForm } from 'react-hook-form'
 
 import './App.css'
 
-export default function App() {
-  const { control, handleSubmit } = useForm({})
+type FormData = {
+  name: string
+}
 
-  function submit(data) {
+export default function App() {
+  const { control, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: '',
+    },
+  })
+
+  function submit(data: FormData) {
     console.log(data)
   }
 
