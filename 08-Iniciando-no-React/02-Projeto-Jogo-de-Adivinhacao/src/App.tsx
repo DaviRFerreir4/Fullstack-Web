@@ -122,14 +122,14 @@ export function App() {
         <div className={styles.word}>
           {challenge.word.split('').map((letter, index) => {
             const letterUsed = lettersUsed.find(
-              (used) =>
-                used.value.toLocaleUpperCase() === letter.toLocaleUpperCase()
+              ({ value: used }) =>
+                used.toLocaleUpperCase() === letter.toLocaleUpperCase()
             )
             return (
               <Letter
                 key={`letter-${index}`}
-                value={letterUsed?.value}
-                color={letterUsed?.correct ? 'correct' : 'default'}
+                value={letterUsed?.value ?? ''}
+                color={letterUsed ? 'correct' : 'default'}
               />
             )
           })}
