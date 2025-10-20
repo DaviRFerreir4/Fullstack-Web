@@ -22,7 +22,11 @@ const schema = yup.object({
 })
 
 export default function App() {
-  const { control, handleSubmit } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     defaultValues: {
       name: '',
       date: '',
@@ -49,7 +53,7 @@ export default function App() {
           )}
         />
 
-        <span className="error">Nome é obrigatório</span>
+        {errors.name && <span className="error">{errors.name.message}</span>}
 
         <Controller
           control={control}
@@ -58,6 +62,8 @@ export default function App() {
             <input type="date" placeholder="Nome do evento" {...field} />
           )}
         />
+
+        {errors.date && <span className="error">{errors.date.message}</span>}
 
         <Controller
           control={control}
@@ -75,6 +81,10 @@ export default function App() {
           )}
         />
 
+        {errors.subject && (
+          <span className="error">{errors.subject.message}</span>
+        )}
+
         <Controller
           control={control}
           name="description"
@@ -82,6 +92,10 @@ export default function App() {
             <textarea placeholder="Descrição" rows={4} {...field} />
           )}
         />
+
+        {errors.description && (
+          <span className="error">{errors.description.message}</span>
+        )}
 
         <button type="submit">Salvar</button>
       </form>
