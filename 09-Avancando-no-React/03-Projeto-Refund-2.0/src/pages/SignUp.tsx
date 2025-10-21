@@ -3,9 +3,11 @@ import { Button } from '../components/Button'
 import { Link } from '../components/Link'
 import { useState } from 'react'
 
-export function SignIn() {
+export function SignUp() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   function onSubmit(e: React.FormEvent) {
@@ -14,8 +16,10 @@ export function SignIn() {
     setIsLoading(true)
 
     console.log({
+      name,
       email,
       password,
+      passwordConfirm,
     })
 
     setTimeout(() => setIsLoading(false), 2000)
@@ -24,6 +28,14 @@ export function SignIn() {
   return (
     <>
       <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
+        <Input
+          required
+          legend="Nome"
+          placeholder="Seu nome"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
         <Input
           required
           legend="E-mail"
@@ -42,12 +54,21 @@ export function SignIn() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
+        <Input
+          required
+          legend="Confirme a senha"
+          type="password"
+          placeholder="******"
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
+        />
+
         <Button type="submit" isLoading={isLoading}>
-          Entrar
+          Cadastrar
         </Button>
       </form>
 
-      <Link href="/signup">Criar uma conta</Link>
+      <Link href="/">Já tenho uma conta</Link>
     </>
   )
 }
