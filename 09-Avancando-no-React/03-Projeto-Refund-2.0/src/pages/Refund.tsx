@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 
 import { CATEGORIES, CATEGORIES_KEYS } from '../utils/categories'
 import { Input } from '../components/Input'
@@ -7,6 +8,8 @@ import { Upload } from '../components/Upload'
 import { Button } from '../components/Button'
 
 export function Refund() {
+  const navigate = useNavigate()
+
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
   const [amount, setAmount] = useState('')
@@ -27,9 +30,7 @@ export function Refund() {
       },
     })
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
+    navigate('/confirm', { state: { fromSubmit: true } })
   }
 
   return (
