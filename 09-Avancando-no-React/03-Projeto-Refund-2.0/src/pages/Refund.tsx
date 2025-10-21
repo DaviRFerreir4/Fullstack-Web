@@ -4,12 +4,39 @@ import { CATEGORIES, CATEGORIES_KEYS } from '../utils/categories'
 import { Input } from '../components/Input'
 import { Select } from '../components/Select'
 import { Upload } from '../components/Upload'
+import { Button } from '../components/Button'
 
 export function Refund() {
+  const [name, setName] = useState('')
   const [category, setCategory] = useState('')
+  const [amount, setAmount] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
+
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    setIsLoading(true)
+
+    console.log({
+      solicitation: {
+        name,
+        category,
+        amount,
+        file,
+      },
+    })
+
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
+  }
 
   return (
-    <form className="bg-gray-500 w-full rounded-xl flex flex-col p-10 gap-6 lg:min-w-[512px]">
+    <form
+      className="bg-gray-500 w-full rounded-xl flex flex-col p-10 gap-6 lg:min-w-[512px]"
+      onSubmit={onSubmit}
+    >
       <header>
         <h1 className="text-xl font-bold text-gray-100">
           Solicitação de reembolso
@@ -19,7 +46,14 @@ export function Refund() {
         </p>
       </header>
 
-      <Input required legend="Nome da solicitação" />
+      <Input
+        required
+        legend="Nome da solicitação"
+        value={name}
+        onChange={(e) => {
+          setName(e.target.value)
+        }}
+      />
 
       <div className="flex gap-4">
         <Select
@@ -39,10 +73,27 @@ export function Refund() {
           })}
         </Select>
 
-        <Input required legend="Valor" type="number" />
+        <Input
+          required
+          legend="Valor"
+          type="number"
+          onChange={(e) => {
+            setAmount(e.target.value)
+          }}
+        />
       </div>
 
-      <Upload />
+      <Upload
+        required
+        filename={file && file.name}
+        onChange={(e) => {
+          e.target.files && setFile(e.target.files[0])
+        }}
+      />
+
+      <Button type="submit" isLoading={isLoading}>
+        Enviar
+      </Button>
     </form>
   )
 }
