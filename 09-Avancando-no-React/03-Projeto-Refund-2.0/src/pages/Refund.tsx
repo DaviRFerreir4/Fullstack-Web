@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { CATEGORIES, CATEGORIES_KEYS } from '../utils/categories'
 import { Input } from '../components/Input'
 import { Select } from '../components/Select'
+import { Upload } from '../components/Upload'
 
 export function Refund() {
   const [category, setCategory] = useState('')
@@ -17,23 +18,31 @@ export function Refund() {
           Dados da despesa para solicitar reembolso.
         </p>
       </header>
+
       <Input required legend="Nome da solicitação" />
-      <Select
-        required
-        legend="Categoria"
-        value={category}
-        onChange={(e) => {
-          setCategory(e.target.value)
-        }}
-      >
-        {CATEGORIES_KEYS.map((category) => {
-          return (
-            <option value={category} key={category}>
-              {CATEGORIES[category].name}
-            </option>
-          )
-        })}
-      </Select>
+
+      <div className="flex gap-4">
+        <Select
+          required
+          legend="Categoria"
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value)
+          }}
+        >
+          {CATEGORIES_KEYS.map((category) => {
+            return (
+              <option value={category} key={category}>
+                {CATEGORIES[category].name}
+              </option>
+            )
+          })}
+        </Select>
+
+        <Input required legend="Valor" type="number" />
+      </div>
+
+      <Upload />
     </form>
   )
 }

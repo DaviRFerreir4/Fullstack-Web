@@ -26,3 +26,14 @@ select {
     background-image: url('./assets/chevron-down-focus.svg');
   }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  appearance: textfild;
+  -moz-appearance: textfield;
+}
