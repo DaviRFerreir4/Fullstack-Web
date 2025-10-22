@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import searchIconSvg from '../assets/search.svg'
 import { CATEGORIES } from '../utils/categories'
+import { formatCurrency } from '../utils/formatCurrency'
 
 import { Input } from '../components/Input'
 import { Button } from '../components/Button'
@@ -11,7 +12,7 @@ const REFUND_ITEM_EXAMPLE = {
   id: '123',
   name: 'Davi',
   category: 'Transporte',
-  amount: '34,5',
+  amount: formatCurrency(34.5),
   categoryImg: CATEGORIES.transport.icon,
 }
 
