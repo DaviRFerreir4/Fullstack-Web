@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
 import { CATEGORIES, CATEGORIES_KEYS } from '../utils/categories'
 import { Input } from '../components/Input'
@@ -9,15 +9,20 @@ import { Button } from '../components/Button'
 
 export function Refund() {
   const navigate = useNavigate()
+  const params = useParams<{ id: string }>()
 
-  const [name, setName] = useState('')
-  const [category, setCategory] = useState('')
-  const [amount, setAmount] = useState('')
+  const [name, setName] = useState('Teste')
+  const [category, setCategory] = useState('Transporte')
+  const [amount, setAmount] = useState('34')
   const [isLoading, setIsLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
+
+    if (params.id) {
+      navigate(-1)
+    }
 
     setIsLoading(true)
 
@@ -54,6 +59,7 @@ export function Refund() {
         onChange={(e) => {
           setName(e.target.value)
         }}
+        disabled={!!params.id}
       />
 
       <div className="flex gap-4">
@@ -64,6 +70,7 @@ export function Refund() {
           onChange={(e) => {
             setCategory(e.target.value)
           }}
+          disabled={!!params.id}
         >
           {CATEGORIES_KEYS.map((category) => {
             return (
@@ -78,14 +85,16 @@ export function Refund() {
           required
           legend="Valor"
           type="number"
+          value={amount}
           onChange={(e) => {
             setAmount(e.target.value)
           }}
+          disabled={!!params.id}
         />
       </div>
 
       <Upload
-        required
+        // required
         filename={file && file.name}
         onChange={(e) => {
           e.target.files && setFile(e.target.files[0])
@@ -93,7 +102,7 @@ export function Refund() {
       />
 
       <Button type="submit" isLoading={isLoading}>
-        Enviar
+        {params.id ? 'Voltar' : 'Enviar'}
       </Button>
     </form>
   )

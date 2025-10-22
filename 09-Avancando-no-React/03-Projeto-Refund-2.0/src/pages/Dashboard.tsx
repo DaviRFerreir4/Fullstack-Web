@@ -21,6 +21,7 @@ export function Dashboard() {
   const [name, setName] = useState('')
   const [page, setPage] = useState(1)
   const [totalOfPages, setTotalOfPages] = useState(10)
+  const [refunds, setRefunds] = useState([REFUND_ITEM_EXAMPLE])
 
   function fetchRefunds(e: React.FormEvent) {
     e.preventDefault()
@@ -62,9 +63,11 @@ export function Dashboard() {
       </form>
 
       <div className="my-6 flex flex-col gap-4 max-h-[342px] overflow-y-scroll ml-[0.425rem]">
-        <RefundItem data={REFUND_ITEM_EXAMPLE} />
-        <RefundItem data={REFUND_ITEM_EXAMPLE} />
-        <RefundItem data={REFUND_ITEM_EXAMPLE} />
+        {refunds.map((refundData) => {
+          return (
+            <RefundItem data={refundData} href={`/refund/${refundData.id}`} />
+          )
+        })}
       </div>
 
       <Pagination
