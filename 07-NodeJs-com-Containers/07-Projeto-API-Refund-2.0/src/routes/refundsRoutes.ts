@@ -1,10 +1,15 @@
 import { Router } from 'express'
 
 import { RefundsController } from '@/controllers/refundsController.js'
+import { verifyUserAuthorization } from '@/middlewares/verifyUserAuthorization.js'
 
 const refundsRoutes = Router()
 const refundsController = new RefundsController()
 
-refundsRoutes.post('/', refundsController.create)
+refundsRoutes.post(
+  '/',
+  verifyUserAuthorization(['employee']),
+  refundsController.create
+)
 
 export { refundsRoutes }
