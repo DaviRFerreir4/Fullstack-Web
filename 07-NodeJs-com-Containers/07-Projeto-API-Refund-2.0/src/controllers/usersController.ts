@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { z } from 'zod'
 import { hash } from 'bcrypt'
 
