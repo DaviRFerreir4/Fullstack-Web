@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
+import fileIconSvg from '../assets/file.svg'
 import { CATEGORIES, CATEGORIES_KEYS } from '../utils/categories'
+
 import { Input } from '../components/Input'
 import { Select } from '../components/Select'
 import { Upload } from '../components/Upload'
@@ -93,13 +95,24 @@ export function Refund() {
         />
       </div>
 
-      <Upload
-        // required
-        filename={file && file.name}
-        onChange={(e) => {
-          e.target.files && setFile(e.target.files[0])
-        }}
-      />
+      {params.id ? (
+        <a
+          href="#"
+          target="_blank"
+          className="text-sm text-green-100 font-semibold flex items-center justify-center gap-2 my-6 hover:opacity-70 transition ease-linear"
+        >
+          <img src={fileIconSvg} alt="Icone de arquivo" />
+          <span>Abrir comprovante</span>
+        </a>
+      ) : (
+        <Upload
+          required
+          filename={file && file.name}
+          onChange={(e) => {
+            e.target.files && setFile(e.target.files[0])
+          }}
+        />
+      )}
 
       <Button type="submit" isLoading={isLoading}>
         {params.id ? 'Voltar' : 'Enviar'}
