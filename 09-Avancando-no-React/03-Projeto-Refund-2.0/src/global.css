@@ -37,3 +37,15 @@ input[type='number'] {
   appearance: textfild;
   -moz-appearance: textfield;
 }
+
+::-webkit-scrollbar {
+  width: 0.4375rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-400);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
