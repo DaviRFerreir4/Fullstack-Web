@@ -1,9 +1,19 @@
 import { useState } from 'react'
 
 import searchIconSvg from '../assets/search.svg'
+import { CATEGORIES } from '../utils/categories'
 
 import { Input } from '../components/Input'
 import { Button } from '../components/Button'
+import { RefundItem } from '../components/RefundItem'
+
+const REFUND_ITEM_EXAMPLE = {
+  id: '123',
+  name: 'Davi',
+  category: 'Transporte',
+  amount: '34,5',
+  categoryImg: CATEGORIES.transport.icon,
+}
 
 export function Dashboard() {
   const [name, setName] = useState('')
@@ -34,6 +44,8 @@ export function Dashboard() {
           <img src={searchIconSvg} alt="Icone de lupa" className="w-6" />
         </Button>
       </form>
+
+      <RefundItem data={REFUND_ITEM_EXAMPLE} />
     </div>
   )
 }
