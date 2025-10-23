@@ -1,6 +1,8 @@
+import { env } from "@/env.js";
+
 export const authConfig = {
   jwt: {
-    secret: 'Davi',
+    secret: env.JWT_SECRET,
     expiresIn: '3d',
   },
 }
