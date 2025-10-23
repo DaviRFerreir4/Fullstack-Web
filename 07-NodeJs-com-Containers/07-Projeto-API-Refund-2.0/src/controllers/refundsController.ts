@@ -6,6 +6,48 @@ import { prisma } from '@/database/prisma.js'
 import { AppError } from '@/utils/AppError.js'
 
 class RefundsController {
+  async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      name: z.string().optional(),
+      page: z.coerce.number().optional().default(1),
+      perPage: z.coerce.number().optional().default(10),
+    })
+
+    const { name, page, perPage } = querySchema.parse(request.query)
+
+    const skip = (page - 1) * perPage
+
+    const refunds = await prisma.refund.findMany({
+      skip,
+      take: perPage,
+      where: { user: { name: { contains: name?.trim() } } },
+      orderBy: { createdAt: 'desc' },
+      include: { user: true },
+    })
+
+    const totalRecords = await prisma.refund.count({
+      where: { user: { name: { contains: name?.trim() } } },
+    })
+
+    const totalPages = Math.ceil(totalRecords / perPage)
+
+    if (page > totalPages) {
+      throw new AppError(
+        `O número da página desejada é maior do que o total de páginas disponíveis. Página desejada: ${page} | Total de páginas disponíveis: ${perPage}`
+      )
+    }
+
+    return response.json({
+      refunds,
+      pagination: {
+        page,
+        perPage,
+        totalPages,
+        totalRecords,
+      },
+    })
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       name: z.string({ message: 'Nome é obrigatório' }).trim(),
