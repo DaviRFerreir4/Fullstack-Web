@@ -48,6 +48,34 @@ class RefundsController {
     })
   }
 
+  async show(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z
+        .string({ message: 'Id é obrigatório' })
+        .uuid({ message: 'Id informado não é reconhecido como um UUID' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    if (!request.user) {
+      throw new AppError('Não autorizado', 401)
+    }
+
+    const refund = await prisma.refund.findFirst({
+      where: { id },
+      include: { user: true },
+    })
+
+    if (
+      request.user.role === 'employee' &&
+      request.user.id !== refund?.userId
+    ) {
+      throw new AppError('Não autorizado', 401)
+    }
+
+    return response.json(refund)
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       name: z.string({ message: 'Nome é obrigatório' }).trim(),
