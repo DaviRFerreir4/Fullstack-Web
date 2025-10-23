@@ -2,8 +2,9 @@ import multer from 'multer'
 import path from 'node:path'
 import crypto from 'node:crypto'
 
-const TMP_FOLDER = path.resolve(import.meta.dirname, '..', '..', 'tmp')
-const UPLOADS_FOLDER = path.relative(TMP_FOLDER, 'uploads')
+const BASE_PATH = path.resolve(import.meta.dirname, '..', '..')
+const TMP_FOLDER = path.resolve(BASE_PATH, 'tmp')
+const UPLOADS_FOLDER = path.resolve(BASE_PATH, 'uploads')
 
 const MAX_SIZE = 3
 const MAX_FILE_SIZE = 1024 * 1024 * MAX_SIZE // 3MBs
