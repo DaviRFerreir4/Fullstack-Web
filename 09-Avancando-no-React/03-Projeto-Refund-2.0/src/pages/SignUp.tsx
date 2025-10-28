@@ -1,7 +1,27 @@
+import { useState } from 'react'
+import { z, ZodError } from 'zod'
+
 import { Input } from '../components/Input'
 import { Button } from '../components/Button'
 import { Link } from '../components/Link'
-import { useState } from 'react'
+
+const signUpSchema = z
+  .object({
+    name: z
+      .string({ message: 'Nome é obrigatório' })
+      .trim()
+      .min(2, { message: 'Nome deve conter 2 ou mais caracteres' }),
+    email: z.email({ message: 'E-mail inválido' }).trim().toLowerCase(),
+    password: z
+      .string({ message: 'Senha é obrigatória' })
+      .trim()
+      .min(8, { message: 'A senha deve possuir pelo menos 8 digitos' }),
+    passwordConfirm: z.string({ message: 'Confirme a senha' }),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'As senhas não são iguais',
+    path: ['passwordConfirm'],
+  })
 
 export function SignUp() {
   const [name, setName] = useState('')
@@ -13,16 +33,24 @@ export function SignUp() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    setIsLoading(true)
+    try {
+      setIsLoading(true)
 
-    console.log({
-      name,
-      email,
-      password,
-      passwordConfirm,
-    })
+      const data = signUpSchema.parse({
+        name,
+        email,
+        password,
+        passwordConfirm,
+      })
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return alert(error.issues[0].message)
+      }
 
-    setTimeout(() => setIsLoading(false), 2000)
+      alert('Não foi possível cadastrar o usuário.\nTente novamente mais tarde')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
