@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { z, ZodError } from 'zod'
 import { AxiosError } from 'axios'
@@ -33,19 +33,23 @@ export function Refund() {
 
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState<string | number>('')
   const [isLoading, setIsLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
+  const [fileURL, setFileURL] = useState<string | null>(null)
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     if (params.id) {
-      navigate(-1)
+      return navigate(-1)
     }
 
-    let filename
+    createRefund()
+  }
 
+  async function createRefund() {
+    let filename
     try {
       setIsLoading(true)
 
@@ -63,7 +67,7 @@ export function Refund() {
       const data = refundSchema.parse({
         name,
         category,
-        amount: amount.replace(',', '.'),
+        amount: String(amount).replace(',', '.'),
       })
 
       await api.post('/refunds', {
@@ -93,6 +97,31 @@ export function Refund() {
       setIsLoading(false)
     }
   }
+
+  async function fetchRefund(id: string) {
+    try {
+      const { data } = await api.get<RefundAPIResponse>(`/refunds/${id}`)
+
+      setName(data.name)
+      setCategory(data.category)
+      setAmount(data.amount)
+      setFileURL(data.filename)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return alert(error.response?.data.message)
+      }
+
+      return alert(
+        'Não foi possível retornar os dados dessa solicitação.\nPor favor, tente novamente mais tarde.'
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (params.id) {
+      fetchRefund(params.id)
+    }
+  }, [params.id])
 
   return (
     <form
@@ -149,7 +178,7 @@ export function Refund() {
         />
       </div>
 
-      {params.id ? (
+      {params.id && fileURL ? (
         <a
           href="#"
           target="_blank"
