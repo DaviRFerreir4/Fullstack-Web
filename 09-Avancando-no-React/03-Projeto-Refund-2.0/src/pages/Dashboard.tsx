@@ -34,11 +34,11 @@ export function Dashboard() {
     }
 
     try {
-      const response = await api.get(
+      const response = await api.get<RefundPaginationData>(
         `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`
       )
 
-      console.log(response)
+      console.log(response.data)
     } catch (error) {
       if (error instanceof AxiosError) {
         return alert(error.response?.data.message)
