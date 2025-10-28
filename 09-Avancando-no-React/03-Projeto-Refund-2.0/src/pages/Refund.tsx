@@ -47,6 +47,15 @@ export function Refund() {
     try {
       setIsLoading(true)
 
+      if (!file) {
+        return console.log({ message: 'Selecione um arquivo de comprovante' })
+      }
+
+      const fileUploadForm = new FormData()
+      fileUploadForm.append('file', file)
+
+      const response = await api.post('/uploads', fileUploadForm)
+
       const data = refundSchema.parse({
         name,
         category,
@@ -55,7 +64,7 @@ export function Refund() {
 
       await api.post('/refunds', {
         ...data,
-        filename: 'exemploasdasdagsf1324213dsf.png',
+        filename: response.data.filename,
       })
 
       navigate('/confirm', { state: { fromSubmit: true } })
@@ -143,7 +152,7 @@ export function Refund() {
         </a>
       ) : (
         <Upload
-          // required
+          required
           filename={file && file.name}
           onChange={(e) => {
             e.target.files && setFile(e.target.files[0])
