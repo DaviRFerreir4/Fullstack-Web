@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { AxiosError } from 'axios'
 
 import searchIconSvg from '../assets/search.svg'
 import { CATEGORIES } from '../utils/categories'
@@ -9,6 +10,8 @@ import { Button } from '../components/Button'
 import { RefundItem } from '../components/RefundItem'
 import { Pagination } from '../components/Pagination'
 
+import { api } from '../services/api'
+
 const REFUND_ITEM_EXAMPLE = {
   id: '123',
   name: 'Davi',
@@ -17,16 +20,34 @@ const REFUND_ITEM_EXAMPLE = {
   categoryImg: CATEGORIES.transport.icon,
 }
 
+const PER_PAGE = 5
+
 export function Dashboard() {
   const [name, setName] = useState('')
   const [page, setPage] = useState(1)
-  const [totalOfPages, setTotalOfPages] = useState(10)
+  const [totalOfPages, setTotalOfPages] = useState(0)
   const [refunds, setRefunds] = useState([REFUND_ITEM_EXAMPLE])
 
-  function fetchRefunds(e: React.FormEvent) {
-    e.preventDefault()
+  async function fetchRefunds(e?: React.FormEvent) {
+    if (e) {
+      e.preventDefault()
+    }
 
-    console.log(name)
+    try {
+      const response = await api.get(
+        `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`
+      )
+
+      console.log(response)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return alert(error.response?.data.message)
+      }
+
+      return alert(
+        'Não foi possível carregar os registros de reembolsos.\nPor favor, tente novamente mais tarde.'
+      )
+    }
   }
 
   function handlePagination(action: 'next' | 'previous') {
@@ -40,6 +61,10 @@ export function Dashboard() {
       return prevPage
     })
   }
+
+  useEffect(() => {
+    fetchRefunds()
+  }, [])
 
   return (
     <div className="bg-gray-500 rounded-xl p-10 md:min-w-[768px]">
@@ -65,7 +90,11 @@ export function Dashboard() {
       <div className="my-6 flex flex-col gap-4 max-h-[342px] overflow-y-scroll ml-[0.425rem]">
         {refunds.map((refundData) => {
           return (
-            <RefundItem data={refundData} href={`/refund/${refundData.id}`} />
+            <RefundItem
+              data={refundData}
+              href={`/refund/${refundData.id}`}
+              key={refundData.id}
+            />
           )
         })}
       </div>

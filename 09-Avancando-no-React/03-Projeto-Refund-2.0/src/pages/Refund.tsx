@@ -48,7 +48,7 @@ export function Refund() {
       setIsLoading(true)
 
       if (!file) {
-        return console.log({ message: 'Selecione um arquivo de comprovante' })
+        return alert({ message: 'Selecione um arquivo de comprovante' })
       }
 
       const fileUploadForm = new FormData()
@@ -70,14 +70,14 @@ export function Refund() {
       navigate('/confirm', { state: { fromSubmit: true } })
     } catch (error) {
       if (error instanceof ZodError) {
-        return console.log({ message: error.issues[0].message })
+        return alert({ message: error.issues[0].message })
       }
 
       if (error instanceof AxiosError) {
-        return console.log({ message: error.response?.data.message })
+        return alert({ message: error.response?.data.message })
       }
 
-      return console.log({
+      return alert({
         message:
           'Não foi possível registrar sua requisição.\nPor favor, tente novamente mais tarde.',
       })
