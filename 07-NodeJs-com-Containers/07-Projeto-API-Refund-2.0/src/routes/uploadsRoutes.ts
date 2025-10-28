@@ -23,11 +23,4 @@ uploadsRoutes.delete(
   uploadsController.remove
 )
 
-// GET
-uploadsRoutes.use(
-  '/',
-  verifyUserAuthorization(['manager']),
-  express.static(uploadConfigs.UPLOADS_FOLDER)
-)
-
 export { uploadsRoutes }
