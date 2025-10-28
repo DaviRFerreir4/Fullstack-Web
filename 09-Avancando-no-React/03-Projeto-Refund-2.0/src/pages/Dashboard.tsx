@@ -20,11 +20,7 @@ export function Dashboard() {
   const [totalOfPages, setTotalOfPages] = useState(0)
   const [refunds, setRefunds] = useState<RefundItemProps[]>([])
 
-  async function fetchRefunds(e?: React.FormEvent) {
-    if (e) {
-      e.preventDefault()
-    }
-
+  async function fetchRefunds() {
     try {
       const response = await api.get<RefundPaginationData>(
         `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`
@@ -54,6 +50,12 @@ export function Dashboard() {
     }
   }
 
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    fetchRefunds()
+  }
+
   function handlePagination(action: 'next' | 'previous') {
     setPage((prevPage) => {
       if (action === 'next' && prevPage < totalOfPages) {
@@ -68,7 +70,7 @@ export function Dashboard() {
 
   useEffect(() => {
     fetchRefunds()
-  }, [])
+  }, [page])
 
   return (
     <div className="bg-gray-500 rounded-xl p-10 md:min-w-3xl">
@@ -76,7 +78,7 @@ export function Dashboard() {
 
       <form
         className="flex items-center justify-between pb-6 border-b border-b-gray-400 gap-2  mt-6"
-        onSubmit={fetchRefunds}
+        onSubmit={onSubmit}
       >
         <Input
           placeholder="Pesquisar pelo nome"

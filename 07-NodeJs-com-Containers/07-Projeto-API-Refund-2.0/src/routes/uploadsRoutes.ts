@@ -10,13 +10,6 @@ const uploadsController = new UploadsController()
 
 const upload = multer(uploadConfigs.MULTER)
 
-// GET
-uploadsRoutes.use(
-  '/',
-  verifyUserAuthorization(['manager']),
-  express.static(uploadConfigs.UPLOADS_FOLDER)
-)
-
 uploadsRoutes.post(
   '/',
   verifyUserAuthorization(['employee']),
@@ -26,8 +19,15 @@ uploadsRoutes.post(
 
 uploadsRoutes.delete(
   '/:filename',
-  verifyUserAuthorization(['manager']),
+  verifyUserAuthorization(['employee', 'manager']),
   uploadsController.remove
+)
+
+// GET
+uploadsRoutes.use(
+  '/',
+  verifyUserAuthorization(['manager']),
+  express.static(uploadConfigs.UPLOADS_FOLDER)
 )
 
 export { uploadsRoutes }

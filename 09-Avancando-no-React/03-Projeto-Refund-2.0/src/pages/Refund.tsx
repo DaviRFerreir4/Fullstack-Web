@@ -44,6 +44,8 @@ export function Refund() {
       navigate(-1)
     }
 
+    let filename
+
     try {
       setIsLoading(true)
 
@@ -55,6 +57,8 @@ export function Refund() {
       fileUploadForm.append('file', file)
 
       const response = await api.post('/uploads', fileUploadForm)
+
+      filename = response.data.filename
 
       const data = refundSchema.parse({
         name,
@@ -69,18 +73,22 @@ export function Refund() {
 
       navigate('/confirm', { state: { fromSubmit: true } })
     } catch (error) {
+      if (filename) {
+        await api.delete(`/uploads/${filename}`)
+      }
+
       if (error instanceof ZodError) {
-        return alert({ message: error.issues[0].message })
+        return alert(error.issues)
       }
 
       if (error instanceof AxiosError) {
-        return alert({ message: error.response?.data.message })
+        console.log(error.response?.data)
+        return alert(error.response?.data.message)
       }
 
-      return alert({
-        message:
-          'Não foi possível registrar sua requisição.\nPor favor, tente novamente mais tarde.',
-      })
+      return alert(
+        'Não foi possível registrar sua requisição.\nPor favor, tente novamente mais tarde.'
+      )
     } finally {
       setIsLoading(false)
     }
@@ -88,7 +96,7 @@ export function Refund() {
 
   return (
     <form
-      className="bg-gray-500 w-full rounded-xl flex flex-col p-10 gap-6 lg:min-w-[512px]"
+      className="bg-gray-500 w-full rounded-xl flex flex-col p-10 gap-6 lg:min-w-lg"
       onSubmit={onSubmit}
     >
       <header>
