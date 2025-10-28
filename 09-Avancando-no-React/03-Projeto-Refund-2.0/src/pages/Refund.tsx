@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import { z, ZodError } from 'zod'
+import { AxiosError } from 'axios'
 
 import fileIconSvg from '../assets/file.svg'
 import { CATEGORIES, CATEGORIES_KEYS } from '../utils/categories'
@@ -9,35 +11,70 @@ import { Select } from '../components/Select'
 import { Upload } from '../components/Upload'
 import { Button } from '../components/Button'
 
+import { api } from '../services/api'
+
+const refundSchema = z.object({
+  name: z
+    .string({ message: 'Nome é obrigatório' })
+    .min(3, { message: 'Informe um nome claro para sua solicitação' }),
+  category: z.enum(CATEGORIES_KEYS, {
+    message: `Categoria deve conter os valores um dos seguintes valores: '${CATEGORIES_KEYS.join(
+      "', '"
+    )}'`,
+  }),
+  amount: z.coerce
+    .number({ message: 'Informe um valor válido' })
+    .gt(0, { message: 'Informe um valor maior do que 0' }),
+})
+
 export function Refund() {
   const navigate = useNavigate()
   const params = useParams<{ id: string }>()
 
-  const [name, setName] = useState('Teste')
-  const [category, setCategory] = useState('Transporte')
-  const [amount, setAmount] = useState('34')
+  const [name, setName] = useState('')
+  const [category, setCategory] = useState('')
+  const [amount, setAmount] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     if (params.id) {
       navigate(-1)
     }
 
-    setIsLoading(true)
+    try {
+      setIsLoading(true)
 
-    console.log({
-      solicitation: {
+      const data = refundSchema.parse({
         name,
         category,
-        amount,
-        file,
-      },
-    })
+        amount: amount.replace(',', '.'),
+      })
 
-    navigate('/confirm', { state: { fromSubmit: true } })
+      await api.post('/refunds', {
+        ...data,
+        filename: 'exemploasdasdagsf1324213dsf.png',
+      })
+
+      navigate('/confirm', { state: { fromSubmit: true } })
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return console.log({ message: error.issues[0].message })
+      }
+
+      if (error instanceof AxiosError) {
+        return console.log({ message: error.response?.data.message })
+      }
+
+      return console.log({
+        message:
+          'Não foi possível registrar sua requisição.\nPor favor, tente novamente mais tarde.',
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -106,7 +143,7 @@ export function Refund() {
         </a>
       ) : (
         <Upload
-          required
+          // required
           filename={file && file.name}
           onChange={(e) => {
             e.target.files && setFile(e.target.files[0])
