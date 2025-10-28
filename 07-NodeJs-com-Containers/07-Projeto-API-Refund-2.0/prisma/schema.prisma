@@ -17,7 +17,7 @@ enum Category {
   others
   services
   transport
-  accomodation
+  accommodation
 }
 
 model User {
@@ -51,4 +51,3 @@ model Refund {
 
   @@map("refunds")
 }
-

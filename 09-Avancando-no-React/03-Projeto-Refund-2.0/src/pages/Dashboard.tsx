@@ -7,18 +7,10 @@ import { formatCurrency } from '../utils/formatCurrency'
 
 import { Input } from '../components/Input'
 import { Button } from '../components/Button'
-import { RefundItem } from '../components/RefundItem'
+import { RefundItem, type RefundItemProps } from '../components/RefundItem'
 import { Pagination } from '../components/Pagination'
 
 import { api } from '../services/api'
-
-const REFUND_ITEM_EXAMPLE = {
-  id: '123',
-  name: 'Davi',
-  category: 'Transporte',
-  amount: formatCurrency(34.5),
-  categoryImg: CATEGORIES.transport.icon,
-}
 
 const PER_PAGE = 5
 
@@ -26,7 +18,7 @@ export function Dashboard() {
   const [name, setName] = useState('')
   const [page, setPage] = useState(1)
   const [totalOfPages, setTotalOfPages] = useState(0)
-  const [refunds, setRefunds] = useState([REFUND_ITEM_EXAMPLE])
+  const [refunds, setRefunds] = useState<RefundItemProps[]>([])
 
   async function fetchRefunds(e?: React.FormEvent) {
     if (e) {
@@ -38,8 +30,20 @@ export function Dashboard() {
         `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`
       )
 
-      console.log(response.data)
-    } catch (error) {
+      setTotalOfPages(response.data.pagination.totalPages)
+
+      setRefunds(
+        response.data.refunds.map((refund) => {
+          return {
+            id: refund.id,
+            name: refund.user.name,
+            title: refund.name,
+            amount: formatCurrency(refund.amount),
+            categoryImg: CATEGORIES[refund.category].icon,
+          }
+        })
+      )
+    } catch (error: any) {
       if (error instanceof AxiosError) {
         return alert(error.response?.data.message)
       }
@@ -67,7 +71,7 @@ export function Dashboard() {
   }, [])
 
   return (
-    <div className="bg-gray-500 rounded-xl p-10 md:min-w-[768px]">
+    <div className="bg-gray-500 rounded-xl p-10 md:min-w-3xl">
       <h1 className="text-gray-100 font-bold text-xl flex-1">Solicitações</h1>
 
       <form
