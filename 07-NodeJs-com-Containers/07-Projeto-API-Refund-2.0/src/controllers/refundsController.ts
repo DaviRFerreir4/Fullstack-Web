@@ -81,7 +81,7 @@ class RefundsController {
       name: z.string({ message: 'Nome é obrigatório' }).trim(),
       category: z.enum(
         [
-          Category.accomodation,
+          Category.accommodation,
           Category.food,
           Category.others,
           Category.services,
@@ -89,7 +89,7 @@ class RefundsController {
         ],
         {
           message:
-            "Categoria deve ser 'accomodation', 'food', 'services', 'transport' ou 'others'",
+            "Categoria deve ser 'accommodation', 'food', 'services', 'transport' ou 'others'",
         }
       ),
       amount: z

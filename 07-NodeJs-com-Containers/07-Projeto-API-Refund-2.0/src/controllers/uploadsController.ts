@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { z, ZodError } from 'zod'
 
 import * as uploadConfigs from '@/configs/upload.js'
@@ -44,6 +44,24 @@ class UploadsController {
       }
 
       throw error
+    }
+  }
+
+  async remove(request: Request, response: Response, next: NextFunction) {
+    const diskStorage = new DiskStorage()
+
+    try {
+      const fileNameSchema = z
+        .string()
+        .min(1, { message: 'Arquivo é obrigatório' })
+
+      const filename = fileNameSchema.parse(request.params?.filename)
+
+      await diskStorage.deleteFile(filename, 'upload')
+
+      return response.json({ filename })
+    } catch (error) {
+      next(error)
     }
   }
 }
