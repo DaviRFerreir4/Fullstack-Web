@@ -1,5 +1,5 @@
 main {
-  margin-bottom: 20rem;
+  margin-bottom: 2rem;
   gap: 2rem;
 
   .card {
@@ -31,8 +31,6 @@ main {
       }
 
       div {
-        margin: 0rem 0.75rem 0.75rem;
-
         p {
           display: -webkit-box;
           -webkit-box-orient: vertical;
@@ -43,7 +41,7 @@ main {
       }
 
       &::after {
-        content: "";
+        content: '';
         grid-column: 1/2;
         grid-row: 1/2;
         width: 100%;
@@ -54,9 +52,46 @@ main {
     }
   }
 
+  header {
+    margin-bottom: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--stroke-color);
+    display: flex;
+    justify-content: space-between;
+
+    font-weight: var(--fw-sb);
+
+    & > div {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+
+      cursor: pointer;
+
+      span:nth-child(2) {
+        width: 1rem;
+        height: 1rem;
+
+        background: url(../assets/icons/ArrowRight.svg);
+      }
+
+      &:hover {
+        color: var(--brand-color-light);
+
+        span:nth-child(2) {
+          background: url(../assets//icons/ArrowRightHover.svg);
+        }
+      }
+    }
+  }
+
   #highlights {
     padding-top: 1rem;
     grid-template-columns: 100%;
+
+    figure > figcaption > div {
+      margin: 0rem 0.75rem 0.75rem;
+    }
 
     figure:nth-child(1) {
       overflow: hidden;
@@ -69,9 +104,36 @@ main {
       figcaption {
         font: var(--fw-xb) var(--fs-lg) / 135% var(--ff);
       }
+
       &::after {
         height: 50%;
         align-self: end;
+      }
+    }
+
+    img {
+      height: 12.5rem;
+      object-fit: cover;
+      /* width: auto; */
+    }
+  }
+
+  #weekly-most-read {
+    & > div {
+      grid-template-columns: repeat(auto-fit, minmax(18rem, auto));
+      gap: 2rem;
+    }
+
+    .card {
+      position: relative;
+
+      span {
+        position: absolute;
+        top: 0.5rem;
+      }
+
+      p {
+        font-size: var(--fs-md);
       }
     }
   }
@@ -86,8 +148,8 @@ main {
       grid-auto-rows: 12.5rem;
       grid-auto-columns: 1fr;
       grid-template-areas:
-        "news-1 news-1 news-2 news-3"
-        "news-1 news-1 news-4 news-5";
+        'news-1 news-1 news-2 news-3'
+        'news-1 news-1 news-4 news-5';
 
       img {
         height: 100%;
@@ -117,6 +179,12 @@ main {
 
       figure:nth-child(5) {
         grid-area: news-5;
+      }
+    }
+
+    #weekly-most-read {
+      & > div {
+        gap: 1rem;
       }
     }
   }
