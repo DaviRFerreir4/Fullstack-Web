@@ -18,6 +18,10 @@
   justify-content: space-between;
 }
 
+.flex-col {
+  flex-direction: column;
+}
+
 .gap-0\.5 {
   gap: 0.5rem;
 }

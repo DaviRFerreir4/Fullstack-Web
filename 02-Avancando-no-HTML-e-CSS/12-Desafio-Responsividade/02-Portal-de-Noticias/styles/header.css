@@ -1,4 +1,8 @@
 header.page-header {
+  a:hover {
+    color: var(--brand-color-light);
+  }
+
   & > nav:nth-child(1) {
     padding-block: 1rem;
     font: var(--fw-bd) var(--fs-md) / 140% var(--ff);
