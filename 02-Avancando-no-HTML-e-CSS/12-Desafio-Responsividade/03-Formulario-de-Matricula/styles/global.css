@@ -45,3 +45,9 @@ body {
   color: var(--text-secondary);
   font: var(--fw-bd) var(--fs-rg) / 1.2 var(--ff);
 }
+
+.container {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 1.5rem;
+}

@@ -1,0 +1,11 @@
+#hero {
+  display: grid;
+  justify-items: center;
+  gap: .75rem;
+
+  background-color: var(--surface-secondary);
+
+  img:nth-child(2) {
+    width: 100%;
+  }
+}
