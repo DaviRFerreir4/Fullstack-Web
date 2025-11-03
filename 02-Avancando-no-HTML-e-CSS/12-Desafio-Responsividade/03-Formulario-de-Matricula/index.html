@@ -37,8 +37,29 @@
         <fieldset name="child-info">
           <legend>Informações da criança</legend>
           <div class="input-wrapper">
-            <label for="">Nome completo</label>
-            <input type="text" name="" id="" />
+            <label for="name">Nome completo</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Qual o nome da criança?"
+            />
+          </div>
+          <div class="input-wrapper">
+            <label for="birthday">Data de Nascimento</label>
+            <input type="date" name="birthday" id="birthday" />
+          </div>
+          <div class="input-wrapper">
+            <label for="sex">Sexo</label>
+            <select name="sex" id="sex">
+              <option value="" selected disabled hidden>Escolha:</option>
+              <option value="male">Masculino</option>
+              <option value="female">Feminino</option>
+            </select>
+          </div>
+          <div class="input-wrapper">
+            <label for="medical-info">Informações médicas</label>
+            <textarea name="medical_info" id="medical-info" rows="5"></textarea>
           </div>
         </fieldset>
       </form>

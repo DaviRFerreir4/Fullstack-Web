@@ -1,4 +1,26 @@
 .input-wrapper {
   display: grid;
   gap: 0.25rem;
+  width: 100%;
+
+  input,
+  select,
+  textarea {
+    box-sizing: inherit;
+    all: unset;
+    width: auto;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--stroke-default);
+    border-radius: 0.5rem;
+    outline: 2px solid transparent;
+
+    &:focus {
+      border-color: var(--stroke-highlight);
+      outline-color: var(--surface-secondary);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
 }
