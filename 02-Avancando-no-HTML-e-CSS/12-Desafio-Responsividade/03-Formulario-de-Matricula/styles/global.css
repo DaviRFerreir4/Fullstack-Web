@@ -1,0 +1,47 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --brand-light: #f67841;
+  --brand-mid: #f3541c;
+  --brand-dark: #e43a12;
+
+  --text-primary: #292524;
+  --text-secondary: #57534e;
+  --text-tertiary: #8f8881;
+  --text-highlight: #e43a12;
+
+  --surface-primary: #ffffff;
+  --surface-secondary: #fee7d6;
+  --surface-disabled: #e7e5e4;
+
+  --stroke-default: #d6d3d1;
+  --stroke-highlight: #f3541c;
+
+  --semantic-error: #dc2626;
+
+  --orange: #f9a474;
+  --yellow: #fedf6f;
+  --green: #c7d78d;
+  --blue: #b8cedc;
+  --violet: #c3b2e7;
+  --pink: #f682a5;
+
+  --ff: 'Poppins', sans-serif;
+  --fw-bd: 700;
+  --fs-rg: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xg: 1.5rem;
+  --fs-xxg: 2rem;
+}
+
+body {
+  background-color: var(--surface-primary);
+  color: var(--text-secondary);
+  font: var(--fw-bd) var(--fs-rg) / 1.2 var(--ff);
+}
