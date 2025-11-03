@@ -1,0 +1,17 @@
+form {
+  display: grid;
+  gap: 3rem;
+
+  fieldset {
+    display: grid;
+    gap: 1.25rem;
+    border: none;
+
+    legend {
+      margin-bottom: 1.25rem;
+
+      font-weight: var(--fw-sb);
+      color: var(--text-primary);
+    }
+  }
+}

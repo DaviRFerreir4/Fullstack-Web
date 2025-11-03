@@ -33,6 +33,8 @@
   --pink: #f682a5;
 
   --ff: 'Poppins', sans-serif;
+  --fw-rg: 400;
+  --fw-sb: 600;
   --fw-bd: 700;
   --fs-rg: 1rem;
   --fs-lg: 1.25rem;
@@ -43,7 +45,7 @@
 body {
   background-color: var(--surface-primary);
   color: var(--text-secondary);
-  font: var(--fw-bd) var(--fs-rg) / 1.2 var(--ff);
+  font: var(--fw-rg) var(--fs-rg) / 1.2 var(--ff);
 }
 
 .container {
