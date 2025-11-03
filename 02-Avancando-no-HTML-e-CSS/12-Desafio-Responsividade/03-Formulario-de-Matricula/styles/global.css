@@ -12,7 +12,7 @@
   --brand-dark: #e43a12;
 
   --text-primary: #292524;
-  --text-secondary: #57534e;
+  --text-secondary: #57534ecb;
   --text-tertiary: #8f8881;
   --text-highlight: #e43a12;
 
@@ -45,11 +45,32 @@
 body {
   background-color: var(--surface-primary);
   color: var(--text-secondary);
-  font: var(--fw-rg) var(--fs-rg) / 1.2 var(--ff);
+  font: var(--fw-rg) var(--fs-rg) / 1.4 var(--ff);
+}
+
+body > div {
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
   max-width: 80rem;
   margin-inline: auto;
   padding: 1.5rem;
+}
+
+@media (width >= 80rem) {
+  .container {
+    padding: 3rem;
+  }
+
+  body > div {
+    flex-direction: row-reverse;
+    max-width: 80rem;
+    margin-inline: auto;
+
+    main {
+      flex: 1 1;
+    }
+  }
 }
