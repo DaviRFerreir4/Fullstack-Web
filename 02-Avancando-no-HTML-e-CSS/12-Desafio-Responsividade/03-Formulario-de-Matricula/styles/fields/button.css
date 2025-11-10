@@ -1,0 +1,48 @@
+button {
+  all: unset;
+  padding-block: 0.75rem;
+  width: 100%;
+  text-align: center;
+  border-radius: 0.5rem;
+}
+
+.button {
+  background-color: var(--brand-dark);
+  color: var(--surface-primary);
+
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: var(--brand-mid);
+  }
+}
+
+.button-variant {
+  border: 1px solid var(--brand-dark);
+  outline: 3px solid transparent;
+  color: var(--brand-dark);
+
+  transition: outline-color 0.3s;
+
+  &:hover {
+    outline-color: var(--surface-secondary);
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (width >= 80rem) {
+  .actions {
+    flex-direction: row;
+    justify-content: end;
+  }
+
+  button {
+    width: auto;
+    padding-inline: 1.5rem;
+  }
+}
