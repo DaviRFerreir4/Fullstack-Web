@@ -42,7 +42,7 @@
               </p>
             </div>
           </section>
-          <fieldset name="child-info">
+          <fieldset name="child_info">
             <legend>Informações da criança</legend>
             <div class="input-wrapper">
               <label for="name">Nome completo</label>
@@ -131,7 +131,7 @@
               </div>
             </div>
           </fieldset>
-          <fieldset name="parent-info">
+          <fieldset name="parent_info">
             <legend>Informações do responsável</legend>
             <div class="input-wrapper">
               <label for="parent-name">Nome do responsável</label>
@@ -156,7 +156,104 @@
               />
               <div class="validation">
                 <img src="assets/icons/alert-circle.svg" alt="Alerta" />
-                <span> Insira um e-mail válido </span>
+                <span>Insira um e-mail válido</span>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset name="registration_options">
+            <legend>Opções de matrícula</legend>
+            <div class="input-wrapper">
+              <label for="study-shift">Selecione o turno de estudo</label>
+              <div class="radio-outer-wrapper">
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="study_shift"
+                    id="study-shift"
+                    value="morning"
+                    checked
+                  />
+                  <img src="assets/icons/radio/sun-cloud.svg" alt="Manhã" />
+                  <span>Manhã</span>
+                </div>
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="study_shift"
+                    id="study-shift"
+                    value="afternoon"
+                  />
+                  <img src="assets/icons/radio/sun.svg" alt="Tarde" />
+                  <span>Tarde</span>
+                </div>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <label for="preferred-sport"
+                >Em qual esporte você gostaria de inscrever seu filho?</label
+              >
+              <div class="radio-outer-wrapper">
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="preferred_sport"
+                    id="preferred-sport"
+                    value="football"
+                    checked
+                  />
+                  <img src="assets/icons/radio/football.svg" alt="Manhã" />
+                  <span>Futebol</span>
+                </div>
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="preferred_sport"
+                    id="preferred-sport"
+                    value="basketball"
+                  />
+                  <img src="assets/icons/radio/basketball.svg" alt="Tarde" />
+                  <span>Basquete</span>
+                </div>
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="preferred_sport"
+                    id="preferred-sport"
+                    value="swimming"
+                  />
+                  <img src="assets/icons/radio/swimming.svg" alt="Tarde" />
+                  <span>Natação</span>
+                </div>
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="preferred_sport"
+                    id="preferred-sport"
+                    value="yoga"
+                  />
+                  <img src="assets/icons/radio/yoga.svg" alt="Tarde" />
+                  <span>Yoga</span>
+                </div>
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="preferred_sport"
+                    id="preferred-sport"
+                    value="volleyball"
+                  />
+                  <img src="assets/icons/radio/volleyball.svg" alt="Tarde" />
+                  <span>Vôlei</span>
+                </div>
+                <div class="radio-wrapper">
+                  <input
+                    type="radio"
+                    name="preferred_sport"
+                    id="preferred-sport"
+                    value="boxe"
+                  />
+                  <img src="assets/icons/radio/boxing-glove.svg" alt="Tarde" />
+                  <span>Boxe</span>
+                </div>
               </div>
             </div>
           </fieldset>
