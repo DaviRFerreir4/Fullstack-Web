@@ -7,7 +7,7 @@
   border: 1.5px dashed var(--stroke-default);
   border-radius: 0.5rem;
 
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background-color 0.3s;
 
   span {
     width: 3rem;
@@ -41,6 +41,7 @@
   &:hover,
   &:has(input:active) {
     border-color: var(--brand-light);
+    background-color: var(--surface-secondary);
 
     p {
       color: var(--brand-light);

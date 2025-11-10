@@ -32,8 +32,7 @@
     resize: vertical;
   }
 
-  input[type='date'],
-  select {
+  input[type='date'] {
     position: relative;
 
     &::-webkit-calendar-picker-indicator {
@@ -57,6 +56,10 @@
   select {
     background: url(../../assets/icons/arrow-down.svg) no-repeat
       calc(100% - 0.75rem);
+
+    &:focus {
+      background-image: url(../../assets/icons/arrow-up.svg);
+    }
   }
 
   p {

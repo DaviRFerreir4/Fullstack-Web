@@ -3,6 +3,10 @@
   gap: 0.75rem;
   align-items: start;
 
+  &:hover input[type='checkbox'] {
+    border-color: var(--stroke-highlight);
+  }
+
   input[type='checkbox'] {
     all: unset;
     box-sizing: inherit;
@@ -10,6 +14,8 @@
     height: 1.25rem;
     border: 2px solid var(--stroke-default);
     border-radius: 0.25rem;
+
+    transition: border-color 0.3s, background-color 0.3s, background-image 0.3s;
 
     &:hover {
       border-color: var(--stroke-highlight);

@@ -46,9 +46,18 @@
     }
   }
 
+  &:hover {
+    border-color: var(--stroke-highlight);
+
+    input::before {
+      border-color: var(--stroke-highlight);
+    }
+  }
+
   &:has(input:checked) {
     border-color: var(--stroke-highlight);
     outline-color: var(--stroke-highlight);
+
     input:checked::before {
       border-color: transparent;
       background: url(../../assets/icons/check.svg) var(--stroke-highlight)
