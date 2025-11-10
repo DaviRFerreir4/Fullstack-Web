@@ -1,0 +1,54 @@
+.file-wrapper {
+  padding: 1.75rem 1rem;
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+  position: relative;
+  border: 1.5px dashed var(--stroke-default);
+  border-radius: 0.5rem;
+
+  transition: border-color 0.3s;
+
+  span {
+    width: 3rem;
+    height: 3rem;
+    background: url(../../assets/icons/cloud-upload.svg);
+  }
+
+  span {
+    transition: background 0.3s;
+  }
+
+  p {
+    display: block;
+    width: 10rem;
+
+    transition: color 0.3s;
+    color: var(--stroke-default);
+    text-align: center;
+  }
+
+  input[type='file'] {
+    all: unset;
+    box-sizing: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+
+    opacity: 0;
+  }
+
+  &:hover,
+  &:has(input:active) {
+    border-color: var(--brand-light);
+
+    p {
+      color: var(--brand-light);
+    }
+
+    span {
+      background: url(../../assets/icons/cloud-upload-hover.svg);
+    }
+  }
+}
