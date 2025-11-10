@@ -67,8 +67,6 @@ body > div {
 
   body > div {
     flex-direction: row-reverse;
-    max-width: 80rem;
-    margin-inline: auto;
 
     main {
       flex: 1 1;
