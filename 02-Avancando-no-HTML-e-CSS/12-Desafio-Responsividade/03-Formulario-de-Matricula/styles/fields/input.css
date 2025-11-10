@@ -58,4 +58,31 @@
     background: url(../../assets/icons/arrow-down.svg) no-repeat
       calc(100% - 0.75rem);
   }
+
+  p {
+    font-size: var(--fs-sm);
+  }
+
+  .validation {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+
+    color: var(--semantic-error);
+
+    &:has() {
+      display: flex;
+    }
+  }
+
+  &:has(input:invalid) {
+    input {
+      border-color: transparent;
+      outline-color: var(--semantic-error);
+    }
+
+    .validation {
+      display: flex;
+    }
+  }
 }

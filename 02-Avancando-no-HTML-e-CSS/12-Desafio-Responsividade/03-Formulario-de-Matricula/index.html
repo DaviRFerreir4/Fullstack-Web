@@ -131,6 +131,35 @@
               </div>
             </div>
           </fieldset>
+          <fieldset name="parent-info">
+            <legend>Informações do responsável</legend>
+            <div class="input-wrapper">
+              <label for="parent-name">Nome do responsável</label>
+              <input type="text" name="parent_name" id="parent-name" />
+              <p>Principal responsável legal e contato de emergência</p>
+            </div>
+            <div class="input-wrapper">
+              <label for="parent-phone-number">Telefone</label>
+              <input
+                type="text"
+                name="parent_phone_number"
+                id="parent-phone-number"
+              />
+            </div>
+            <div class="input-wrapper">
+              <label for="parent-email">E-mail</label>
+              <input
+                type="email"
+                name="parent_email"
+                id="parent-email"
+                required
+              />
+              <div class="validation">
+                <img src="assets/icons/alert-circle.svg" alt="Alerta" />
+                <span> Insira um e-mail válido </span>
+              </div>
+            </div>
+          </fieldset>
         </form>
       </main>
     </div>
