@@ -1,0 +1,48 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --snitap-sun: #ffcd1e;
+  --snitap-sky-mid: #06b6d4;
+  --snitap-sky-light: #67e8f9;
+  --snitap-joy-mid: #db2777;
+  --snitap-joy-light: #f472b6;
+  --snitap-leaf-mid: #16a34a;
+  --text: #000000;
+  --highlights: #000000;
+  --background: #fafafa;
+
+  --ff-title: 'Syne', sans-serif;
+  --ff-body: 'Montserrat', sans-serif;
+  --ff-notification: 'Inter', sans-serif;
+  --fw-md: 500;
+  --fw-bd: 700;
+  --fs-rg: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xl: 2.5rem;
+  --fs-xxl: 4rem;
+}
+
+body {
+  font: var(--fw-md) var(--fs-rg) / 1.5 var(--ff-body);
+}
+
+h1,
+h2 {
+  font-family: var(--ff-title);
+}
+
+h1 {
+  font-size: var(--fs-xxl);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--fs-xl);
+  line-height: 1.2;
+}
