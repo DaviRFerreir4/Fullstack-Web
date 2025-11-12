@@ -53,6 +53,7 @@ h2 {
 .container {
   max-width: 80rem;
   margin-inline: auto;
+  overflow-x: hidden;
 }
 
 a {
