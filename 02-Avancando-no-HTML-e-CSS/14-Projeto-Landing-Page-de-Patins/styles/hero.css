@@ -1,5 +1,8 @@
 #hero {
   padding: 2.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   div:nth-child(1) {
     h1 {
@@ -15,7 +18,7 @@
 
         span {
           display: block;
-          animation: slideUp 6s ease infinite;
+          animation: slide-up 5s 2s ease infinite;
         }
 
         span:nth-child(1),
@@ -71,9 +74,66 @@
       }
     }
   }
+
+  & > div:nth-child(2) {
+    width: 30.5rem;
+    height: 30.5rem;
+    display: block;
+
+    .content {
+      width: 100%;
+      height: 100%;
+      position: relative;
+
+      img {
+        position: absolute;
+        width: 100%;
+
+        &[src*='ellipse'] {
+          width: 94%;
+          top: 3%;
+          left: 3%;
+
+          transform: translateX(200%);
+
+          animation: slide-in 3s 0.2s ease forwards;
+        }
+
+        &[src*='patins'] {
+          z-index: 1;
+
+          transform: translateX(200%);
+
+          animation: slide-in 3s ease forwards;
+        }
+
+        &[src*='stars-1'] {
+          width: 5.5rem;
+          top: 30%;
+          z-index: 0;
+
+          opacity: 0;
+          transform: translateX(400%);
+
+          animation: slide-in 2s 0.8s ease forwards, appear 0.1s 0.8s forwards;
+        }
+
+        &[src*='stars-2'] {
+          width: 2.5rem;
+          bottom: 35%;
+          right: 0;
+          z-index: 0;
+
+          transform: translateX(400%);
+
+          animation: slide-in 2s 0.8s ease forwards;
+        }
+      }
+    }
+  }
 }
 
-@keyframes slideUp {
+@keyframes slide-up {
   /* radical static */
   0%,
   22% {
@@ -141,5 +201,21 @@
 
   100% {
     transform: translateY(-15rem);
+  }
+}
+
+@keyframes slide-in {
+  50% {
+    transform: translateX(-20px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes appear {
+  100% {
+    opacity: 1;
   }
 }
