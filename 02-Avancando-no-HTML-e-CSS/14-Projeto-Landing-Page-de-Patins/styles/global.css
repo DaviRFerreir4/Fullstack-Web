@@ -24,12 +24,15 @@
   --fw-bd: 700;
   --fs-rg: 1rem;
   --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
   --fs-xl: 2.5rem;
   --fs-xxl: 4rem;
 }
 
 body {
   font: var(--fw-md) var(--fs-rg) / 1.5 var(--ff-body);
+  background-color: var(--background);
+  color: var(--text);
 }
 
 h1,
@@ -45,4 +48,14 @@ h1 {
 h2 {
   font-size: var(--fs-xl);
   line-height: 1.2;
+}
+
+.container {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
