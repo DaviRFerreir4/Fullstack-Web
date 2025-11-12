@@ -1,34 +1,73 @@
 #hero {
   padding: 2.5rem 2rem;
 
-  h1 {
-    max-width: 40rem;
+  div:nth-child(1) {
+    h1 {
+      max-width: 40rem;
 
-    div {
-      display: inline-block;
-      overflow: hidden;
-      height: 5rem;
-      width: min-content;
+      div {
+        display: inline-block;
+        overflow: hidden;
+        height: 5rem;
+        width: min-content;
 
-      vertical-align: bottom;
+        vertical-align: bottom;
 
-      span {
-        display: block;
-        animation: slideUp 6s ease infinite;
+        span {
+          display: block;
+          animation: slideUp 6s ease infinite;
+        }
+
+        span:nth-child(1),
+        span:nth-child(4) {
+          color: var(--snitap-sky-mid);
+        }
+
+        span:nth-child(2) {
+          color: var(--snitap-joy-mid);
+        }
+
+        span:nth-child(3) {
+          color: var(--snitap-leaf-mid);
+          transform: translateY();
+        }
+      }
+    }
+
+    .buttons {
+      margin-top: 3rem;
+      display: flex;
+      gap: 2rem;
+
+      .button {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-radius: 5rem;
+
+        text-transform: uppercase;
+
+        transition: scale 0.5s;
+
+        &.buy {
+          padding: 1.5rem 3rem;
+          background-color: var(--snitap-sun);
+        }
+
+        &.play span:nth-child(1) {
+          padding: 1.5rem;
+          border-radius: 50%;
+          background-color: #fff;
+        }
+
+        &:hover {
+          scale: 1.1;
+        }
       }
 
-      span:nth-child(1),
-      span:nth-child(4) {
-        color: var(--snitap-sky-mid);
-      }
-
-      span:nth-child(2) {
-        color: var(--snitap-joy-mid);
-      }
-
-      span:nth-child(3) {
-        color: var(--snitap-leaf-mid);
-        transform: translateY();
+      .shadow {
+        box-shadow: 0 2px 5px rgb(0 0 0 / 0.1), 0 9px 9px rgb(0 0 0 / 0.09),
+          0 20px 12px rgb(0 0 0 / 0.05), 0 36px 15px rgb(0 0 0 / 0.01);
       }
     }
   }
