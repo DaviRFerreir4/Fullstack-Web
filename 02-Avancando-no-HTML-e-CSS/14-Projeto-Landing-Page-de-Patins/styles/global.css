@@ -33,11 +33,13 @@ body {
   font: var(--fw-md) var(--fs-rg) / 1.5 var(--ff-body);
   background-color: var(--background);
   color: var(--text);
+  overflow-x: hidden;
 }
 
 h1,
 h2 {
   font-family: var(--ff-title);
+  font-weight: var(--fw-bd);
 }
 
 h1 {
@@ -53,7 +55,6 @@ h2 {
 .container {
   max-width: 80rem;
   margin-inline: auto;
-  overflow-x: hidden;
 }
 
 a {

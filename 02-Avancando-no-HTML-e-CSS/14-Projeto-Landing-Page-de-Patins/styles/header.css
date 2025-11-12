@@ -1,4 +1,4 @@
-header {
+body > header {
   padding: 1.25rem 2rem;
   display: flex;
   align-items: center;
