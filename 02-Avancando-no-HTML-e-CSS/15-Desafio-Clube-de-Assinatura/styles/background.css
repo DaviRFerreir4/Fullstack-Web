@@ -1,0 +1,99 @@
+#ellipse-1 {
+  /* Ellipse 1 */
+
+  position: absolute;
+  width: 202.92px;
+  height: 202.92px;
+  right: -209.46px;
+  top: 393.13px;
+
+  background: #3f0f41;
+  filter: blur(138.038px);
+}
+#ellipse-2 {
+  /* Ellipse 2 */
+
+  position: absolute;
+  width: 155.4px;
+  height: 155.4px;
+  left: -209.46px;
+  top: 298.9px;
+
+  background: #3f0f41;
+  filter: blur(104.975px);
+}
+#ellipse-3 {
+  /* Ellipse 3 */
+
+  position: absolute;
+  width: 222.35px;
+  height: 222.35px;
+  left: calc(50% - 222.35px / 2 - 82.86px);
+  top: 502.65px;
+
+  background: #3f0f41;
+  filter: blur(179.367px);
+}
+#ellipse-4 {
+  /* Ellipse 4 */
+
+  position: absolute;
+  width: 99.6px;
+  height: 99.6px;
+  right: -157.8px;
+  top: 246px;
+
+  background: #3f0f41;
+  filter: blur(96.7092px);
+}
+
+@media (width >= 80rem) {
+  #ellipse-1 {
+    /* Ellipse 1 */
+
+    position: absolute;
+    width: 491px;
+    height: 491px;
+    left: calc(50% - 491px / 2 + 696.5px);
+    top: 722px;
+
+    background: #3f0f41;
+    filter: blur(334px);
+  }
+  #ellipse-2 {
+    /* Ellipse 2 */
+
+    position: absolute;
+    width: 376px;
+    height: 376px;
+    left: calc(50% - 376px / 2 - 791px);
+    top: 494px;
+
+    background: #3f0f41;
+    filter: blur(254px);
+  }
+  #ellipse-3 {
+    /* Ellipse 3 */
+
+    position: absolute;
+    width: 538px;
+    height: 538px;
+    left: calc(50% - 538px / 2 - 219px);
+    top: 987px;
+
+    background: #3f0f41;
+    filter: blur(434px);
+  }
+  #ellipse-4 {
+    /* Ellipse 4 */
+
+    position: absolute;
+    width: 241px;
+    height: 241px;
+    left: calc(50% - 241px / 2 + 696.5px);
+    top: 366px;
+
+    background: #3f0f41;
+    filter: blur(234px);
+  }
+}

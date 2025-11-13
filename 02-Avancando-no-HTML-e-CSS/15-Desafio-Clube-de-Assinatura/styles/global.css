@@ -39,7 +39,7 @@
 }
 
 body {
-  background-color: var(--shape-base);
+  background-color: var(--shape-background);
   font: var(--fw-rg) var(--fs-md) / 1.4 var(--ff);
   color: var(--text-body);
 }
@@ -52,4 +52,8 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+strong {
+  font-weight: inherit;
 }

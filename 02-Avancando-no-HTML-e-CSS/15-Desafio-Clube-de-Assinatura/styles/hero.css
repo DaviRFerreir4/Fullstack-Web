@@ -1,12 +1,16 @@
 #hero {
+  position: relative;
+  overflow: hidden;
+
   .hero-bg-image {
-    padding-bottom: 12rem;
+    padding-bottom: 19rem;
+    margin-bottom: 2rem;
     background-image: url(../assets/hero/hero-background.png);
-    background-position: center;
+    background-position: top;
     background-size: 280%;
+    background-repeat: no-repeat;
 
     div:nth-child(2) {
-      max-width: 41rem;
       margin-top: 3rem;
       margin-inline: 1.25rem;
 
@@ -24,18 +28,89 @@
       }
     }
   }
+
+  & > div:nth-child(2) {
+    padding: 1rem 1.25rem 5.125rem;
+    position: relative;
+    text-align: center;
+
+    img {
+      position: absolute;
+      width: 3rem;
+
+      &[src*='spellbook'] {
+        top: -15%;
+        right: 19%;
+      }
+
+      &[src*='planchette'] {
+        width: 2.5rem;
+        bottom: 21%;
+        left: 5%;
+        transform: rotate(-130deg);
+      }
+
+      &[src*='ball'] {
+        bottom: 15%;
+        right: 5.5%;
+        transform: rotate(30deg);
+      }
+    }
+
+    p {
+      opacity: 0.5;
+    }
+  }
 }
 
 @media (width >= 80rem) {
   #hero {
     .hero-bg-image {
+      margin-bottom: 6rem;
       padding-bottom: 29.375rem;
       background-size: cover;
-      background-position: center;
 
       div:nth-child(2) {
+        max-width: 41rem;
         margin-top: 10.25rem;
         margin-inline: auto;
+      }
+    }
+
+    & > div:nth-child(2) {
+      max-width: 75rem;
+      margin-inline: auto;
+      margin-bottom: 5rem;
+      padding-block: 7.125rem 9.875rem;
+
+      img[src*='spellbook'] {
+        width: 5.5rem;
+        top: 10%;
+        right: 47.4%;
+      }
+
+      img[src*='planchette'] {
+        width: 5rem;
+        bottom: 21%;
+        left: 4%;
+        transform: rotate(0);
+      }
+
+      img[src*='ball'] {
+        width: 4.5rem;
+        bottom: 24%;
+        right: 1.2%;
+        transform: rotate(0);
+      }
+
+      p {
+        opacity: 1;
+        font: var(--fw-rg) var(--title-sm) / 2 var(--ff);
+
+        strong {
+          font-weight: var(--fw-bd);
+          color: var(--blue-light);
+        }
       }
     }
   }
