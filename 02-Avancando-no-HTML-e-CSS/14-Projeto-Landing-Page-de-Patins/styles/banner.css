@@ -40,3 +40,9 @@
     background-position: 100% 50%;
   }
 }
+
+@media (width < 65rem) {
+  #banner {
+    padding-block: 1.5rem;
+  }
+}

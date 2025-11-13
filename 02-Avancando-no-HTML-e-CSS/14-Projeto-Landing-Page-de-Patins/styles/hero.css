@@ -3,13 +3,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow: hidden;
 
-  div:nth-child(1) {
+  & > div:nth-child(1) {
     h1 {
       max-width: 40rem;
 
       div {
-        height: 5rem;
+        height: var(--title-animation-div-height);
         width: min-content;
         display: inline-block;
         overflow: hidden;
@@ -141,66 +142,91 @@
   }
 
   23% {
-    transform: translateY(calc(-5rem - 15px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -1 - var(--bounce-up-high))
+    );
   }
 
   25% {
-    transform: translateY(calc(-5rem + 10px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -1 + var(--bounce-down-high))
+    );
   }
 
   27% {
-    transform: translateY(calc(-5rem - 5px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -1 - var(--bounce-low))
+    );
   }
 
   29% {
-    transform: translateY(calc(-5rem + 5px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -1 + var(--bounce-low))
+    );
   }
 
   /* divertida static */
   33%,
   55% {
-    transform: translateY(-5rem);
+    transform: translateY(calc(var(--title-animation-div-height) * -1));
   }
 
   56% {
-    transform: translateY(calc(-10rem - 15px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -2 - var(--bounce-up-high))
+    );
   }
 
   58% {
-    transform: translateY(calc(-10rem + 10px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -2 + var(--bounce-down-high))
+    );
   }
 
   60% {
-    transform: translateY(calc(-10rem - 5px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -2 - var(--bounce-low))
+    );
   }
 
   62% {
-    transform: translateY(calc(-10rem + 5px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -2 + var(--bounce-low))
+    );
   }
 
   /* saudável static */
   66%,
   88% {
-    transform: translateY(-10rem);
+    transform: translateY(calc(var(--title-animation-div-height) * -2));
   }
+
   90% {
-    transform: translateY(calc(-15rem - 15px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -3 - var(--bounce-up-high))
+    );
   }
 
   92% {
-    transform: translateY(calc(-15rem + 10px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -3 + var(--bounce-down-high))
+    );
   }
 
   94% {
-    transform: translateY(calc(-15rem - 5px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -3 - var(--bounce-low))
+    );
   }
 
   96% {
-    transform: translateY(calc(-15rem + 5px));
+    transform: translateY(
+      calc(var(--title-animation-div-height) * -3 + var(--bounce-low))
+    );
   }
 
   100% {
-    transform: translateY(-15rem);
+    transform: translateY(calc(var(--title-animation-div-height) * -3));
   }
 }
 
@@ -217,5 +243,38 @@
 @keyframes appear {
   100% {
     opacity: 1;
+  }
+}
+
+@media (width < 65rem) {
+  :root {
+    --title-animation-div-height: 2.5rem;
+    --bounce-up-high: 5px;
+    --bounce-down-high: 3px;
+    --bounce-low: 1px;
+  }
+
+  #hero {
+    padding: 1rem 1.5rem 3rem;
+    flex-direction: column-reverse;
+    gap: 2rem;
+
+    & > div:nth-child(1) {
+      width: 100%;
+
+      .buttons {
+        flex-direction: column-reverse;
+        gap: 1.5rem;
+
+        .button:hover {
+          scale: 1;
+        }
+      }
+    }
+
+    & > div:nth-child(2) {
+      width: 19.5rem;
+      height: 19.5rem;
+    }
   }
 }
