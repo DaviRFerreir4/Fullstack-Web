@@ -1,0 +1,14 @@
+#hero > header {
+  padding: 3.5rem 10rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .button {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+
+    font: var(--fw-bd) var(--fs-sm) var(--ff);
+    background-color: var(--pink-dark);
+  }
+}
