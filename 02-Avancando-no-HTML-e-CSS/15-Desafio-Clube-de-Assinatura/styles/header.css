@@ -1,5 +1,5 @@
-#hero > header {
-  padding: 3.5rem 10rem;
+#hero header {
+  padding: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,5 +10,11 @@
 
     font: var(--fw-bd) var(--fs-sm) var(--ff);
     background-color: var(--pink-dark);
+  }
+}
+
+@media (width >= 80rem) {
+  #hero header {
+    padding: 3.5rem 10rem;
   }
 }

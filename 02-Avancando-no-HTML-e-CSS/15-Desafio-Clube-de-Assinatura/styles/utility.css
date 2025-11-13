@@ -1,0 +1,13 @@
+.desktop-only {
+  display: none;
+}
+
+@media (width >= 80rem) {
+  .desktop-only {
+    display: initial;
+  }
+
+  .mobile-only {
+    display: none;
+  }
+}
