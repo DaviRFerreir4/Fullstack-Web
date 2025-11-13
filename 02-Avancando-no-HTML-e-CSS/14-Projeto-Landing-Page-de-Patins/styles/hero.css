@@ -275,6 +275,19 @@
     & > div:nth-child(2) {
       width: 19.5rem;
       height: 19.5rem;
+
+      .content {
+        img[src*='stars-1'] {
+          width: 3.5rem;
+          top: 30%;
+        }
+
+        img[src*='stars-2'] {
+          width: 1.625rem;
+          bottom: 35%;
+          right: 0;
+        }
+      }
     }
   }
 }
