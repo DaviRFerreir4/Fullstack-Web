@@ -1,3 +1,7 @@
+.shadow {
+  z-index: -1;
+}
+
 #ellipse-1 {
   /* Ellipse 1 */
 

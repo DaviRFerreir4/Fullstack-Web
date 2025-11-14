@@ -1,0 +1,24 @@
+.button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+
+  font: var(--fw-bd) var(--fs-sm) var(--ff);
+
+  transition: background-color 0.5s ease-in-out;
+}
+
+.primary {
+  background-color: var(--pink-dark);
+
+  &:hover {
+    background-color: var(--pink-base);
+  }
+}
+
+.secondary {
+  background-color: var(--blue-dark);
+
+  &:hover {
+    background-color: var(--blue-mid);
+  }
+}

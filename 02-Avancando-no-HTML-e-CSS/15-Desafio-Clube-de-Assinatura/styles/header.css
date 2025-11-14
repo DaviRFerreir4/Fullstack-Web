@@ -1,20 +1,17 @@
-#hero header {
+body > header {
+  width: 100%;
   padding: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .button {
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem;
-
-    font: var(--fw-bd) var(--fs-sm) var(--ff);
-    background-color: var(--pink-dark);
-  }
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 @media (width >= 80rem) {
-  #hero header {
+  body > header {
     padding: 3.5rem 10rem;
   }
 }

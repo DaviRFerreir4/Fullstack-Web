@@ -3,15 +3,17 @@
   overflow: hidden;
 
   .hero-bg-image {
-    padding-bottom: 19rem;
     margin-bottom: 2rem;
+    padding-top: 7.25rem;
+    padding-bottom: 19rem;
     background-image: url(../assets/hero/hero-background.png);
     background-position: top;
     background-size: 280%;
     background-repeat: no-repeat;
 
-    div:nth-child(2) {
-      margin-top: 3rem;
+    animation: appear 6.5s ease-in-out both;
+
+    div {
       margin-inline: 1.25rem;
 
       text-align: center;
@@ -34,9 +36,57 @@
     position: relative;
     text-align: center;
 
+    &:hover {
+      img {
+        scale: 1;
+
+        &[src*='spellbook'] {
+          transition-delay: 0s;
+        }
+
+        &[src*='planchette'] {
+          transition-delay: 1s;
+        }
+
+        &[src*='ball'] {
+          transition-delay: 2s;
+        }
+      }
+
+      p {
+        & > span {
+          opacity: 1;
+
+          strong {
+            color: var(--blue-light);
+            transition-delay: inherit;
+          }
+        }
+
+        & > span:nth-child(1) {
+          transition-delay: 0s;
+        }
+
+        & > span:nth-child(2) {
+          transition-delay: 1s;
+        }
+
+        & > span:nth-child(3) {
+          transition-delay: 2s;
+        }
+      }
+    }
+
     img {
       position: absolute;
       width: 3rem;
+      scale: 0;
+
+      transition: rotate 1s ease-in-out, scale 1s ease-in-out;
+
+      &:hover {
+        animation: grow 1s ease-in-out forwards, spin 1s ease-in-out forwards;
+      }
 
       &[src*='spellbook'] {
         top: -15%;
@@ -58,7 +108,18 @@
     }
 
     p {
-      opacity: 0.5;
+      & > span {
+        opacity: 0.5;
+
+        transition: opacity 1s ease-in-out;
+      }
+
+      strong {
+        font-weight: var(--fw-bd);
+        color: var(--text-body);
+
+        transition: color 1s ease-in-out;
+      }
     }
   }
 }
@@ -70,7 +131,7 @@
       padding-bottom: 29.375rem;
       background-size: cover;
 
-      div:nth-child(2) {
+      div:nth-child(1) {
         max-width: 41rem;
         margin-top: 10.25rem;
         margin-inline: auto;
@@ -104,13 +165,7 @@
       }
 
       p {
-        opacity: 1;
         font: var(--fw-rg) var(--title-sm) / 2 var(--ff);
-
-        strong {
-          font-weight: var(--fw-bd);
-          color: var(--blue-light);
-        }
       }
     }
   }
@@ -120,5 +175,27 @@
   :root {
     --title-lg: 1.75rem;
     --fs-lg: 0.875rem;
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes grow {
+  to {
+    scale: 1.2;
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 15deg;
   }
 }
