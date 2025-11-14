@@ -11,7 +11,7 @@
 }
 
 @media (width >= 80rem) {
-  body > header {
+  #app > header {
     padding: 3.5rem 10rem;
   }
 }
