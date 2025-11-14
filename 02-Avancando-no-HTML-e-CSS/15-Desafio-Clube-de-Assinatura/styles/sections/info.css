@@ -1,0 +1,178 @@
+#info {
+  padding-block: 6.5rem 5.5rem;
+  position: relative;
+
+  & > div:nth-child(1) {
+    width: fit-content;
+    margin-inline: auto;
+    margin-bottom: 5.5rem;
+
+    h2 {
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+
+      font: var(--fw-bd) var(--title-sm) var(--ff);
+
+      &::after,
+      &::before {
+        content: '';
+        margin-inline: 1rem;
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        background-image: url(../../assets/icons/star-primary.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+    span {
+      display: block;
+
+      text-align: center;
+    }
+  }
+
+  & > div:nth-child(2) {
+    padding-block: 3.375rem 3.625rem;
+
+    .content {
+      position: relative;
+      width: 9.75rem;
+      height: 13rem;
+      margin-inline: auto;
+
+      img,
+      div,
+      span {
+        position: absolute;
+        transition: top 1s cubic-bezier(0, 0.2, 0.4, 1.35),
+          right 1s cubic-bezier(0, 0.2, 0.4, 1.35),
+          bottom 1s cubic-bezier(0, 0.2, 0.4, 1.35),
+          left 1s cubic-bezier(0, 0.2, 0.4, 1.35),
+          rotate 1s cubic-bezier(0, 0.2, 0.4, 1.35);
+        z-index: 0;
+      }
+
+      span {
+        text-wrap: nowrap;
+      }
+
+      img[src*='book.png'] {
+        width: 100%;
+        inset: 0;
+        z-index: 1;
+      }
+
+      #book-info {
+        width: 50%;
+        height: 10%;
+        left: 30%;
+        top: 10%;
+
+        img {
+          width: 100%;
+        }
+        span {
+          left: -33%;
+          top: -70%;
+        }
+      }
+
+      img[src*='bookmark'] {
+        height: 85%;
+      }
+
+      img[src*='yellow'] {
+        right: 5%;
+        top: 5%;
+      }
+
+      img[src*='purple'] {
+        right: 5%;
+        top: 5%;
+      }
+
+      #bookmarks-info {
+        width: 25%;
+        height: 25%;
+        right: 15%;
+        bottom: 10%;
+        span {
+          right: 20%;
+          bottom: -10%;
+        }
+      }
+
+      img[src*='pin'] {
+        height: 40%;
+        bottom: 5%;
+        left: 5%;
+      }
+
+      #pin-info {
+        width: 50%;
+        height: 56%;
+        left: 30%;
+        bottom: 5%;
+        span {
+          left: -38%;
+          bottom: 31%;
+        }
+      }
+    }
+
+    & {
+      .content {
+        #book-info {
+          left: -41%;
+          top: -4.5%;
+        }
+
+        img[src*='yellow'] {
+          right: -27.2%;
+          top: -13%;
+          rotate: 12deg;
+        }
+
+        img[src*='purple'] {
+          rotate: 22deg;
+          top: 7%;
+          right: -50%;
+        }
+
+        #bookmarks-info {
+          right: -32.5%;
+          bottom: -12.5%;
+        }
+
+        img[src*='pin'] {
+          left: -28%;
+          bottom: -14%;
+          rotate: -8deg;
+        }
+
+        #pin-info {
+          left: -28.5%;
+          bottom: 25%;
+        }
+      }
+    }
+  }
+}
+
+@media (width >= 80rem) {
+  #info {
+    padding-block: 14.625rem 6.875rem;
+
+    & > div:nth-child(2) {
+      padding-block: 8.375rem 10.5rem;
+
+      .content {
+        width: 29.125rem;
+        height: 38.5rem;
+      }
+    }
+  }
+}

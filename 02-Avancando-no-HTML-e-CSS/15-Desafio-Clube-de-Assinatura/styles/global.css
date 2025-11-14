@@ -44,6 +44,11 @@ body {
   color: var(--text-body);
 }
 
+#app {
+  position: relative;
+  overflow: hidden;
+}
+
 .container {
   max-width: 80rem;
   margin-inline: auto;
@@ -56,4 +61,13 @@ a {
 
 strong {
   font-weight: inherit;
+}
+
+@media (width < 65rem) {
+  :root {
+    --title-lg: 1.75rem;
+    --title-sm: 1.5rem;
+    --fs-lg: 0.875rem;
+    --fs-md: 0.625rem;
+  }
 }

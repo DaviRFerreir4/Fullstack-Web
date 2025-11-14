@@ -1,12 +1,9 @@
 #hero {
-  position: relative;
-  overflow: hidden;
-
   .hero-bg-image {
     margin-bottom: 2rem;
     padding-top: 7.25rem;
     padding-bottom: 19rem;
-    background-image: url(../assets/hero/hero-background.png);
+    background-image: url(../../assets/hero/hero-background.png);
     background-position: top;
     background-size: 280%;
     background-repeat: no-repeat;
@@ -108,6 +105,8 @@
     }
 
     p {
+      font: var(--fw-rg) 1rem / 2 var(--ff);
+
       & > span {
         opacity: 0.5;
 
@@ -168,13 +167,6 @@
         font: var(--fw-rg) var(--title-sm) / 2 var(--ff);
       }
     }
-  }
-}
-
-@media (width < 65rem) {
-  :root {
-    --title-lg: 1.75rem;
-    --fs-lg: 0.875rem;
   }
 }
 

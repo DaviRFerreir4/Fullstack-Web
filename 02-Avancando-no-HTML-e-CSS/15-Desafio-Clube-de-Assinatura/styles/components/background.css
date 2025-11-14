@@ -51,6 +51,20 @@
   filter: blur(96.7092px);
 }
 
+#ellipse-5 {
+  /* Ellipse 5 */
+
+  position: absolute;
+  width: 298px;
+  height: 298px;
+  left: calc(50% - 298px / 2 + 0.5px);
+  top: calc(50% - 298px / 2 - 7.5px);
+
+  background: #3f0f41;
+  opacity: 0.5;
+  filter: blur(103.226px);
+}
+
 @media (width >= 80rem) {
   #ellipse-1 {
     /* Ellipse 1 */
@@ -99,5 +113,19 @@
 
     background: #3f0f41;
     filter: blur(234px);
+  }
+
+  #ellipse-5 {
+    /* blur */
+
+    position: absolute;
+    width: 930px;
+    height: 930px;
+    left: calc(50% - 930px / 2);
+    top: calc(50% - 930px / 2 + 38px);
+
+    background: #3f0f41;
+    opacity: 0.5;
+    filter: blur(300px);
   }
 }
