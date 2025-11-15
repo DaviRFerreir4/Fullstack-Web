@@ -45,16 +45,6 @@ main {
         line-clamp: 2;
         overflow: hidden;
       }
-
-      &::after {
-        content: '';
-        grid-column: 1/2;
-        grid-row: 1/2;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(180deg, transparent, var(--bg-color));
-        opacity: 0.8;
-      }
     }
   }
 
@@ -95,8 +85,23 @@ main {
     padding-top: 1rem;
     grid-template-columns: 100%;
 
-    figure > figcaption > div {
-      margin: 0rem 0.75rem 0.75rem;
+    figure > figcaption {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        z-index: -1;
+        width: 100%;
+        height: 150%;
+        background: linear-gradient(180deg, transparent, #020617);
+        opacity: 0.8;
+      }
+
+      & > div {
+        margin: 0rem 0.75rem 0.75rem;
+      }
     }
 
     figure:nth-child(1) {
