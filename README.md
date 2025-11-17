@@ -3,8 +3,8 @@
 Repositório referente ao curso de desenvolvimento Web Full-Stack da Rocketseat<br>
 Aqui estão alguns projetos e desafios que acompanham o curso<br><br>
 <ul>
-<a href="https://davirferreir4.github.io/Fullstack-Web/01-Iniciando-o-HTML-e-CSS/00-Projeto-Pagina-de-Receita/">Projeto Página de Receita 🧁</a>
-<a href="https://davirferreir4.github.io/Fullstack-Web/01-Iniciando-o-HTML-e-CSS/01-Desafio-Local-Turistico/">Desafio Local Turístico 🇰🇷</a>
+<a href="https://davirferreir4.github.io/Fullstack-Web/01-Iniciando-o-HTML-e-CSS/00-Projeto-Pagina-de-Receita/">Projeto Página de Receita 🧁</a><br>
+<a href="https://davirferreir4.github.io/Fullstack-Web/01-Iniciando-o-HTML-e-CSS/01-Desafio-Local-Turistico/">Desafio Local Turístico 🇰🇷</a><br>
 <a href="https://davirferreir4.github.io/Fullstack-Web/02-Avancando-no-HTML-e-CSS/03-Projeto-Travelgram/">Projeto Travelgram ✈️</a><br>
 <a href="https://davirferreir4.github.io/Fullstack-Web/02-Avancando-no-HTML-e-CSS/05-Projeto-Portal-de-Noticias">Projeto Portal de Notícias 📰</a><br>
 <a href="https://davirferreir4.github.io/Fullstack-Web/02-Avancando-no-HTML-e-CSS/06-Desafio-Portfolio-Dev">Desafio Portfolio Dev 📁</a><br>
