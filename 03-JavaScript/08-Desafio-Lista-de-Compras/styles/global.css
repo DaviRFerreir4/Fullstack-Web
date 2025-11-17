@@ -42,5 +42,6 @@ body {
   .container {
     max-width: 39.25rem;
     margin-inline: auto;
+    padding: 0;
   }
 }

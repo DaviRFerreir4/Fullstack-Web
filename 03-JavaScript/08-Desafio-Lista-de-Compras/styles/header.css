@@ -5,6 +5,7 @@ body > img {
 }
 
 header {
+  margin-bottom: 2.75rem;
   display: grid;
   gap: 1rem;
 
