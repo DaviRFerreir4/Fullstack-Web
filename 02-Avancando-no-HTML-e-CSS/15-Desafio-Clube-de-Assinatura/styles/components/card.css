@@ -1,0 +1,134 @@
+.card {
+  height: 25rem;
+  padding: 2rem 2rem 1.75rem;
+  border: 1px solid var(--shape-stroke);
+  border-radius: 1.5rem;
+  display: grid;
+  align-content: space-between;
+
+  background-color: var(--shape-base);
+
+  transition: background-color 0.5s, scale 0.5s, z-index 0.2s;
+
+  & > div:nth-child(1) {
+    display: grid;
+    gap: 1.5rem;
+
+    h3 {
+      font-weight: var(--fw-bd);
+      color: var(--blue-light);
+    }
+
+    & > div {
+      & span:nth-child(1) {
+        font: var(--fw-bd) var(--title-md) var(--ff);
+      }
+
+      small {
+        font: var(--fw-bd) var(--fs-md) var(--ff);
+      }
+
+      & span:nth-child(3) {
+        display: block;
+
+        font-size: var(--fs-sm);
+        color: var(--text-label);
+      }
+    }
+  }
+
+  & > div:nth-child(2) {
+    ul {
+      margin-bottom: 1.5rem;
+      display: grid;
+      gap: 0.75rem;
+
+      font-size: var(--fs-xs);
+
+      li {
+        display: flex;
+        align-items: center;
+
+        &::before {
+          content: '';
+          width: 0.875rem;
+          height: 0.875rem;
+          margin-right: 0.5rem;
+          display: inline-block;
+
+          background-image: url(../../assets/icons/star-secondary.svg);
+          background-size: cover;
+        }
+      }
+    }
+
+    button {
+      all: unset;
+      width: 100%;
+      padding-block: 0.75rem;
+      border-radius: 0.5rem;
+
+      font-weight: var(--fw-bd);
+      text-align: center;
+      background-color: var(--blue-dark);
+      cursor: pointer;
+
+      transition: background-color 0.5s;
+
+      &:hover {
+        background-color: var(--blue-mid);
+      }
+    }
+  }
+}
+
+.popular {
+  position: relative;
+
+  &::after {
+    content: 'Popular';
+    padding: 0.625rem 1.25rem;
+    border-radius: 5rem;
+    position: absolute;
+    right: 10%;
+    top: 6%;
+
+    font: var(--fw-bd) var(--fs-xxs) var(--ff);
+    text-transform: uppercase;
+    background-color: var(--shape-stroke);
+  }
+
+  & > div:nth-child(1) {
+    h3 {
+      color: var(--pink-light);
+    }
+  }
+
+  & > div:nth-child(2) {
+    ul {
+      li::before {
+        background-image: url(../../assets/icons/star-primary.svg);
+      }
+    }
+
+    button {
+      background-color: var(--pink-dark);
+
+      &:hover {
+        background-color: var(--pink-base);
+      }
+    }
+  }
+}
+
+@media (width >= 80rem) {
+  .card {
+    height: 26rem;
+
+    &:hover {
+      scale: 1.05;
+      background-color: var(--shape-hover);
+      z-index: 1;
+    }
+  }
+}

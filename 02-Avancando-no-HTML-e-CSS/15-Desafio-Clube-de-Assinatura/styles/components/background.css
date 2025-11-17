@@ -128,4 +128,17 @@
     opacity: 0.5;
     filter: blur(300px);
   }
+
+  #ellipse-6 {
+    /* Blur */
+
+    position: absolute;
+    width: 944px;
+    height: 944px;
+    left: calc(50% - 944px / 2);
+    top: calc(50% - 944px / 2 - 44px);
+
+    background: #000f1f;
+    filter: blur(284px);
+  }
 }

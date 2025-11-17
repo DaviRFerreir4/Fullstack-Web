@@ -128,6 +128,9 @@
         #book-info {
           left: -41%;
           top: -4.5%;
+          span {
+            top: -120%;
+          }
         }
 
         img[src*='yellow'] {
@@ -145,6 +148,10 @@
         #bookmarks-info {
           right: -32.5%;
           bottom: -12.5%;
+          span {
+            right: -55%;
+            bottom: -30%;
+          }
         }
 
         img[src*='pin'] {
@@ -156,6 +163,10 @@
         #pin-info {
           left: -28.5%;
           bottom: 25%;
+          span {
+            left: -50%;
+            bottom: 36%;
+          }
         }
       }
     }
@@ -172,6 +183,30 @@
       .content {
         width: 29.125rem;
         height: 38.5rem;
+      }
+
+      &:hover {
+        .content {
+          #book-info {
+            span {
+              top: -70%;
+            }
+          }
+
+          #bookmarks-info {
+            span {
+              right: 15%;
+              bottom: -10%;
+            }
+          }
+
+          #pin-info {
+            span {
+              left: -38%;
+              bottom: 32%;
+            }
+          }
+        }
       }
     }
   }

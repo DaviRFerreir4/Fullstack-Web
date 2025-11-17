@@ -1,0 +1,94 @@
+#pricing {
+  padding-block: 12rem 1rem;
+
+  h2 {
+    max-width: 18.5rem;
+    margin-bottom: 3rem;
+    margin-inline: auto;
+    display: block;
+
+    font: var(--fw-bd) var(--title-sm) var(--ff);
+    text-align: center;
+  }
+
+  & > div {
+    padding-inline: 3.25rem;
+    display: flex;
+    gap: 1rem;
+
+    overflow: auto;
+    scroll-snap-type: inline mandatory;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    & > div {
+      flex: 0 0 17rem;
+      scroll-snap-align: center;
+    }
+  }
+}
+
+@media (width >= 80rem) {
+  #pricing {
+    h2 {
+      margin-bottom: 3.5rem;
+    }
+
+    & > div {
+      padding-block: 5rem 6.75rem;
+      position: relative;
+
+      & > div {
+        flex: unset;
+        position: relative;
+      }
+
+      & > div:nth-child(1) {
+        &::before {
+          content: '';
+          width: 2rem;
+          height: 3.375rem;
+          position: absolute;
+          left: -15%;
+          top: -5%;
+
+          background-image: url(../../assets/pricing/stars-1.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+      }
+
+      & > div:nth-child(2) {
+        &::before {
+          content: '';
+          width: 2.875rem;
+          height: 3.125rem;
+          position: absolute;
+          left: 12%;
+          top: -12.1%;
+
+          background-image: url(../../assets/pricing/bunny.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+      }
+
+      & > div:nth-child(3) {
+        &::before {
+          content: '';
+          width: 3.625rem;
+          height: 1.625rem;
+          position: absolute;
+          right: -15%;
+          bottom: -7%;
+
+          background-image: url(../../assets/pricing/stars-2.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,8 @@
 @import url(utility.css);
 @import url(components/background.css);
 @import url(components/buttons.css);
+@import url(components/card.css);
 @import url(sections/header.css);
 @import url(sections/hero.css);
 @import url(sections/info.css);
+@import url(sections/pricing.css);
