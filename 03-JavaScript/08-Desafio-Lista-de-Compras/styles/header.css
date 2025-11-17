@@ -1,0 +1,48 @@
+body > img {
+  margin-block: 1.75rem 2.5rem;
+  margin-inline: auto;
+  display: block;
+}
+
+header {
+  display: grid;
+  gap: 1rem;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    color: var(--color-brand);
+    cursor: pointer;
+
+    transition: background-image 0.5s, color 0.5s;
+
+    &::before {
+      content: '';
+      width: 1rem;
+      height: 1rem;
+
+      background-image: url(../assets/arrow-left.svg);
+      background-size: cover;
+    }
+
+    &:hover {
+      color: var(--color-brand-hover);
+
+      &::before {
+        background-image: url(../assets/arrow-left-hover.svg);
+      }
+    }
+  }
+
+  h1 {
+    font: var(--fw-bd) var(--fs-lg) / 2rem var(--ff);
+  }
+}
+
+@media (width >= 80rem) {
+  body > img {
+    margin-bottom: 4rem;
+  }
+}
