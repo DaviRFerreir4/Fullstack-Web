@@ -133,6 +133,7 @@
     /* Blur */
 
     position: absolute;
+    z-index: -1;
     width: 944px;
     height: 944px;
     left: calc(50% - 944px / 2);

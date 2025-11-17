@@ -1,5 +1,6 @@
 #pricing {
   padding-block: 12rem 1rem;
+  position: relative;
 
   h2 {
     max-width: 18.5rem;
@@ -11,7 +12,7 @@
     text-align: center;
   }
 
-  & > div {
+  & > div:nth-child(2) {
     padding-inline: 3.25rem;
     display: flex;
     gap: 1rem;
@@ -36,58 +37,107 @@
       margin-bottom: 3.5rem;
     }
 
-    & > div {
+    & > div:nth-child(2) {
       padding-block: 5rem 6.75rem;
       position: relative;
+      padding-inline: auto;
+      justify-content: center;
+
+      &:hover {
+        & > div:nth-child(1) {
+          left: 17%;
+          top: 20%;
+          rotate: -8deg;
+        }
+
+        & > div:nth-child(2) {
+          background-color: var(--shape-hover);
+        }
+
+        & > div:nth-child(3) {
+          right: 17%;
+          top: 20%;
+          rotate: 8deg;
+        }
+
+        &:has(div:hover:not(& > div:nth-child(2), & > div:nth-child(2) *)) {
+          & > div:nth-child(2) {
+            background-color: var(--shape-base);
+          }
+        }
+      }
 
       & > div {
         flex: unset;
-        position: relative;
-      }
+        position: absolute;
 
-      & > div:nth-child(1) {
-        &::before {
-          content: '';
-          width: 2rem;
-          height: 3.375rem;
-          position: absolute;
-          left: -15%;
-          top: -5%;
+        transition: top 1.5s cubic-bezier(0, 0.2, 0.4, 1.2),
+          right 1.5s cubic-bezier(0, 0.2, 0.4, 1.2),
+          left 1.5s cubic-bezier(0, 0.2, 0.4, 1.2),
+          rotate 1.5s cubic-bezier(0, 0.2, 0.4, 1.2), background-color 0.5s,
+          scale 0.5s, z-index 0.2s;
 
-          background-image: url(../../assets/pricing/stars-1.svg);
-          background-size: contain;
-          background-repeat: no-repeat;
+        &:hover {
+          scale: 1.05;
+          background-color: var(--shape-hover);
+          z-index: 2;
+        }
+
+        &:nth-child(1) {
+          top: 5rem;
+          left: calc(50% - 276px / 2);
+
+          &::before {
+            content: '';
+            width: 2rem;
+            height: 3.375rem;
+            position: absolute;
+            left: -15%;
+            top: -5%;
+
+            background-image: url(../../assets/pricing/stars-1.svg);
+            background-size: contain;
+            background-repeat: no-repeat;
+          }
+        }
+
+        &:nth-child(2) {
+          position: relative;
+
+          &::before {
+            content: '';
+            width: 2.875rem;
+            height: 3.125rem;
+            position: absolute;
+            left: 12%;
+            top: -12.1%;
+
+            background-image: url(../../assets/pricing/bunny.svg);
+            background-size: contain;
+            background-repeat: no-repeat;
+          }
+        }
+
+        &:nth-child(3) {
+          top: 5rem;
+          right: calc(50% - 276px / 2);
+          &::before {
+            content: '';
+            width: 3.625rem;
+            height: 1.625rem;
+            position: absolute;
+            right: -15%;
+            bottom: -7%;
+
+            background-image: url(../../assets/pricing/stars-2.svg);
+            background-size: contain;
+            background-repeat: no-repeat;
+          }
         }
       }
 
-      & > div:nth-child(2) {
-        &::before {
-          content: '';
-          width: 2.875rem;
-          height: 3.125rem;
-          position: absolute;
-          left: 12%;
-          top: -12.1%;
-
-          background-image: url(../../assets/pricing/bunny.svg);
-          background-size: contain;
-          background-repeat: no-repeat;
-        }
-      }
-
-      & > div:nth-child(3) {
-        &::before {
-          content: '';
-          width: 3.625rem;
-          height: 1.625rem;
-          position: absolute;
-          right: -15%;
-          bottom: -7%;
-
-          background-image: url(../../assets/pricing/stars-2.svg);
-          background-size: contain;
-          background-repeat: no-repeat;
-        }
+      .popular {
+        z-index: 1;
       }
     }
   }
