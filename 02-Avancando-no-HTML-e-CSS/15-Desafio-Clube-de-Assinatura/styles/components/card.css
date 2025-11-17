@@ -124,3 +124,9 @@
     height: 26rem;
   }
 }
+
+@media (width < 80rem) {
+  .popular {
+    background-color: var(--shape-hover);
+  }
+}

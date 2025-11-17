@@ -1,0 +1,132 @@
+footer {
+  background-image: url(../../assets/book-trace-background.png);
+  background-size: 100% 100%;
+  background-position: center;
+  padding: 6.125rem 2rem 2.375rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+
+  & > div:nth-child(1) {
+    display: grid;
+    gap: 0.75rem;
+
+    hr {
+      all: unset;
+      border-top: 1px solid var(--shape-stroke);
+    }
+
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        transition: background-color 0.5s, background-image 0.5s;
+
+        &#instagram {
+          background-image: url(../../assets/icons/contact/instagram.svg);
+
+          &:hover {
+            background-image: url(../../assets/icons/contact/instagram-hover.svg);
+          }
+        }
+
+        &#twitter {
+          background-image: url(../../assets/icons/contact/twitter.svg);
+
+          &:hover {
+            background-image: url(../../assets/icons/contact/twitter-hover.svg);
+          }
+        }
+
+        &#facebook {
+          background-image: url(../../assets/icons/contact/facebook.svg);
+
+          &:hover {
+            background-image: url(../../assets/icons/contact/facebook-hover.svg);
+          }
+        }
+
+        &#discord {
+          background-image: url(../../assets/icons/contact/discord.svg);
+
+          &:hover {
+            background-image: url(../../assets/icons/contact/discord-hover.svg);
+          }
+        }
+
+        &#whatsapp {
+          background-image: url(../../assets/icons/contact/whatsapp.svg);
+
+          &:hover {
+            background-image: url(../../assets/icons/contact/whatsapp-hover.svg);
+          }
+        }
+
+        &#email {
+          background-image: url(../../assets/icons/contact/email.svg);
+
+          &:hover {
+            background-image: url(../../assets/icons/contact/email-hover.svg);
+          }
+        }
+
+        &:hover {
+          background-color: var(--shape-stroke);
+        }
+      }
+    }
+  }
+
+  & > div:nth-child(2) {
+    display: flex;
+    gap: 3.5rem;
+
+    & > div {
+      display: grid;
+      gap: 1.25rem;
+
+      span {
+        font-weight: var(--fw-bd);
+        font-size: 1rem;
+      }
+
+      & > ul {
+        display: grid;
+        gap: 0.75rem;
+
+        font-size: 0.875rem;
+
+        li a {
+          color: var(--blue-light);
+
+          transition: color 0.5s;
+
+          &:hover {
+            color: var(--text-body);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (width >= 80rem) {
+  footer {
+    padding: 10.625rem 10rem 6.375rem;
+    gap: 0;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
