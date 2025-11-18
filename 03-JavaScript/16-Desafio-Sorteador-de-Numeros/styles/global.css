@@ -1,0 +1,75 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --content-primary: #ffffff;
+  --content-secondary: #c7c9cc;
+  --content-tertiary: #d9d9d9;
+  --content-brand: #c58de7;
+  --color-inverse: #030203;
+  --background-primary: #020202;
+  --background-secondary: #111012;
+  --background-tertiary: #24222e;
+  --background-brand: #c58de7;
+  --background-gray: #3d3d3d;
+  --accent-pink: #d586e0;
+  --accent-blue: #91a1fa;
+  --accent-green: #77c0af;
+  --accent-lime: #d1dc97;
+  --accent-red: #e9a9b3;
+  --gradient-border: var(--accent-green) 0%, var(--accent-lime) 14.84%,
+    var(--accent-red) 32.15%, var(--accent-pink) 65.79%,
+    var(--accent-blue) 84.58%, var(--accent-green);
+  --gradient-background: var(--accent-pink) 0%, var(--accent-blue) 98.93%;
+  --gradient-content: var(--content-secondary) 0%, var(--background-gray) 100%;
+
+  --ff-body: 'Roboto Flex', sans-serif;
+  --ff-display: 'Sora', sans-serif;
+  --ff-overline: 'Roboto Mono', monospace;
+  --fw-md: 500;
+  --fw-bd: 700;
+  --fw-xb: 800;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --display-sm: 2rem;
+  --display-md: 2.5rem;
+  --display-lg: 4.5rem;
+}
+
+body {
+  background-color: var(--background-primary);
+  background-image: url(../assets/background.png);
+  font: var(--fw-md) var(--fs-md) / 1.5 var(--ff-body);
+  color: var(--content-secondary);
+}
+
+.container {
+  padding-inline: 2.25rem;
+}
+
+.logo {
+  margin-block: 2.75rem 2.875rem;
+  display: flex;
+  justify-content: center;
+}
+
+@media (width >= 80rem) {
+  .container {
+    padding: 0;
+    max-width: 80rem;
+    margin-inline: auto;
+  }
+
+  .logo {
+    margin-block: 4.75rem 5.5rem;
+    margin-left: 7.5rem;
+    justify-content: start;
+  }
+}
