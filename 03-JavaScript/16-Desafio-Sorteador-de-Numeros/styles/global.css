@@ -69,7 +69,11 @@ body {
 
   .logo {
     margin-block: 4.75rem 5.5rem;
-    margin-left: 7.5rem;
     justify-content: start;
+
+    img {
+      display: block;
+      margin-left: 7.5rem;
+    }
   }
 }

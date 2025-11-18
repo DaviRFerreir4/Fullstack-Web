@@ -1,0 +1,34 @@
+#title {
+  span {
+    margin-bottom: 0.5rem;
+    display: inline-block;
+
+    font: var(--fw-bd) var(--fs-md) / 1.5 var(--ff-overline);
+    text-transform: uppercase;
+    background-image: linear-gradient(90deg, var(--gradient-content));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  h1 {
+    font: var(--fw-xb) var(--display-md) / 1.3 var(--ff-display);
+    text-transform: uppercase;
+    color: var(--content-primary);
+  }
+}
+
+@media (width >= 80rem) {
+  #title {
+    span {
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      max-width: 32rem;
+
+      font-size: var(--display-lg);
+    }
+  }
+}

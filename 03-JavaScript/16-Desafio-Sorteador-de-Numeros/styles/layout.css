@@ -1,0 +1,23 @@
+#app {
+  grid-template-areas:
+    'title'
+    'lottery'
+    'info';
+
+  #title {
+    grid-area: title;
+  }
+}
+
+@media (width >= 80rem) {
+  #app {
+    grid-template-areas:
+      'title lottery'
+      'info lottery';
+
+    #title {
+      margin-left: 7.5rem;
+      width: fit-content;
+    }
+  }
+}
