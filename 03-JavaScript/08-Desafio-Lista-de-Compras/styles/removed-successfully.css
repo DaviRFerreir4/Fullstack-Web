@@ -1,7 +1,7 @@
 #removed-successfully {
   margin-bottom: 3rem;
 
-  .removed-item {
+  .item-removed {
     padding: 0.75rem;
     border-radius: 0.75rem;
     display: flex;
@@ -9,6 +9,8 @@
     gap: 0.5rem;
 
     background-color: var(--color-danger);
+
+    transition: opacity 0.5s;
 
     span {
       flex: 1 1;
@@ -20,5 +22,9 @@
     img[src*='delete'] {
       cursor: pointer;
     }
+  }
+
+  .hide {
+    opacity: 0;
   }
 }

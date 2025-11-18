@@ -41,16 +41,18 @@
         flex: 1 1;
 
         line-height: 1.5rem;
+
+        transition: opacity 0.5s, text-decoration 0.5s;
       }
 
       img {
         cursor: pointer;
       }
-    }
-  }
-}
 
-@media (width >= 80rem) {
-  #items-list {
+      .checked {
+        opacity: 0.6;
+        text-decoration: line-through;
+      }
+    }
   }
 }
