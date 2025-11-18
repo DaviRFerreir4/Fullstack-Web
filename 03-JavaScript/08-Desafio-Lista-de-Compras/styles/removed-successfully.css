@@ -1,0 +1,24 @@
+#removed-successfully {
+  margin-bottom: 3rem;
+
+  .removed-item {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    background-color: var(--color-danger);
+
+    span {
+      flex: 1 1;
+
+      font: var(--fw-sb) var(--fs-md) / 20px var(--ff);
+      color: var(--always-white);
+    }
+
+    img[src*='delete'] {
+      cursor: pointer;
+    }
+  }
+}

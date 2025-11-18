@@ -1,4 +1,6 @@
 #items-list {
+  margin-bottom: 2.25rem;
+
   ul {
     display: grid;
     gap: 0.75rem;
