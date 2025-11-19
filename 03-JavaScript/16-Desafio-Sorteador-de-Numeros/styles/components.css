@@ -11,10 +11,20 @@ button {
   background-color: var(--background-tertiary);
   cursor: pointer;
 
-  transition: background-color 0.2s;
+  transition: background-color 0.35s, opacity 0.1s;
 
   &:hover {
     background-color: var(--background-secondary);
+  }
+
+  &:disabled {
+    opacity: 0;
+    cursor: auto;
+
+    &::before,
+    &::after {
+      all: unset;
+    }
   }
 
   span {

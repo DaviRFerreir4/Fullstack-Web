@@ -1,6 +1,8 @@
 #result {
   gap: 2.5rem;
 
+  transition: opacity 1s;
+
   div:nth-child(1) {
     text-align: center;
 
@@ -18,18 +20,86 @@
 
   div:nth-child(2) {
     flex-wrap: wrap;
+    position: relative;
 
-    span {
+    & > div {
       width: 5.25rem;
       height: 5.25rem;
-      padding: 0.25rem 0.75rem;
       border-radius: 1.75rem;
       display: flex;
       justify-content: center;
       align-items: center;
 
-      font: var(--fw-bd) var(--display-md) / 1.5 var(--ff-overline);
+      animation: result 4s both linear;
+
       color: var(--content-brand);
+
+      span {
+        font: var(--fw-bd) var(--display-md) / 1.5 var(--ff-overline);
+
+        animation: span 4s both linear;
+      }
     }
+  }
+}
+
+@keyframes result {
+  0% {
+    scale: 0;
+  }
+
+  10%,
+  85% {
+    scale: 1.25;
+  }
+
+  100% {
+    scale: 1;
+  }
+
+  0%,
+  90% {
+    background-color: var(--content-brand);
+    color: var(--background-primary);
+  }
+
+  0%,
+  20% {
+    rotate: 0deg;
+  }
+
+  55%,
+  100% {
+    rotate: 180deg;
+  }
+
+  0% {
+    display: none;
+  }
+
+  100% {
+    display: flex;
+  }
+}
+
+@keyframes span {
+  0%,
+  20% {
+    rotate: 0deg;
+  }
+
+  55%,
+  100% {
+    rotate: -180deg;
+  }
+
+  0%,
+  35% {
+    opacity: 0;
+  }
+
+  45%,
+  100% {
+    opacity: 1;
   }
 }

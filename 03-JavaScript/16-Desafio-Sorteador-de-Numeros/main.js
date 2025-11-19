@@ -11,6 +11,7 @@ const generateButton = document.querySelector('button.generate')
 const raffleAgainButton = document.querySelector('button.raffle-again')
 
 function generateNumbers() {
+  generateButton.disabled = true
   if (!quantityInput.value || !minNumberInput.value || !maxNumberInput.value) {
     return alert('Preencha os campos antes de sortear números')
   }
@@ -36,25 +37,42 @@ function generateNumbers() {
 
   resultDiv.replaceChildren()
 
-  lotterySection.classList.toggle('hide')
+  resultSection.classList.toggle('opacity-0')
   resultSection.classList.toggle('hide')
+  lotterySection.classList.toggle('opacity-0')
+
+  setTimeout(() => {
+    lotterySection.classList.toggle('hide')
+    generateButton.disabled = false
+  }, 1000)
+
+  let animationDelay = 1000
 
   if (noRepeatedNumbersCheckbox.checked) {
-    return noRepeatRaffle(minNumber, maxNumber, numbers)
+    return noRepeatRaffle(minNumber, maxNumber, numbers, animationDelay)
   }
 
-  raffle(minNumber, maxNumber, numbers)
+  raffle(minNumber, maxNumber, numbers, animationDelay)
 }
 
-function raffle(min, max, numbers) {
+function raffle(min, max, numbers, animationDelay) {
   for (let i = 0; i < numbers; i++) {
+    const numberContainer = document.createElement('div')
     const numberSpan = document.createElement('span')
+    numberContainer.style.animationDelay = `${animationDelay}ms`
+    animationDelay += 4000
     numberSpan.textContent = Math.floor(Math.random() * (max - min + 1) + min)
-    resultDiv.append(numberSpan)
+    numberContainer.append(numberSpan)
+    resultDiv.append(numberContainer)
   }
+
+  raffleAgainButton.disabled = true
+  setTimeout(() => {
+    raffleAgainButton.disabled = false
+  }, animationDelay + 500)
 }
 
-function noRepeatRaffle(min, max, numbers) {
+function noRepeatRaffle(min, max, numbers, animationDelay) {
   const possibleNumbers = []
 
   for (let i = min; i <= max; i++) {
@@ -62,18 +80,35 @@ function noRepeatRaffle(min, max, numbers) {
   }
 
   for (let i = 0; i < numbers; i++) {
+    const numberContainer = document.createElement('div')
     const numberSpan = document.createElement('span')
+    numberContainer.style.animationDelay = `${animationDelay}ms`
+    animationDelay += 4000
     numberSpan.textContent = possibleNumbers.splice(
       Math.floor(Math.random() * (possibleNumbers.length - min)),
       1
     )
-    resultDiv.append(numberSpan)
+    numberContainer.append(numberSpan)
+    resultDiv.append(numberContainer)
   }
+
+  raffleAgainButton.disabled = true
+  setTimeout(() => {
+    raffleAgainButton.disabled = false
+  }, animationDelay + 1000)
 }
 
 function raffleAgain() {
+  raffleAgainButton.disabled = true
+
+  resultSection.classList.toggle('opacity-0')
   lotterySection.classList.toggle('hide')
-  resultSection.classList.toggle('hide')
+  lotterySection.classList.toggle('opacity-0')
+
+  setTimeout(() => {
+    resultSection.classList.toggle('hide')
+    raffleAgainButton.disabled = true
+  }, 1000)
 }
 
 generateButton.addEventListener('click', generateNumbers)

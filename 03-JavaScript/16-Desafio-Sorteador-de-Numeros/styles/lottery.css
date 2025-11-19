@@ -1,5 +1,6 @@
 #lottery {
   gap: 2.5rem;
+  transition: opacity 1s;
 
   & > div:nth-child(1) {
     h2 {
