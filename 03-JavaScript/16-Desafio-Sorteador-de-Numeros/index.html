@@ -29,41 +29,60 @@
             veja os resultados na tela. É rápido e fácil!
           </p>
         </div>
-        <div class="grid">
-          <div class="flex">
-            <div class="grid">
+        <div class="grid gap-1.25 justify-center">
+          <div class="flex gap-0.75">
+            <div class="grid gap-0.5">
               <span>Números</span>
               <div class="grid border-gradient">
                 <input type="number" value="2" />
               </div>
             </div>
-            <div class="grid">
+            <div class="grid gap-0.5">
               <span>De</span>
               <div class="grid border-gradient">
                 <input type="number" value="1" />
               </div>
             </div>
-            <div class="grid">
+            <div class="grid gap-0.5">
               <span>Até</span>
               <div class="grid border-gradient">
                 <input type="number" value="100" />
               </div>
             </div>
           </div>
-          <div class="flex align-center">
+          <div class="flex align-center gap-0.5">
             <input type="checkbox" id="no-repeat" />
             <label for="no-repeat">Não repetir número</label>
           </div>
         </div>
         <div>
           <button class="border-gradient">
-            <span>Sortear</span>
+            <span class="flex align-center gap-0.5">Sortear</span>
           </button>
         </div>
       </div>
-      <!-- 
-        <div id="info"></div>
-        -->
+      <div id="info" class="grid gap-2.25">
+        <div class="flex align-start gap-0.5">
+          <img src="assets/icons/info.svg" alt="Informações" />
+          <div>
+            <h3>Como funciona o sorteador de números?</h3>
+            <p>
+              O sorteador utiliza um algoritmo de geração aleatória para criar
+              números dentro do intervalo especificado pelo usuário.
+            </p>
+          </div>
+        </div>
+        <div class="flex align-start gap-0.5">
+          <img src="assets/icons/info.svg" alt="Informações" />
+          <div>
+            <h3>Posso escolher o intervalo dos números?</h3>
+            <p>
+              Sim, você pode definir os valores mínimo e máximo para o intervalo
+              dos números sorteados.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

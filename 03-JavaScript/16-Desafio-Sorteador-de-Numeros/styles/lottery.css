@@ -14,15 +14,9 @@
   }
 
   & > div:nth-child(2) {
-    justify-content: center;
-    gap: 1.25rem;
-
     & > div:nth-child(1) {
-      gap: 0.75rem;
-
       & > div {
         flex: 0 0 5.375rem;
-        gap: 0.5rem;
 
         &:has(div > input:focus) {
           span {
@@ -38,6 +32,7 @@
             padding: 2px;
             top: -2px;
             left: -2px;
+
             animation: rotate 4s linear infinite;
             background-image: conic-gradient(
               from var(--angle),
@@ -95,8 +90,6 @@
     }
 
     & > div:nth-child(2) {
-      gap: 0.5rem;
-
       input {
         all: unset;
         width: 1.875rem;
@@ -154,10 +147,6 @@
       }
 
       span {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-
         font-weight: var(--fw-bd);
         text-transform: uppercase;
         color: var(--content-primary);

@@ -1,0 +1,10 @@
+#info {
+  h3 {
+    color: var(--content-brand);
+    font-size: var(--fs-sm);
+  }
+
+  p {
+    font-size: var(--fs-xs);
+  }
+}

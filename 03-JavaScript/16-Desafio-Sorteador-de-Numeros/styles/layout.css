@@ -18,22 +18,28 @@
 
 @media (width >= 80rem) {
   #app {
+    margin-bottom: 5.5rem;
     grid-template-areas:
       'title lottery'
       'info lottery';
     column-gap: 6.75rem;
+    row-gap: 2.375rem;
     align-items: center;
 
     #title {
       margin-left: 7.5rem;
       margin-bottom: 0;
-      width: fit-content;
     }
 
     #lottery {
       margin-right: 7.5rem;
       margin-bottom: 0;
-      width: fit-content;
+    }
+
+    #info {
+      margin-left: 7.5rem;
+      max-width: 24rem;
+      /* width: ; */
     }
   }
 }
