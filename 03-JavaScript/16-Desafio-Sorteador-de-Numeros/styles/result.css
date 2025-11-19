@@ -1,0 +1,35 @@
+#result {
+  gap: 2.5rem;
+
+  div:nth-child(1) {
+    text-align: center;
+
+    h2 {
+      font: var(--fw-bd) var(--fs-lg) / 1.5 var(--ff-display);
+      text-transform: uppercase;
+      color: var(--content-primary);
+    }
+
+    span {
+      font: var(--fw-md) var(--fs-xs) / 1.3 var(--ff-overline);
+      text-transform: uppercase;
+    }
+  }
+
+  div:nth-child(2) {
+    flex-wrap: wrap;
+
+    span {
+      width: 5.25rem;
+      height: 5.25rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1.75rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font: var(--fw-bd) var(--display-md) / 1.5 var(--ff-overline);
+      color: var(--content-brand);
+    }
+  }
+}

@@ -53,3 +53,7 @@
 .gap-2\.25 {
   gap: 2.25rem;
 }
+
+.hide {
+  display: none;
+}

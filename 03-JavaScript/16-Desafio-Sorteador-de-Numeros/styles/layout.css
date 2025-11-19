@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas:
     'title'
-    'lottery'
+    'content'
     'info';
 
   #title {
@@ -10,9 +10,17 @@
     grid-area: title;
   }
 
-  #lottery {
+  #lottery,
+  #result {
     margin-bottom: 5rem;
-    grid-area: lottery;
+  }
+
+  #info {
+    margin-bottom: 5rem;
+  }
+
+  .content {
+    grid-area: content;
   }
 }
 
@@ -20,26 +28,33 @@
   #app {
     margin-bottom: 5.5rem;
     grid-template-areas:
-      'title lottery'
-      'info lottery';
+      'title content'
+      'info content';
     column-gap: 6.75rem;
     row-gap: 2.375rem;
     align-items: center;
 
     #title {
+      width: fit-content;
       margin-left: 7.5rem;
       margin-bottom: 0;
     }
 
-    #lottery {
+    #lottery,
+    #result {
       margin-right: 7.5rem;
       margin-bottom: 0;
     }
 
+    #result {
+      padding-right: 7.5rem;
+      width: 100%;
+    }
+
     #info {
-      margin-left: 7.5rem;
       max-width: 24rem;
-      /* width: ; */
+      margin-left: 7.5rem;
+      margin-bottom: 0;
     }
   }
 }

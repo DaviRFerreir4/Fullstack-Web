@@ -17,11 +17,11 @@
       <img src="assets/logo.svg" alt="Logo" />
     </div>
     <div class="container" id="app">
-      <div id="title">
+      <section id="title">
         <span>Online - gratuito</span>
         <h1>Sorteador de números</h1>
-      </div>
-      <div id="lottery" class="grid">
+      </section>
+      <section id="lottery" class="grid content hide">
         <div>
           <h2>Quero sortear:</h2>
           <p>
@@ -57,11 +57,28 @@
         </div>
         <div>
           <button class="border-gradient">
-            <span class="flex align-center gap-0.5">Sortear</span>
+            <span class="flex align-center gap-0.5 raffle">Sortear</span>
           </button>
         </div>
-      </div>
-      <div id="info" class="grid gap-2.25">
+      </section>
+      <section id="result" class="grid content">
+        <div class="grid justify-center">
+          <h2>Resultado do sorteio</h2>
+          <span>1º resultado</span>
+        </div>
+        <div class="flex justify-center gap-0.25">
+          <span>23</span>
+          <span>12</span>
+        </div>
+        <div>
+          <button class="border-gradient">
+            <span class="flex align-center gap-0.5 again">
+              Sortear novamente
+            </span>
+          </button>
+        </div>
+      </section>
+      <section id="info" class="grid gap-2.25">
         <div class="flex align-start gap-0.5">
           <img src="assets/icons/info.svg" alt="Informações" />
           <div>
@@ -82,7 +99,7 @@
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </body>
 </html>
