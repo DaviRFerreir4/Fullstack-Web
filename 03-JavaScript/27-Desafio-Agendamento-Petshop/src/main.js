@@ -1,1 +1,3 @@
-console.log('oi')
+'use strict'
+
+import './styles/global.css'
