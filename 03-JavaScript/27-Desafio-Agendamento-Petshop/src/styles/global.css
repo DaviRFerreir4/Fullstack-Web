@@ -70,17 +70,48 @@ h1 {
   }
 }
 
+#new-schedule {
+  padding: 1.125rem 1.25rem;
+  display: flex;
+  justify-content: center;
+
+  background-color: var(--background-tertiary);
+
+  button {
+    all: unset;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+
+    background-color: var(--brand-color);
+    font: var(--fw-bd) var(--fs-md) / var(--lh-lg) 'Reddit Sans', sans-serif;
+    color: #050505;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0px 0px 40px rgba(146, 130, 250, 0.3);
+  }
+}
+
 @media (width >= 80rem) {
   #app {
     max-width: 80rem;
     margin-top: 0;
     margin-inline: auto;
     padding: 0;
+    position: relative;
 
     .content {
       max-width: 54.5rem;
       margin-inline: auto;
       padding: 5rem;
     }
+  }
+
+  #new-schedule {
+    padding: 0;
+    background-color: transparent;
+
+    position: fixed;
+    bottom: 2rem;
+    right: 1.25rem;
   }
 }
