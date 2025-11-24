@@ -46,3 +46,40 @@ h1 {
   font: var(--title);
   color: var(--content-primary);
 }
+
+#logo {
+  padding: 0.75rem 1.25rem;
+  border-end-end-radius: 0.75rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background-color: var(--background-tertiary);
+}
+
+.container {
+  padding-inline: 1.25rem;
+}
+
+#app {
+  margin-top: 3.875rem;
+
+  .content {
+    padding: 0.75;
+  }
+}
+
+@media (width >= 80rem) {
+  #app {
+    max-width: 80rem;
+    margin-top: 0;
+    margin-inline: auto;
+    padding: 0;
+
+    .content {
+      max-width: 54.5rem;
+      margin-inline: auto;
+      padding: 5rem;
+    }
+  }
+}

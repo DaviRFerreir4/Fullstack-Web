@@ -1,0 +1,52 @@
+.content > header {
+  flex-direction: column;
+
+  & > div:nth-child(1) {
+    h1 {
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      font: var(--fw-md) var(--fs-sm) / var(--lh-lg) var(--ff);
+    }
+  }
+
+  input {
+    all: unset;
+    padding-block: 0.75rem;
+    padding-left: 2.5rem;
+    border: 1.5px solid var(--border-primary);
+    border-radius: 0.5rem;
+    position: relative;
+
+    background-image: url(../assets/icons/arrow-down.svg);
+    background-repeat: no-repeat;
+    background-position: 92% 50%;
+
+    &::before {
+      content: '';
+      width: 1.25rem;
+      height: 1.25rem;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 7%;
+      background-image: url(../assets/icons/calendar.svg);
+    }
+
+    &::-webkit-calendar-picker-indicator {
+      opacity: 0;
+    }
+  }
+}
+
+@media (width >= 80rem) {
+  .content > header {
+    flex-direction: row;
+    align-items: center;
+
+    input {
+      max-width: 10.75rem;
+    }
+  }
+}
