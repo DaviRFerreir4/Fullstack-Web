@@ -106,9 +106,25 @@
           </div>
         </section>
       </div>
+      <dialog>
+        <div class="grid gap-1.75">
+          <header>
+            <h1>Agende um atendimento</h1>
+            <p>Preencha os dados do cliente para realizar o agendamento:</p>
+          </header>
+        </div>
+      </dialog>
     </div>
     <div id="new-schedule">
-      <button>Novo Agendamento</button>
+      <button onclick="openDialog()">Novo Agendamento</button>
     </div>
   </body>
 </html>
+
+<script>
+  const dialog = document.querySelector('dialog')
+
+  function openDialog() {
+    dialog.showModal()
+  }
+</script>
