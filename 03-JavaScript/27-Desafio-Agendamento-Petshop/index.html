@@ -26,8 +26,85 @@
               hoje.
             </p>
           </div>
-          <input type="date" name="sched_date" id="sched-date" />
+          <div>
+            <input type="date" name="sched_date" id="sched-date" />
+          </div>
         </header>
+
+        <section id="schedules" class="grid gap-0.75">
+          <div id="morning">
+            <header class="flex gap-0.75 align-center">
+              <img src="./src/assets/icons/sunrise.svg" alt="Manhã" />
+              <h2>Manhã</h2>
+              <span>09h-12h</span>
+            </header>
+            <ul class="grid">
+              <li class="flex align-center">
+                <h3>09:00</h3>
+                <div id="pet">
+                  <strong>Thor</strong> /
+                  <small>Fernanda Costa</small>
+                </div>
+                <span id="service">Vacinação</span>
+                <span id="remove">Remover agendamento</span>
+              </li>
+            </ul>
+          </div>
+          <div id="evening">
+            <header class="flex gap-0.75 align-center">
+              <img src="./src/assets/icons/cloud-sun.svg" alt="Tarde" />
+              <h2>Tarde</h2>
+              <span>13h-18h</span>
+            </header>
+            <ul class="grid gap-0.75">
+              <li class="flex align-center">
+                <h3>13:00</h3>
+                <div id="pet">
+                  <strong>Mel</strong> /
+                  <small>João Souza</small>
+                </div>
+                <span id="service">Corte de Unhas</span>
+                <span id="remove">Remover agendamento</span>
+              </li>
+              <li class="flex align-center">
+                <h3>14:00</h3>
+                <div id="pet">
+                  <strong>Bella</strong> /
+                  <small>Pedro Martins</small>
+                </div>
+                <span id="service">Aplicação de Anti-pulgas</span>
+                <span id="remove">Remover agendamento</span>
+              </li>
+              <li class="flex align-center">
+                <h3>15:00</h3>
+                <div id="pet">
+                  <strong>Simba</strong> /
+                  <small>Juliana Rocha</small>
+                </div>
+                <span id="service">Tosa Higiênica</span>
+                <span id="remove">Remover agendamento</span>
+              </li>
+            </ul>
+          </div>
+          <div id="night">
+            <header class="flex gap-0.75 align-center">
+              <img src="./src/assets/icons/moon.svg" alt="Noite" />
+              <h2>Noite</h2>
+              <span>19h-21h</span>
+            </header>
+            <ul class="grid">
+              <li class="flex align-center">
+                <h3>20:00</h3>
+                <div id="pet">
+                  <strong>Max</strong> /
+                  <small>Camila Santos</small>
+                </div>
+                <span id="service">Limpeza de Dentes</span>
+                <span id="remove">Remover agendamento</span>
+              </li>
+            </ul>
+          </div>
+        </section>
       </div>
     </div>
   </body>
