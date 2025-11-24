@@ -26,8 +26,10 @@
               hoje.
             </p>
           </div>
-          <div>
-            <input type="date" name="sched_date" id="sched-date" />
+          <div class="input-wrapper">
+            <div>
+              <input type="date" name="sched_date" id="sched-date" />
+            </div>
           </div>
         </header>
 
@@ -107,12 +109,54 @@
         </section>
       </div>
       <dialog>
-        <div class="grid gap-1.75">
+        <span id="close-dialog"></span>
+        <form class="grid gap-1.75">
           <header>
             <h1>Agende um atendimento</h1>
             <p>Preencha os dados do cliente para realizar o agendamento:</p>
           </header>
-        </div>
+          <div class="grid gap-1">
+            <div class="input-wrapper">
+              <label for="tutor-name">Nome do tutor</label>
+              <div>
+                <input type="text" name="tutor_name" id="tutor-name" required />
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <label for="pet-name">Nome do pet</label>
+              <div>
+                <input type="text" name="pet_name" id="pet-name" required />
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <label for="phone">Nome do pet</label>
+              <div>
+                <input type="text" name="phone" id="phone" required />
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <label for="service-desc">Nome do pet</label>
+              <textarea name="service_desc" id="service-desc"></textarea>
+            </div>
+            <div class="appointment flex gap-1">
+              <div class="input-wrapper">
+                <label for="date">Data</label>
+                <div>
+                  <input type="date" name="date" id="date" required />
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <label for="hour">Hora</label>
+                <div>
+                  <select name="hour" id="hour">
+                    <option value="" selected disabled hidden>Escolha</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button>Agendar</button>
+        </form>
       </dialog>
     </div>
     <div id="new-schedule">
