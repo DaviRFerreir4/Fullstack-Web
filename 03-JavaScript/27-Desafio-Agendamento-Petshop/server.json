@@ -1,3 +1,28 @@
 {
-  "schedules": []
+  "schedules": [
+    {
+      "id": "6b6932d8-47cb-48a5-8bcf-3c0fa0cad27a",
+      "tutor_name": "Davi",
+      "pet_name": "Buzé",
+      "phone": "9 99 999 9999",
+      "service": "Tozé",
+      "date": "2025-11-25T20:00:00.000Z"
+    },
+    {
+      "id": "c86d87ff-ac8e-4e71-b35c-172804b05099",
+      "tutor_name": "Sara",
+      "pet_name": "Banguela",
+      "phone": "1 1 1 1 1 1",
+      "service": "Tira dente",
+      "date": "2025-11-25T17:00:00.000Z"
+    },
+    {
+      "id": "dd35fe01-cdbf-4b49-8ac1-a6b5cd42366f",
+      "tutor_name": "Paulo",
+      "pet_name": "Abacate",
+      "phone": "1456",
+      "service": "Vacina",
+      "date": "2025-11-26T00:00:00.000Z"
+    }
+  ]
 }
