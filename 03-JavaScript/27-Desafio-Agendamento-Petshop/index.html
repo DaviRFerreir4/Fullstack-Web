@@ -119,24 +119,47 @@
             <div class="input-wrapper">
               <label for="tutor-name">Nome do tutor</label>
               <div>
-                <input type="text" name="tutor_name" id="tutor-name" required />
+                <input
+                  type="text"
+                  name="tutor_name"
+                  id="tutor-name"
+                  required
+                  placeholder="John Doe"
+                />
               </div>
             </div>
             <div class="input-wrapper">
               <label for="pet-name">Nome do pet</label>
               <div>
-                <input type="text" name="pet_name" id="pet-name" required />
+                <input
+                  type="text"
+                  name="pet_name"
+                  id="pet-name"
+                  required
+                  placeholder="Rex"
+                />
               </div>
             </div>
             <div class="input-wrapper">
-              <label for="phone">Nome do pet</label>
+              <label for="phone">Telefone</label>
               <div>
-                <input type="text" name="phone" id="phone" required />
+                <input
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  required
+                  placeholder="(12) 93456-7890"
+                />
               </div>
             </div>
             <div class="input-wrapper">
-              <label for="service-desc">Nome do pet</label>
-              <textarea name="service_desc" id="service-desc"></textarea>
+              <label for="service-desc">Descrição do serviço</label>
+              <textarea
+                name="service_desc"
+                id="service-desc"
+                placeholder="Descreva o serviço a ser prestado a esse pet"
+                maxlength="30"
+              ></textarea>
             </div>
             <div class="appointment flex gap-1">
               <div class="input-wrapper">
@@ -148,27 +171,35 @@
               <div class="input-wrapper">
                 <label for="hour">Hora</label>
                 <div>
-                  <select name="hour" id="hour">
+                  <select name="hour" id="hour" required>
                     <option value="" selected disabled hidden>Escolha</option>
                   </select>
                 </div>
               </div>
             </div>
           </div>
-          <button>Agendar</button>
+          <button id="schedule">Agendar</button>
         </form>
       </dialog>
     </div>
     <div id="new-schedule">
-      <button onclick="openDialog()">Novo Agendamento</button>
+      <button id="create-schedule">Novo Agendamento</button>
     </div>
   </body>
 </html>
 
 <script>
-  const dialog = document.querySelector('dialog')
+  // Para visualizar o frontend no github pages
 
-  function openDialog() {
+  const dialog = document.querySelector('dialog')
+  const button = document.querySelector('button#create-schedule')
+  const span = document.querySelector('span#close-dialog')
+
+  button.addEventListener('click', () => {
     dialog.showModal()
-  }
+  })
+
+  span.addEventListener('click', () => {
+    dialog.close()
+  })
 </script>
