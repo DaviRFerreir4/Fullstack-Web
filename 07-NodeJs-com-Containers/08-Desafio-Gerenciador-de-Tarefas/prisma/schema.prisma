@@ -11,5 +11,105 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  member
+}
+
+enum Status {
+  pending
+  in_progress
+  completed
+}
+
+enum Priority {
+  low
+  medium
+  high
+}
+
+model User {
+  id String @id @default(uuid())
+  name String @db.VarChar(100)
+  email String @db.VarChar(150) @unique
+  password String @db.VarChar(255)
+
+  role UserRole @default(member)
+
+  teams TeamsMembers[]
+  tasks Task[]
+  tasksHistories TasksHistory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Team {
+  id String @id @default(uuid())
+  name String @db.VarChar(100)
+  description String
+
+  member TeamsMembers[]
+  tasks Task[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("teams")
+}
+
+model TeamsMembers {
+  id String @id @default(uuid())
+
+  user User @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+  team Team @relation(fields: [teamId], references: [id])
+  teamId String @map("team_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("teams_members")
+}
+
+model Task {
+  id String @id @default(uuid())
+  title String @db.VarChar(200)
+  description String
+
+  status Status @default(pending)
+  priority Priority @default(low)
+
+  taskHistories TasksHistory[]
+
+  assignTo String @map("assign_to")
+  user User @relation(fields: [assignTo], references: [id])
+
+  teamId String @map("team_id")
+  team Team @relation(fields: [teamId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("tasks")
+}
+
+model TasksHistory {
+  id String @id @default(uuid())
+
+  taskId String @map("task_id")
+  task Task @relation(fields: [taskId], references: [id])
+
+  changedBy String @map("changed_by")
+  user User @relation(fields: [changedBy], references: [id])
+
+  oldStatus Status @map("old_status")
+  newStatus Status @map("new_status")
+
+  changedAt DateTime @updatedAt @map("changed_at")
+
+  @@map("tasks_history")
 }
