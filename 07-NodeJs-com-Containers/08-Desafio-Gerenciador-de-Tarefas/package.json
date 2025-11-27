@@ -4,7 +4,7 @@
   "description": "API para um sistema de Gerenciamento de Tarefas com Node.js",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "ts-node-dev --poll src/server.ts",
+    "dev": "ts-node-dev --poll --files src/server.ts",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/src/server.js"
   },

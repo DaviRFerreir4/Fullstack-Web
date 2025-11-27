@@ -7,5 +7,6 @@ const teamsController = new TeamsController()
 
 teamsRoutes.get('/', teamsController.index)
 teamsRoutes.post('/', teamsController.create)
+teamsRoutes.put('/:id', teamsController.update)
 
 export { teamsRoutes }

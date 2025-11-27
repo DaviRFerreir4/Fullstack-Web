@@ -1,10 +1,10 @@
-type IUserRole = 'admin' | 'member'
+type TUserRole = 'admin' | 'member'
 
 declare namespace Express {
   interface Request {
     user?: {
       id: string
-      role: IUserRole
+      role: TUserRole
     }
   }
 }

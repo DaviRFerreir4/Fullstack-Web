@@ -36,4 +36,32 @@ export class TeamsController {
 
     return response.status(201).json()
   }
+
+  async update(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Inform a valid ID' }),
+    })
+
+    const bodySchema = z.object({
+      name: z
+        .string({ error: 'Name is required' })
+        .max(100, { error: "Name can't be over 100 digits" })
+        .optional(),
+      description: z.string({ error: 'Description is required' }).optional(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const { name, description } = bodySchema.parse(request.body)
+
+    if (!name && !description) {
+      throw new AppError(
+        'Inform the data to be updated (name and/or description)'
+      )
+    }
+
+    await prisma.team.update({ where: { id }, data: { name, description } })
+
+    return response.status(200).json()
+  }
 }
