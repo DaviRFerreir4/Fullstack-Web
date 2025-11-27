@@ -64,4 +64,16 @@ export class TeamsController {
 
     return response.status(200).json()
   }
+
+  async remove(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Inform a valid ID' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    await prisma.team.delete({ where: { id } })
+
+    return response.json()
+  }
 }
