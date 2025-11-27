@@ -2,9 +2,9 @@ import { Router } from 'express'
 
 import { SessionsController } from '../controllers/sessions-controller'
 
-const sessionRoutes = Router()
+const sessionsRoutes = Router()
 const sessionsController = new SessionsController()
 
-sessionRoutes.post('/', sessionsController.create)
+sessionsRoutes.post('/', sessionsController.create)
 
-export { sessionRoutes }
+export { sessionsRoutes }

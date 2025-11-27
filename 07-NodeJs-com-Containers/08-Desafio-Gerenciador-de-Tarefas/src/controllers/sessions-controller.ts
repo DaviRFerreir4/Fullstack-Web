@@ -10,10 +10,10 @@ import { AppError } from '../../utils/app-error'
 export class SessionsController {
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
-      email: z.email({ message: 'E-mail is required and must be valid' }),
+      email: z.email({ error: 'E-mail is required and must be valid' }),
       password: z
-        .string({ message: 'Password is required' })
-        .min(8, { message: 'Password must contain at least 8 characters' }),
+        .string({ error: 'Password is required' })
+        .min(8, { error: 'Password must contain at least 8 characters' }),
     })
 
     const { email, password } = bodySchema.parse(request.body)

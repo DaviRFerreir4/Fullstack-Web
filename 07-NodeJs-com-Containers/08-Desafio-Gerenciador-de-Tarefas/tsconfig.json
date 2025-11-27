@@ -5,10 +5,6 @@
 
     "outDir": "./dist",
 
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-
     "module": "node16",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

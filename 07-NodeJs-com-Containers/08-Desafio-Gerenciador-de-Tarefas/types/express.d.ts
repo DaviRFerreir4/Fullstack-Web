@@ -1,4 +1,3 @@
-// import { UserRole } from '@prisma/client'
 type IUserRole = 'admin' | 'member'
 
 declare namespace Express {
