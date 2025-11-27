@@ -1,4 +1,4 @@
-import e, { Request, Response } from 'express'
+import { Request, Response } from 'express'
 import z from 'zod'
 import { hash } from 'bcrypt'
 
@@ -10,8 +10,12 @@ export class UsersController {
   async create(request: Request, response: Response) {
     const bodySchema = z
       .object({
-        name: z.string({ error: 'Name is required' }),
-        email: z.email({ error: 'E-mail is required and must be valid' }),
+        name: z
+          .string({ error: 'Name is required' })
+          .max(100, { error: "Name can't be over 100 digits" }),
+        email: z
+          .email({ error: 'E-mail is required and must be valid' })
+          .max(150, { error: "E-mail can't be over 150 digits" }),
         password: z
           .string({ error: 'Password is required' })
           .min(8, { error: 'Password must contain at least 8 characters' }),
