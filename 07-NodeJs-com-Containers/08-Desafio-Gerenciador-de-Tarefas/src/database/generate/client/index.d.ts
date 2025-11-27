@@ -7149,16 +7149,16 @@ export namespace Prisma {
 
   export type TeamWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    name?: string
     AND?: TeamWhereInput | TeamWhereInput[]
     OR?: TeamWhereInput[]
     NOT?: TeamWhereInput | TeamWhereInput[]
-    name?: StringFilter<"Team"> | string
     description?: StringFilter<"Team"> | string
     createdAt?: DateTimeFilter<"Team"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Team"> | Date | string | null
     member?: TeamsMembersListRelationFilter
     tasks?: TaskListRelationFilter
-  }, "id">
+  }, "id" | "name">
 
   export type TeamOrderByWithAggregationInput = {
     id?: SortOrder
