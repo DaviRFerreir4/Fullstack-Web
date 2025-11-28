@@ -15,11 +15,11 @@ export class TeamsMembersController {
 
     const user = await prisma.user.findUnique({ where: { id: user_id } })
 
-    const team = await prisma.team.findUnique({ where: { id: team_id } })
-
     if (!user) {
       throw new AppError("This user doesn't exist")
     }
+
+    const team = await prisma.team.findUnique({ where: { id: team_id } })
 
     if (!team) {
       throw new AppError("This team doen't exist")
@@ -37,7 +37,7 @@ export class TeamsMembersController {
       data: { userId: user.id, teamId: team.id },
     })
 
-    return response.status(201).json({ user: user.name, team: team.name })
+    return response.status(201).json()
   }
 
   async remove(request: Request, response: Response) {
@@ -50,11 +50,11 @@ export class TeamsMembersController {
 
     const user = await prisma.user.findUnique({ where: { id: user_id } })
 
-    const team = await prisma.team.findUnique({ where: { id: team_id } })
-
     if (!user) {
       throw new AppError("This user doesn't exist")
     }
+
+    const team = await prisma.team.findUnique({ where: { id: team_id } })
 
     if (!team) {
       throw new AppError("This team doen't exist")

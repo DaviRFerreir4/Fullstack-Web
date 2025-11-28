@@ -21,8 +21,10 @@ export class UsersController {
           .min(8, { error: 'Password must contain at least 8 characters' }),
         confirm_password: z.string({ error: 'Password is required' }),
         role: z
-          .enum([UserRole.admin, UserRole.member], {
-            error: 'Role must be only "admin" or "member"',
+          .enum(Object.values(UserRole), {
+            error: `Role must be only "${Object.values(UserRole).join(
+              '", "'
+            )}"`,
           })
           .default(UserRole.member),
       })

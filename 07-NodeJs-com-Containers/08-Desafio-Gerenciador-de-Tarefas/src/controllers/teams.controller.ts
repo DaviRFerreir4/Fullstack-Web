@@ -52,6 +52,12 @@ export class TeamsController {
 
     const { name, description } = bodySchema.parse(request.body)
 
+    const team = await prisma.team.findUnique({ where: { name } })
+
+    if (team) {
+      throw new AppError('A team with this name already exists')
+    }
+
     await prisma.team.create({ data: { name, description } })
 
     return response.status(201).json()
@@ -72,6 +78,12 @@ export class TeamsController {
 
     const { id } = paramsSchema.parse(request.params)
 
+    const team = await prisma.team.findUnique({ where: { id } })
+
+    if (!team) {
+      throw new AppError("The team ID informed doesn't exist")
+    }
+
     const { name, description } = bodySchema.parse(request.body)
 
     if (!name && !description) {
@@ -91,6 +103,12 @@ export class TeamsController {
     })
 
     const { id } = paramsSchema.parse(request.params)
+
+    const team = await prisma.team.findUnique({ where: { id } })
+
+    if (!team) {
+      throw new AppError("The team ID informed doesn't exist")
+    }
 
     await prisma.team.delete({ where: { id } })
 
