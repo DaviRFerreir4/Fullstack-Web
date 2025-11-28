@@ -106,4 +106,38 @@ export class TasksController {
 
     return response.status(201).json()
   }
+
+  async update(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Inform a valid ID' }),
+    })
+
+    const bodySchema = z.object({
+      title: z
+        .string()
+        .max(200, { error: "Title can't be over 200 digits" })
+        .optional(),
+      description: z.string().optional(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const task = await prisma.task.findUnique({ where: { id } })
+
+    if (!task) {
+      throw new AppError("The task informed doesn't exist")
+    }
+
+    const { title, description } = bodySchema.parse(request.body)
+
+    if (!title && !description) {
+      throw new AppError(
+        'Inform the data to be updated (title and/or description)'
+      )
+    }
+
+    await prisma.task.update({ where: { id }, data: { title, description } })
+
+    return response.json()
+  }
 }

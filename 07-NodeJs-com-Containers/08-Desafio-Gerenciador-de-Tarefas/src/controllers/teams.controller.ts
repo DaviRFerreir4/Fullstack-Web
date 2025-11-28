@@ -81,7 +81,7 @@ export class TeamsController {
     const team = await prisma.team.findUnique({ where: { id } })
 
     if (!team) {
-      throw new AppError("The team ID informed doesn't exist")
+      throw new AppError("The team informed doesn't exist")
     }
 
     const { name, description } = bodySchema.parse(request.body)
