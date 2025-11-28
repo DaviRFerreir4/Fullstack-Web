@@ -5,6 +5,7 @@ import { TeamsMembersController } from '../controllers/teams-members.controller'
 const teamsMembersRoutes = Router()
 const teamsMembersController = new TeamsMembersController()
 
-teamsMembersRoutes.post('/teams-members', teamsMembersController.create)
+teamsMembersRoutes.post('/', teamsMembersController.create)
+teamsMembersRoutes.delete('/', teamsMembersController.remove)
 
 export { teamsMembersRoutes }

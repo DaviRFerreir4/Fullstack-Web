@@ -14,6 +14,10 @@ routes.use('/sessions', sessionsRoutes)
 routes.use(ensureAuthenticated)
 routes.use('/users', verifyUserAuthorization(['admin']), usersRoutes)
 routes.use('/teams', verifyUserAuthorization(['admin']), teamsRoutes)
-routes.use('/', verifyUserAuthorization(['admin']), teamsMembersRoutes)
+routes.use(
+  '/teams-members',
+  verifyUserAuthorization(['admin']),
+  teamsMembersRoutes
+)
 
 export { routes }
