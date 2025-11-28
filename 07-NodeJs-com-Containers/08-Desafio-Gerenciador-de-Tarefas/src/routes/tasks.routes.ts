@@ -7,6 +7,7 @@ const tasksRoutes = Router()
 const tasksController = new TasksController()
 
 tasksRoutes.get('/', tasksController.index)
+tasksRoutes.get('/:id/history', tasksController.show)
 tasksRoutes.post('/', tasksController.create)
 tasksRoutes.put(
   '/:id',

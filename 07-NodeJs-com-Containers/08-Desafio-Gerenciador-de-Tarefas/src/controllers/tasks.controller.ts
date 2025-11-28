@@ -46,6 +46,21 @@ export class TasksController {
     return response.json(tasks)
   }
 
+  async show(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Inform a valid ID' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const taskWithHistories = await prisma.task.findUnique({
+      where: { id },
+      include: { taskHistories: true },
+    })
+
+    return response.json(taskWithHistories)
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       title: z
