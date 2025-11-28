@@ -140,4 +140,22 @@ export class TasksController {
 
     return response.json()
   }
+
+  async remove(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Inform a valid ID' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const task = await prisma.task.findUnique({ where: { id } })
+
+    if (!task) {
+      throw new AppError("The task informed doesn't exist")
+    }
+
+    await prisma.task.delete({ where: { id } })
+
+    return response.json()
+  }
 }
