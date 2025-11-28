@@ -225,6 +225,10 @@ export class TasksController {
   }
 
   async patch(request: Request, response: Response) {
+    if (!request.user) {
+      throw new AppError('User data not found')
+    }
+
     const paramsSchema = z.object({
       id: z.uuid({ error: 'Inform a valid ID' }),
     })
@@ -245,6 +249,12 @@ export class TasksController {
       throw new AppError("The task informed doesn't exist")
     }
 
+    if (request.user.role === 'member' && task.assignTo !== request.user.id) {
+      throw new AppError(
+        "You can't change the status from this task because it wasn't assigned to you"
+      )
+    }
+
     const { status } = bodySchema.parse(request.body)
 
     if (task.status === status) {
@@ -258,6 +268,15 @@ export class TasksController {
     }
 
     await prisma.task.update({ where: { id }, data: { status } })
+
+    await prisma.tasksHistory.create({
+      data: {
+        taskId: task.id,
+        changedBy: request.user.id,
+        oldStatus: task.status,
+        newStatus: status,
+      },
+    })
 
     return response.json()
   }
