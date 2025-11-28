@@ -7,6 +7,12 @@ import { prisma } from '../database/prisma'
 import { AppError } from '../../utils/app-error'
 
 export class UsersController {
+  async index(request: Request, response: Response) {
+    const users = await prisma.user.findMany({ omit: { password: true } })
+
+    return response.json(users)
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z
       .object({
