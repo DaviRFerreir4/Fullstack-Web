@@ -118,6 +118,19 @@ export class TasksController {
         .max(200, { error: "Title can't be over 200 digits" })
         .optional(),
       description: z.string().optional(),
+      assign_to: z
+        .uuid({
+          error: 'Inform a valid ID',
+        })
+        .optional(),
+      team_id: z.uuid({ error: 'Inform a valid ID' }).optional(),
+      priority: z
+        .enum(Object.values(Priority), {
+          error: `Priority must be only "${Object.values(Priority).join(
+            '", "'
+          )}"`,
+        })
+        .optional(),
     })
 
     const { id } = paramsSchema.parse(request.params)
@@ -128,15 +141,85 @@ export class TasksController {
       throw new AppError("The task informed doesn't exist")
     }
 
-    const { title, description } = bodySchema.parse(request.body)
+    const { title, description, assign_to, team_id, priority } =
+      bodySchema.parse(request.body)
 
-    if (!title && !description) {
+    if (!title && !description && !assign_to && !team_id && !priority) {
       throw new AppError(
-        'Inform the data to be updated (title and/or description)'
+        `Inform at least one data to be updated ("${Object.values(
+          bodySchema.keyof().enum
+        ).join('", "')}")`
       )
     }
 
-    await prisma.task.update({ where: { id }, data: { title, description } })
+    let user
+
+    if (assign_to) {
+      user = await prisma.user.findUnique({ where: { id: assign_to } })
+
+      if (!user) {
+        throw new AppError("The user informed doesn't exist")
+      }
+    }
+
+    let team
+
+    if (team_id) {
+      team = await prisma.team.findUnique({ where: { id: team_id } })
+
+      if (!team) {
+        throw new AppError("The team informed doesn't exist")
+      }
+    }
+
+    if (user && team) {
+      const teamMemberRegistred = await prisma.teamsMembers.findFirst({
+        where: { userId: assign_to, teamId: team_id },
+      })
+
+      if (!teamMemberRegistred) {
+        throw new AppError("This user doesn't belong to this team")
+      }
+    }
+
+    if (user && !team_id) {
+      const teamMemberRegistred = await prisma.teamsMembers.findFirst({
+        where: { userId: assign_to, teamId: task.teamId },
+      })
+
+      console.log(teamMemberRegistred)
+
+      if (!teamMemberRegistred) {
+        throw new AppError(
+          "This user doesn't belong to the team assigned to the task"
+        )
+      }
+    }
+
+    if (team && !assign_to) {
+      const teamMemberRegistred = await prisma.teamsMembers.findFirst({
+        where: { userId: task.assignTo, teamId: team_id },
+      })
+
+      console.log(teamMemberRegistred)
+
+      if (!teamMemberRegistred) {
+        throw new AppError(
+          "The user assigned to this task doesn't belong to this team"
+        )
+      }
+    }
+
+    await prisma.task.update({
+      where: { id },
+      data: {
+        title,
+        description,
+        assignTo: assign_to,
+        teamId: team_id,
+        priority,
+      },
+    })
 
     return response.json()
   }
