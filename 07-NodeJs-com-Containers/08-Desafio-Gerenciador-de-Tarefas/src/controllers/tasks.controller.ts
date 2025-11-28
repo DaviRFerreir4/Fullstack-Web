@@ -7,6 +7,45 @@ import { prisma } from '../database/prisma'
 import { AppError } from '../../utils/app-error'
 
 export class TasksController {
+  async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      title: z.string().optional(),
+      // assign_to: z
+      //   .uuid({
+      //     error: 'Inform a valid ID',
+      //   })
+      //   .optional(),
+      // team_id: z.uuid({ error: 'Inform a valid ID' }).optional(),
+      status: z
+        .enum(Object.values(Status), {
+          error: `Status must be only "${Object.values(Status).join('", "')}"`,
+        })
+        .optional(),
+      priority: z
+        .enum(Object.values(Priority), {
+          error: `Priority must be only "${Object.values(Priority).join(
+            '", "'
+          )}"`,
+        })
+        .optional(),
+    })
+
+    const { title, /* assign_to, team_id, */ status, priority } =
+      querySchema.parse(request.query)
+
+    const tasks = await prisma.task.findMany({
+      where: {
+        title: { contains: title },
+        // assignTo: assign_to,
+        // teamId: team_id,
+        status,
+        priority,
+      },
+    })
+
+    return response.json(tasks)
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       title: z
