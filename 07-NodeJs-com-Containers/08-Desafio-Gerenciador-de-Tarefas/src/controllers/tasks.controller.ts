@@ -141,6 +141,44 @@ export class TasksController {
     return response.json()
   }
 
+  async patch(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Inform a valid ID' }),
+    })
+
+    const bodySchema = z.object({
+      status: z.enum(Object.values(Status), {
+        error: `Expected status. Status must be only "${Object.values(
+          Status
+        ).join('", "')}"`,
+      }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const task = await prisma.task.findUnique({ where: { id } })
+
+    if (!task) {
+      throw new AppError("The task informed doesn't exist")
+    }
+
+    const { status } = bodySchema.parse(request.body)
+
+    if (task.status === status) {
+      throw new AppError('This task already has the status informed')
+    }
+
+    if (task.status === 'in_progress' && status === 'pending') {
+      throw new AppError(
+        `This task has the status of "${task.status}", so you can't change its status to "${status}"`
+      )
+    }
+
+    await prisma.task.update({ where: { id }, data: { status } })
+
+    return response.json()
+  }
+
   async remove(request: Request, response: Response) {
     const paramsSchema = z.object({
       id: z.uuid({ error: 'Inform a valid ID' }),
