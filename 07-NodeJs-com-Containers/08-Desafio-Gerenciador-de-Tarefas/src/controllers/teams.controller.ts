@@ -13,6 +13,26 @@ export class TeamsController {
         .optional(),
     })
 
+    const paramsSchema = z.object({
+      id: z.uuid(),
+    })
+
+    if (Object.keys(request.params).length > 0) {
+      const { id } = paramsSchema.parse(request.params)
+
+      const teams = await prisma.team.findMany({
+        where: { id },
+        include: {
+          member: {
+            omit: { id: true, createdAt: true, teamId: true, userId: true },
+            include: { user: { omit: { password: true } } },
+          },
+        },
+      })
+
+      return response.json(teams)
+    }
+
     const { name } = querySchema.parse(request.query)
 
     const teams = await prisma.team.findMany({
