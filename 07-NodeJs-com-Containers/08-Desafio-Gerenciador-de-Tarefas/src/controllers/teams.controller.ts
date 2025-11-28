@@ -88,7 +88,9 @@ export class TeamsController {
 
     if (!name && !description) {
       throw new AppError(
-        'Inform the data to be updated (name and/or description)'
+        `Inform at least one data to be updated ("${Object.values(
+          bodySchema.keyof().enum
+        ).join('", "')}")`
       )
     }
 
