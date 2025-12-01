@@ -4,7 +4,7 @@ import { hash } from 'bcrypt'
 
 import { UserRole } from '../database/generate/client'
 import { prisma } from '../database/prisma'
-import { AppError } from '../../utils/app-error'
+import { AppError } from '../utils/app-error'
 
 export class UsersController {
   async index(request: Request, response: Response) {

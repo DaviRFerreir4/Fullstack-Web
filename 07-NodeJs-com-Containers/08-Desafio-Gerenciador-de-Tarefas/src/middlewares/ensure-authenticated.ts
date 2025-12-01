@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 
 import { UserRole } from '../database/generate/client'
 import { authConfig } from '../configs/auth'
-import { AppError } from '../../utils/app-error'
+import { AppError } from '../utils/app-error'
 
 interface TokenPayload {
   role: UserRole

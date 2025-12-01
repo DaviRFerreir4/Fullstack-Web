@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 import { prisma } from '../database/prisma'
 import { authConfig } from '../configs/auth'
-import { AppError } from '../../utils/app-error'
+import { AppError } from '../utils/app-error'
 
 export class SessionsController {
   async create(request: Request, response: Response) {

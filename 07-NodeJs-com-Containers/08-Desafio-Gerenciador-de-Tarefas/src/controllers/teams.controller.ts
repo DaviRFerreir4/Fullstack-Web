@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import z from 'zod'
 
 import { prisma } from '../database/prisma'
-import { AppError } from '../../utils/app-error'
+import { AppError } from '../utils/app-error'
 
 export class TeamsController {
   async index(request: Request, response: Response) {

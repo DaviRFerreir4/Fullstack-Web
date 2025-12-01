@@ -4,7 +4,7 @@ import z from 'zod'
 import { Status } from '../database/generate/client'
 import { Priority } from '../database/generate/client'
 import { prisma } from '../database/prisma'
-import { AppError } from '../../utils/app-error'
+import { AppError } from '../utils/app-error'
 
 export class TasksController {
   async index(request: Request, response: Response) {
