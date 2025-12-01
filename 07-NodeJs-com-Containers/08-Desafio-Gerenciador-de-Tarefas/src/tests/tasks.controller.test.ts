@@ -127,4 +127,23 @@ describe('TasksController', () => {
     expect(taskHistory.oldStatus).toBe('pending')
     expect(taskHistory.taskId).toBe(taskId)
   })
+
+  it("should list a task and all it's histories", async () => {
+    const response = await request(app)
+      .get(`/tasks/${taskId}/histories`)
+      .auth(token, { type: 'bearer' })
+
+    const taskHistoriesSchema = {
+      taskHistories: expect.arrayContaining([
+        expect.objectContaining({
+          taskId: taskId,
+          oldStatus: 'pending',
+          newStatus: 'in_progress',
+        }),
+      ]),
+    }
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toEqual(expect.objectContaining(taskHistoriesSchema))
+  })
 })
