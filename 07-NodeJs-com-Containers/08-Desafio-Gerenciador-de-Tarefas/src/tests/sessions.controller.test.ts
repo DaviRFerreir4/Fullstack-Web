@@ -32,6 +32,17 @@ describe('SessionsController', () => {
     await prisma.user.delete({ where: { id: user.id } })
   })
 
+  it('should throw an authentication error', async () => {
+    const response = await request(app)
+      .post('/users')
+      .send({
+        ...userData,
+      })
+
+    expect(response.statusCode).toBe(401)
+    expect(response.body).toHaveProperty('message')
+  })
+
   it('should authenticate and return user and token info', async () => {
     const userResponse = await request(app)
       .post('/users')
