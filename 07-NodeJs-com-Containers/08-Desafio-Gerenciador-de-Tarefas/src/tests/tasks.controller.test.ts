@@ -146,4 +146,28 @@ describe('TasksController', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual(expect.objectContaining(taskHistoriesSchema))
   })
+
+  it('should delete a task', async () => {
+    await request(app)
+      .post('/tasks')
+      .send({
+        ...taskData,
+        title: `${taskData.title} 2`,
+      })
+      .auth(token, { type: 'bearer' })
+
+    const task = await prisma.task.findFirst({
+      where: { title: `${taskData.title} 2` },
+    })
+
+    if (!task) {
+      return
+    }
+
+    const response = await request(app)
+      .delete(`/tasks/${task.id}`)
+      .auth(token, { type: 'bearer' })
+
+    expect(response.statusCode).toBe(200)
+  })
 })
