@@ -91,4 +91,15 @@ describe('TasksController', () => {
       ])
     )
   })
+
+  it('should update data from a task', async () => {
+    const response = await request(app)
+      .put(`/tasks/${taskId}`)
+      .send({
+        description: 'Some other description',
+      })
+      .auth(token, { type: 'bearer' })
+
+    expect(response.statusCode).toBe(200)
+  })
 })
