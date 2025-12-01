@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev --poll --files src/server.ts",
     "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/src/server.js"
+    "start": "npm run build && node dist/src/server.js",
+    "test:dev": "npx jest --watchAll --runInBand"
   },
   "author": "Davi Ferreira",
   "license": "ISC",
