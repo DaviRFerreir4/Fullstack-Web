@@ -23,7 +23,9 @@ describe('SessionsController', () => {
   })
 
   afterAll(async () => {
-    const user = await prisma.user.findFirst({ where: { name: userData.name } })
+    const user = await prisma.user.findFirst({
+      where: { email: userData.email },
+    })
 
     if (!user) {
       return
