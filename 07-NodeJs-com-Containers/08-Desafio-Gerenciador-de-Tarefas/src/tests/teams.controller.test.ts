@@ -119,4 +119,45 @@ describe('TeamsController', () => {
       expect.arrayContaining([expect.objectContaining(memberSchema)])
     )
   })
+
+  it('should update informations about a team', async () => {
+    const team = await prisma.team.findFirst({ where: { name: teamData.name } })
+
+    if (!team) {
+      return
+    }
+
+    const response = await request(app)
+      .put(`/teams/${team.id}`)
+      .send({
+        description: 'Some other description',
+      })
+      .auth(token, { type: 'bearer' })
+
+    expect(response.statusCode).toBe(200)
+  })
+
+  it('should delete a team created', async () => {
+    await request(app)
+      .post('/teams')
+      .send({
+        ...teamData,
+        name: `${teamData.name} 2`,
+      })
+      .auth(token, { type: 'bearer' })
+
+    const team = await prisma.team.findUnique({
+      where: { name: `${teamData.name} 2` },
+    })
+
+    if (!team) {
+      return
+    }
+
+    const response = await request(app)
+      .delete(`/teams/${team.id}`)
+      .auth(token, { type: 'bearer' })
+
+    expect(response.statusCode).toBe(200)
+  })
 })
