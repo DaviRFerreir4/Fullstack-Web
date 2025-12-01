@@ -2,6 +2,7 @@ import request from 'supertest'
 
 import { app } from '../app'
 import { prisma } from '../database/prisma'
+import { response } from 'express'
 
 describe('TasksController', () => {
   let token: string
@@ -76,5 +77,18 @@ describe('TasksController', () => {
     taskId = task.id
 
     expect(response.statusCode).toBe(201)
+  })
+
+  it('should list all tasks', async () => {
+    const response = await request(app)
+      .get('/tasks')
+      .auth(token, { type: 'bearer' })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ title: taskData.title }),
+      ])
+    )
   })
 })
