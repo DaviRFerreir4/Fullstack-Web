@@ -3,12 +3,12 @@ import request from 'supertest'
 import { app } from '../app'
 import { prisma } from '../database/prisma'
 
-describe('UsersController', () => {
+describe('SessionsController', () => {
   let token: string
 
   const userData = {
-    name: 'Test User',
-    email: 'testuser@example.com',
+    name: 'Auth Test User',
+    email: 'auth_test_user@example.com',
     password: '12345678',
     confirm_password: '12345678',
   }
@@ -32,26 +32,21 @@ describe('UsersController', () => {
     await prisma.user.delete({ where: { id: user.id } })
   })
 
-  it('should create a new user successfully', async () => {
-    const response = await request(app)
+  it('should authenticate and return user and token info', async () => {
+    const userResponse = await request(app)
       .post('/users')
       .send({
         ...userData,
       })
       .auth(token, { type: 'bearer' })
 
-    expect(response.statusCode).toBe(201)
-  })
+    const sessionResponse = await request(app).post('/sessions').send({
+      email: userData.email,
+      password: userData.password,
+    })
 
-  it('should throw an error if user with same email already exists', async () => {
-    const response = await request(app)
-      .post('/users')
-      .send({
-        ...userData,
-      })
-      .auth(token, { type: 'bearer' })
-
-    expect(response.statusCode).toBe(400)
-    expect(response.body).toHaveProperty('message')
+    expect(sessionResponse.statusCode).toBe(201)
+    expect(sessionResponse.body).toHaveProperty('user')
+    expect(sessionResponse.body).toHaveProperty('token')
   })
 })
