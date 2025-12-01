@@ -40,4 +40,15 @@ describe('TeamsController', () => {
 
     expect(response.statusCode).toBe(201)
   })
+
+  it('should show all teams registred', async () => {
+    const response = await request(app)
+      .get('/teams')
+      .auth(token, { type: 'bearer' })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toEqual(
+      expect.arrayContaining([expect.objectContaining({ ...teamData })])
+    )
+  })
 })
