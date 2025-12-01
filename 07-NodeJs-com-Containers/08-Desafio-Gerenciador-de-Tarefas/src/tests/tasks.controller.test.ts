@@ -210,4 +210,28 @@ describe('TasksController', () => {
       "The user assigned to this task doesn't belong to this team"
     )
   })
+
+  it("should throw an error if assing a task for a user and a team that aren't related", async () => {
+    const user = await prisma.user.create({
+      data: { ...userData, email: `second_${userData.email}` },
+    })
+
+    const team = await prisma.team.create({
+      data: { ...teamData, name: `Second ${teamData.name}` },
+    })
+
+    const response = await request(app)
+      .put(`/tasks/${taskId}`)
+      .send({
+        assign_to: user.id,
+        team_id: team.id,
+      })
+      .auth(token, { type: 'bearer' })
+
+    await prisma.team.delete({ where: { id: team.id } })
+    await prisma.user.delete({ where: { id: user.id } })
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body.message).toBe("This user doesn't belong to this team")
+  })
 })
