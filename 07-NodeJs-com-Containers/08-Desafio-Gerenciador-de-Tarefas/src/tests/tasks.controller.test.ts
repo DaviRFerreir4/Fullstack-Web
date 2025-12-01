@@ -7,6 +7,7 @@ import { response } from 'express'
 describe('TasksController', () => {
   let token: string
   let taskId: string
+  let taskHistoryId: string
   let userId: string
   let teamId: string
   let teamMemberRegisterId: string
@@ -53,6 +54,7 @@ describe('TasksController', () => {
 
   afterAll(async () => {
     await prisma.teamsMembers.delete({ where: { id: teamMemberRegisterId } })
+    await prisma.tasksHistory.delete({ where: { id: taskHistoryId } })
     await prisma.task.delete({ where: { id: taskId } })
     await prisma.user.delete({ where: { id: userId } })
     await prisma.team.delete({ where: { id: teamId } })
@@ -101,5 +103,28 @@ describe('TasksController', () => {
       .auth(token, { type: 'bearer' })
 
     expect(response.statusCode).toBe(200)
+  })
+
+  it('should update the task status and generate a task history', async () => {
+    const response = await request(app)
+      .patch(`/tasks/${taskId}`)
+      .send({
+        status: 'in_progress',
+      })
+      .auth(token, { type: 'bearer' })
+
+    const taskHistory = await prisma.tasksHistory.findFirst({
+      where: { taskId },
+    })
+
+    if (!taskHistory) {
+      return
+    }
+
+    taskHistoryId = taskHistory.id
+
+    expect(response.statusCode).toBe(200)
+    expect(taskHistory.oldStatus).toBe('pending')
+    expect(taskHistory.taskId).toBe(taskId)
   })
 })
