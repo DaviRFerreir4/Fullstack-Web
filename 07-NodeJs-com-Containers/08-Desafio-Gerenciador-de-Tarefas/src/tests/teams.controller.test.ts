@@ -5,6 +5,7 @@ import { prisma } from '../database/prisma'
 
 describe('TeamsController', () => {
   let token: string
+  let testTeamId: string
 
   const teamData = {
     name: 'Test Team',
@@ -127,8 +128,10 @@ describe('TeamsController', () => {
       return
     }
 
+    testTeamId = team.id
+
     const response = await request(app)
-      .put(`/teams/${team.id}`)
+      .put(`/teams/${testTeamId}`)
       .send({
         description: 'Some other description',
       })
@@ -159,5 +162,14 @@ describe('TeamsController', () => {
       .auth(token, { type: 'bearer' })
 
     expect(response.statusCode).toBe(200)
+  })
+
+  it('should throw an error after sending an put request without data to be updated', async () => {
+    const response = await request(app)
+      .put(`/teams/${testTeamId}`)
+      .auth(token, { type: 'bearer' })
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toHaveProperty('message')
   })
 })
