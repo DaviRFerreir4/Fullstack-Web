@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import z from 'zod'
 
-import { Status } from '../database/generate/client'
-import { Priority } from '../database/generate/client'
+import { Status } from '@prisma/client'
+import { Priority } from '@prisma/client'
 import { prisma } from '../database/prisma'
 import { AppError } from '../utils/app-error'
 

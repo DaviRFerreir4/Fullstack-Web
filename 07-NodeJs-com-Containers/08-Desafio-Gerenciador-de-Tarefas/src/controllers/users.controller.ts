@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import z from 'zod'
 import { hash } from 'bcrypt'
 
-import { UserRole } from '../database/generate/client'
+import { UserRole } from '@prisma/client'
 import { prisma } from '../database/prisma'
 import { AppError } from '../utils/app-error'
 

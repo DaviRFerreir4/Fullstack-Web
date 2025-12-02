@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-import { UserRole } from '../database/generate/client'
+import { UserRole } from '@prisma/client'
 import { AppError } from '../utils/app-error'
 
 export function verifyUserAuthorization(roles: UserRole[]) {

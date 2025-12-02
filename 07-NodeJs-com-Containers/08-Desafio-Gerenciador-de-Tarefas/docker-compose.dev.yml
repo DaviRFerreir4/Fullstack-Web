@@ -10,6 +10,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '3333:3333'
+    environment:
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/api?schema=public'
     depends_on:
       - postgres
     command: npm run dev
