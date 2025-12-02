@@ -1,4 +1,6 @@
 node_modules
 dist
+insomnia_requests.yaml
 .env
+.env-example
 .gitignore
