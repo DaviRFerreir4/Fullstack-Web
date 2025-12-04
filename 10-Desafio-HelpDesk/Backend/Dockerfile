@@ -12,8 +12,6 @@ RUN npx prisma generate
 
 COPY . .
 
-RUN npm run build
-
 CMD ["npm", "run", "dev"]
 
 FROM node:20.19-alpine AS production

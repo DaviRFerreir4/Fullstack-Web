@@ -1,12 +1,33 @@
 import { Request, Response } from 'express'
 import z from 'zod'
+import { hash } from 'bcrypt'
 
 import { Role } from '@prisma/client'
 import { AppError } from '../utils/app-error'
 import { prisma } from '../database/prisma'
-import { hash } from 'bcrypt'
 
 export class UsersController {
+  async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      role: z
+        .enum(Object.values(Role), {
+          error: `O papel do usuário deve ser um dos seguintes: ${Object.keys(
+            Role
+          ).join(', ')}`,
+        })
+        .default('technician'),
+    })
+
+    const { role } = querySchema.parse(request.query)
+
+    const users = await prisma.user.findMany({
+      where: { role },
+      omit: { password: true },
+    })
+
+    return response.json(users)
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z
       .object({
