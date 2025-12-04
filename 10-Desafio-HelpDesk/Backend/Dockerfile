@@ -6,9 +6,11 @@ COPY package*.json .
 
 RUN npm install
 
-COPY . .
+COPY prisma ./prisma
 
-EXPOSE 3333
+RUN npx prisma generate
+
+COPY . .
 
 RUN npm run build
 
@@ -23,5 +25,8 @@ COPY package*.json .
 RUN npm ci --only=production
 
 COPY --from=development /usr/src/app/dist ./dist
+
+COPY --from=development /usr/src/app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=development /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
 CMD ["npm", "start"]

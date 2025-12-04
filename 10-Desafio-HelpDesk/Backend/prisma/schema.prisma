@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  technician
+  client
+}
+
+enum Status {
+  opened
+  in_progress
+  closed
+}
+
+model User {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+
+  role Role
+
+  openingHours OpeningHour?
+
+  clientCall Call[] @relation("client")
+  technicianCall Call[] @relation("technician")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model OpeningHour {
+  userId String @id @map("user_id")
+  availableHours Json @map("available_hours")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("opening_hours")
+}
+
+model Service {
+  id String @id @default(uuid())
+  type String
+  value BigInt
+
+  calls CallService[]
+
+  isActive Boolean @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("services")
+}
+
+model Call {
+  id Int @id @default(autoincrement())
+
+  status Status @default(opened)
+
+  requestedBy String @map("requested_by")
+  client User @relation("client", fields: [requestedBy], references: [id])
+
+  assignedTo String @map("assigned_to")
+  technician User @relation("technician", fields: [assignedTo], references: [id])
+
+  services CallService[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("calls")
+}
+
+model CallService {
+  id String @id @default(uuid())
+
+  callId Int @map("call_id")
+  call Call @relation(fields: [callId], references: [id])
+
+  serviceId String @map("service_id")
+  service Service @relation(fields: [serviceId], references: [id])
+
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("calls_services")
+}
