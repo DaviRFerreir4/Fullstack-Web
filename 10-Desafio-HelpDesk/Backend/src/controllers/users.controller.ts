@@ -50,6 +50,12 @@ export class UsersController {
       request.body
     )
 
+    if (role !== 'client' && (!request.user || request.user.role !== 'admin')) {
+      throw new AppError(
+        'Somente administradores do sistema podem criar usuários com esse papel'
+      )
+    }
+
     const userWithSameEmail = await prisma.user.findUnique({ where: { email } })
 
     if (userWithSameEmail) {
