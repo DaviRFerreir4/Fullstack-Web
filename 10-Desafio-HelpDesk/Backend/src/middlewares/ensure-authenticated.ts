@@ -18,7 +18,7 @@ export function ensureAuthenticated(
   const authHeader = request.headers.authorization
 
   if (!authHeader) {
-    throw new AppError('Não autorizado', 401)
+    throw new AppError('JWT não encontrado')
   }
 
   const [, token] = authHeader.split(' ')
