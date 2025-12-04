@@ -32,7 +32,7 @@ model User {
   email String @unique
   password String
 
-  role Role
+  role Role @default(client)
 
   openingHours OpeningHour?
 
@@ -47,7 +47,7 @@ model User {
 
 model OpeningHour {
   userId String @id @map("user_id")
-  availableHours Json @map("available_hours")
+  availableHours Int[] @map("available_hours")
 
   user User @relation(fields: [userId], references: [id])
 
