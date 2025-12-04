@@ -1,25 +1,17 @@
 import 'express-async-errors'
 import express from 'express'
 
-import { prisma } from './database/prisma'
+import { AppError } from './utils/app-error'
+import { errorHandling } from './middlewares/error-handling'
 
 const app = express()
 
 app.use(express.json())
 
-app.get('/', async (req, res) => {
-  await prisma.user.create({
-    data: {
-      name: 'davi',
-      email: 'davi@email.com',
-      password: '1234',
-      role: 'admin',
-    },
-  })
-
-  const user = await prisma.user.findFirst({ where: { name: 'davi' } })
-
-  return res.json(user)
+app.get('/', () => {
+  throw new AppError('teste')
 })
+
+app.use(errorHandling)
 
 export { app }
