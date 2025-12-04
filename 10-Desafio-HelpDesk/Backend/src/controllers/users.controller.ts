@@ -55,7 +55,7 @@ export class UsersController {
           .array(
             z
               .int({ error: 'Horário deve ser um número' })
-              .min(0, { error: 'Horário deve ser maio que 0' })
+              .min(7, { error: 'Horário deve ser maio que 0' })
               .max(23, { error: 'Horário deve ser menor que 23' })
           )
           .default([]),
@@ -83,8 +83,16 @@ export class UsersController {
       throw new AppError('Já existe um usuário com esse e-mail')
     }
 
-    if (role === 'technician' && available_hours.length !== 8) {
-      throw new AppError('Um técnico precisa ter uma jornada de 8 horas')
+    if (role === 'technician') {
+      if (available_hours.length < 1) {
+        throw new AppError('Informe os horários disponíveis do técnico')
+      }
+
+      if (available_hours.length > 8) {
+        throw new AppError(
+          'Um técnico não pode trabalhar mais que 8 horas no dia'
+        )
+      }
     }
 
     const hashedPassword = await hash(password, 10)
@@ -100,5 +108,30 @@ export class UsersController {
     }
 
     return response.status(201).json()
+  }
+
+  async remove(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Informe um usuário válido' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const user = await prisma.user.findUnique({ where: { id } })
+
+    if (!user) {
+      throw new AppError('Usuário a ser removido não encontrado')
+    }
+
+    if (
+      !request.user ||
+      (request.user.role !== 'admin' && id !== request.user.id)
+    ) {
+      throw new AppError('Você não tem permissão para excluir esse usuário')
+    }
+
+    await prisma.user.delete({ where: { id } })
+
+    return response.json()
   }
 }

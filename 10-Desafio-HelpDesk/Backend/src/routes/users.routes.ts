@@ -11,5 +11,6 @@ const usersController = new UsersController()
 usersRoutes.post('/', usersController.create)
 usersRoutes.use(ensureAuthenticated)
 usersRoutes.get('/', verifyUserAuthorization(['admin']), usersController.index)
+usersRoutes.delete('/:id', usersController.remove)
 
 export { usersRoutes }
