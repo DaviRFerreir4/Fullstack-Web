@@ -9,6 +9,6 @@ const upload = multer(uploadConfig.MULTER)
 const uploadsRoutes = Router()
 const uploadsController = new UploadsController()
 
-uploadsRoutes.post('/', upload.single('file'), uploadsController.create)
+uploadsRoutes.post('/:id', upload.single('file'), uploadsController.create)
 
 export { uploadsRoutes }
