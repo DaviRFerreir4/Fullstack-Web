@@ -15,17 +15,65 @@ export class UsersController {
             Role
           ).join(', ')}`,
         })
-        .default('technician'),
+        .optional(),
+      page: z.coerce.number().default(1),
+      perPage: z.coerce.number().default(10),
     })
 
-    const { role } = querySchema.parse(request.query)
+    const { role, page, perPage } = querySchema.parse(request.query)
+
+    const skip = (page - 1) * perPage
 
     const users = await prisma.user.findMany({
+      skip,
       where: { role },
       omit: { password: true },
     })
 
-    return response.json(users)
+    const totalRecords = await prisma.user.count({
+      where: { role },
+    })
+
+    const totalPages = Math.ceil(totalRecords / perPage)
+
+    return response.json({
+      users,
+      pagination: {
+        page,
+        perPage,
+        totalRecords,
+        totalPages: totalPages > 0 ? totalPages : 1,
+      },
+    })
+  }
+
+  async show(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Informe um usuário válido' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    if (
+      !request.user ||
+      (request.user.id !== id && request.user.role !== 'admin')
+    ) {
+      throw new AppError(
+        'Você não tem permissão para ver os dados desse usuário',
+        401
+      )
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      omit: { password: true },
+    })
+
+    if (!user) {
+      throw new AppError('Usuário não encontrado')
+    }
+
+    return response.json(user)
   }
 
   async create(request: Request, response: Response) {
@@ -121,7 +169,10 @@ export class UsersController {
       !request.user ||
       (request.user.role !== 'admin' && id !== request.user.id)
     ) {
-      throw new AppError('Você não tem permissão para excluir esse usuário')
+      throw new AppError(
+        'Você não tem permissão para excluir esse usuário',
+        401
+      )
     }
 
     const user = await prisma.user.findUnique({ where: { id } })
@@ -192,7 +243,10 @@ export class UsersController {
       !request.user ||
       (request.user.role !== 'admin' && id !== request.user.id)
     ) {
-      throw new AppError('Você não tem permissão para excluir esse usuário')
+      throw new AppError(
+        'Você não tem permissão para excluir esse usuário',
+        401
+      )
     }
 
     const user = await prisma.user.findUnique({ where: { id } })
