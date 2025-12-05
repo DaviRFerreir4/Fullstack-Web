@@ -110,12 +110,19 @@ export class UsersController {
     return response.status(201).json()
   }
 
-  async remove(request: Request, response: Response) {
+  async update(request: Request, response: Response) {
     const paramsSchema = z.object({
       id: z.uuid({ error: 'Informe um usuário válido' }),
     })
 
     const { id } = paramsSchema.parse(request.params)
+
+    if (
+      !request.user ||
+      (request.user.role !== 'admin' && id !== request.user.id)
+    ) {
+      throw new AppError('Você não tem permissão para excluir esse usuário')
+    }
 
     const user = await prisma.user.findUnique({ where: { id } })
 
@@ -123,11 +130,75 @@ export class UsersController {
       throw new AppError('Usuário a ser removido não encontrado')
     }
 
+    const bodySchema = z
+      .object({
+        name: z
+          .string({ error: 'Informe o nome' })
+          .trim()
+          .min(3, { error: 'Informe o nome' })
+          .optional(),
+        email: z.email({ error: 'Informe um e-mail válido' }).trim().optional(),
+        password: z
+          .string({ error: 'Informe a senha' })
+          .trim()
+          .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, {
+            error:
+              'Senha inválida.\nUma senha deve conter 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
+          })
+          .optional(),
+        confirm_password: z
+          .string({ error: 'Informe a confirmação da senha' })
+          .optional(),
+        available_hours: z
+          .array(
+            z
+              .int({ error: 'Horário deve ser um número' })
+              .min(7, { error: 'Horário deve ser maio que 0' })
+              .max(23, { error: 'Horário deve ser menor que 23' })
+          )
+          .default([]),
+      })
+      .refine(
+        ({ password, confirm_password }) => {
+          return password === confirm_password
+        },
+        { error: 'A senha e a confirmação não são iguais' }
+      )
+
+    const { name, email, password, available_hours } = bodySchema.parse(
+      request.body
+    )
+
+    if (user.role === 'technician' && available_hours) {
+      await prisma.openingHour.update({
+        where: { userId: id },
+        data: { availableHours: available_hours },
+      })
+    }
+
+    await prisma.user.update({ where: { id }, data: { name, email, password } })
+
+    return response.json()
+  }
+
+  async remove(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Informe um usuário válido' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
     if (
       !request.user ||
       (request.user.role !== 'admin' && id !== request.user.id)
     ) {
       throw new AppError('Você não tem permissão para excluir esse usuário')
+    }
+
+    const user = await prisma.user.findUnique({ where: { id } })
+
+    if (!user) {
+      throw new AppError('Usuário a ser removido não encontrado')
     }
 
     await prisma.user.delete({ where: { id } })
