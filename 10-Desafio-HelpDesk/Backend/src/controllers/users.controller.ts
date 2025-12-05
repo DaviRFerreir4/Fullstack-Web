@@ -223,6 +223,14 @@ export class UsersController {
       request.body
     )
 
+    if (!name && !email && !password && available_hours.length === 0) {
+      throw new AppError(
+        `Informe algum dado a ser atualizado (${Object.values(
+          bodySchema.keyof().enum
+        ).join(', ')})`
+      )
+    }
+
     if (user.role === 'technician' && available_hours.length > 0) {
       await prisma.openingHour.update({
         where: { userId: id },

@@ -67,4 +67,45 @@ export class ServicesController {
 
     return response.status(201).json(service)
   }
+
+  async update(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Informe um serviço válido' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const service = await prisma.service.findUnique({ where: { id } })
+
+    if (!service) {
+      throw new AppError('Serviço não encontrado')
+    }
+
+    const bodySchema = z.object({
+      type: z
+        .string({ error: 'O tipo de serviço deve ser um texto' })
+        .optional(),
+      value: z
+        .number({ error: 'O valor do serviço deve ser um número' })
+        .min(1, { error: 'O valor do serviço deve ser maior que 0' })
+        .optional(),
+    })
+
+    const { type, value } = bodySchema.parse(request.body)
+
+    if (!type && !value) {
+      throw new AppError(
+        `Informe algum dado a ser atualizado (${Object.values(
+          bodySchema.keyof().enum
+        ).join(', ')})`
+      )
+    }
+
+    const serviceUpdated = await prisma.service.update({
+      where: { id },
+      data: { type, value: value && Number(value.toFixed(2)) },
+    })
+
+    return response.json({ service: serviceUpdated })
+  }
 }
