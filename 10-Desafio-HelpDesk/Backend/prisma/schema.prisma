@@ -37,8 +37,8 @@ model User {
 
   openingHours OpeningHour?
 
-  clientCall Call[] @relation("client")
-  technicianCall Call[] @relation("technician")
+  clientRequest Request[] @relation("client")
+  technicianRequest Request[] @relation("technician")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
@@ -60,7 +60,7 @@ model Service {
   type String
   value Float
 
-  calls CallService[]
+  requests RequestService[]
 
   isActive Boolean @default(true) @map("is_active")
   createdAt DateTime @default(now()) @map("created_at")
@@ -69,7 +69,7 @@ model Service {
   @@map("services")
 }
 
-model Call {
+model Request {
   id Int @id @default(autoincrement())
 
   status Status @default(opened)
@@ -80,19 +80,19 @@ model Call {
   assignedTo String @map("assigned_to")
   technician User @relation("technician", fields: [assignedTo], references: [id])
 
-  services CallService[]
+  services RequestService[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  @@map("calls")
+  @@map("requests")
 }
 
-model CallService {
+model RequestService {
   id String @id @default(uuid())
 
-  callId Int @map("call_id")
-  call Call @relation(fields: [callId], references: [id])
+  requestId Int @map("request_id")
+  request Request @relation(fields: [requestId], references: [id])
 
   serviceId String @map("service_id")
   service Service @relation(fields: [serviceId], references: [id])
@@ -100,5 +100,5 @@ model CallService {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  @@map("calls_services")
+  @@map("requests_services")
 }
