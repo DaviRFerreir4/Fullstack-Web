@@ -108,4 +108,40 @@ export class ServicesController {
 
     return response.json({ service: serviceUpdated })
   }
+
+  async patch(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Informe um serviço válido' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const service = await prisma.service.findUnique({ where: { id } })
+
+    if (!service) {
+      throw new AppError('Serviço não encontrado')
+    }
+
+    const bodySchema = z.object({
+      isActive: z.boolean({
+        error:
+          'A informação de serviço ativo deve ser um valor boleano (true ou false)',
+      }),
+    })
+
+    const { isActive } = bodySchema.parse(request.body)
+
+    if (isActive === service.isActive) {
+      throw new AppError(
+        `Esse serviço já está ${service.isActive ? 'ativado' : 'desativado'}`
+      )
+    }
+
+    const serviceUpdated = await prisma.service.update({
+      where: { id },
+      data: { isActive },
+    })
+
+    return response.json(serviceUpdated)
+  }
 }
