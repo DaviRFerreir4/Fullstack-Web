@@ -9,6 +9,7 @@ import { prisma } from '../database/prisma'
 export class UsersController {
   async index(request: Request, response: Response) {
     const querySchema = z.object({
+      name: z.string().optional(),
       role: z
         .enum(Object.values(Role), {
           error: `O papel do usuário deve ser um dos seguintes: ${Object.keys(
@@ -20,13 +21,13 @@ export class UsersController {
       perPage: z.coerce.number().default(10),
     })
 
-    const { role, page, perPage } = querySchema.parse(request.query)
+    const { role, name, page, perPage } = querySchema.parse(request.query)
 
     const skip = (page - 1) * perPage
 
     const users = await prisma.user.findMany({
       skip,
-      where: { role },
+      where: { role, name: { contains: name, mode: 'insensitive' } },
       omit: { password: true },
     })
 
@@ -155,7 +156,9 @@ export class UsersController {
       })
     }
 
-    return response.status(201).json()
+    const { password: _, ...userWithoutPassword } = user
+
+    return response.status(201).json({ user: userWithoutPassword })
   }
 
   async update(request: Request, response: Response) {

@@ -58,7 +58,7 @@ model OpeningHour {
 model Service {
   id String @id @default(uuid())
   type String
-  value BigInt
+  value Float
 
   calls CallService[]
 

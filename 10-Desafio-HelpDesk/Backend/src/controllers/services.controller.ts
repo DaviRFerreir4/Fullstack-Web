@@ -5,23 +5,66 @@ import { prisma } from '../database/prisma'
 import { AppError } from '../utils/app-error'
 
 export class ServicesController {
+  async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      type: z.string().optional(),
+      is_active: z.coerce.boolean().optional(),
+      gt: z.coerce.number().optional(),
+      lt: z.coerce.number().optional(),
+      page: z.coerce.number().default(1),
+      perPage: z.coerce.number().default(10),
+    })
+
+    const { type, is_active, gt, lt, page, perPage } = querySchema.parse(
+      request.query
+    )
+
+    const skip = (page - 1) * perPage
+
+    const services = await prisma.service.findMany({
+      skip,
+      where: {
+        type: { contains: type, mode: 'insensitive' },
+        isActive: { equals: is_active },
+        value: { gt, lt },
+      },
+    })
+
+    const totalRecords = await prisma.service.count({
+      where: {
+        type: { contains: type, mode: 'insensitive' },
+        isActive: { equals: is_active },
+        value: { gt, lt },
+      },
+    })
+
+    const totalPages = Math.ceil(totalRecords / perPage)
+
+    return response.json({
+      services,
+      pagination: {
+        page,
+        perPage,
+        totalRecords,
+        totalPages: totalPages > 0 ? totalPages : 1,
+      },
+    })
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
       type: z.string({ error: 'Informe o tipo do serviço' }),
       value: z
         .number({ error: 'Informe o valor do serviço' })
-        .min(1, { error: 'O valor do serviço deve ser maior que 0' })
-        .refine((number) => {
-          return Number.isInteger(number) ? number : number.toFixed(2)
-        }),
+        .min(1, { error: 'O valor do serviço deve ser maior que 0' }),
     })
 
     const { type, value } = bodySchema.parse(request.body)
 
-    const valueWithoutDecimal = value * 100
+    const service = await prisma.service.create({
+      data: { type, value: Number(value.toFixed(2)) },
+    })
 
-    await prisma.service.create({ data: { type, value: valueWithoutDecimal } })
-
-    return response.status(201).json()
+    return response.status(201).json(service)
   }
 }

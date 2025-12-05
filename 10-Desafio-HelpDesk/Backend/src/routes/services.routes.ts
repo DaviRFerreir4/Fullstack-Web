@@ -7,6 +7,7 @@ const servicesRoutes = Router()
 const servicesController = new ServicesController()
 
 servicesRoutes.use(verifyUserAuthorization(['admin']))
+servicesRoutes.get('/', servicesController.index)
 servicesRoutes.post('/', servicesController.create)
 
 export { servicesRoutes }
