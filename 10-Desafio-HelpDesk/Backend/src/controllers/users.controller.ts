@@ -220,7 +220,7 @@ export class UsersController {
       request.body
     )
 
-    if (user.role === 'technician' && available_hours) {
+    if (user.role === 'technician' && available_hours.length > 0) {
       await prisma.openingHour.update({
         where: { userId: id },
         data: { availableHours: available_hours },
