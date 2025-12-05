@@ -5,11 +5,13 @@ import { verifyUserAuthorization } from '../middlewares/verify-user-authorizatio
 
 import { sessionsRoutes } from './sessions.routes'
 import { usersRoutes } from './users.routes'
+import { uploadsRoutes } from './uploads.routes'
 
 const routes = Router()
 
 routes.use('/sessions', sessionsRoutes)
 routes.use('/users', usersRoutes)
 routes.use(ensureAuthenticated)
+routes.use('/uploads', uploadsRoutes)
 
 export { routes }
