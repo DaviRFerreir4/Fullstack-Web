@@ -131,6 +131,10 @@ export class RequestsController {
       throw new AppError('Serviço não encontrado')
     }
 
+    if (!service.isActive) {
+      throw new AppError('Serviço não está mais ativo para atendimento')
+    }
+
     const userRequest = await prisma.request.create({
       data: { requestedBy: request.user.id, assignedTo },
     })
