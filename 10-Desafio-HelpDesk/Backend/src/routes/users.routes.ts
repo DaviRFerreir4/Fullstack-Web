@@ -10,6 +10,11 @@ const usersController = new UsersController()
 
 usersRoutes.post('/', usersController.create)
 usersRoutes.use(ensureAuthenticated)
+usersRoutes.post(
+  '/technician',
+  verifyUserAuthorization(['admin']),
+  usersController.create
+)
 usersRoutes.get('/', verifyUserAuthorization(['admin']), usersController.index)
 usersRoutes.get('/:id', usersController.show)
 usersRoutes.put('/:id', usersController.update)

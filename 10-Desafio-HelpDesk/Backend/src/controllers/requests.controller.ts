@@ -3,6 +3,7 @@ import z from 'zod'
 
 import { prisma } from '../database/prisma'
 import { AppError } from '../utils/app-error'
+import { Status } from '@prisma/client'
 
 export class RequestsController {
   async index(request: Request, response: Response) {
@@ -206,6 +207,42 @@ export class RequestsController {
     }
 
     await prisma.requestService.create({ data: { requestId: id, serviceId } })
+
+    return response.json()
+  }
+
+  async patch(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.coerce.number({ error: 'Informe um chamado existente' }).min(1),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const clientRequest = await prisma.request.findUnique({ where: { id } })
+
+    if (!clientRequest) {
+      throw new AppError('Chamado não encontrado')
+    }
+
+    if (!request.user || clientRequest.assignedTo !== request.user.id) {
+      throw new AppError('Você não é o técnico responsável por esse chamado')
+    }
+
+    const bodySchema = z.object({
+      status: z.enum(Object.values(Status), {
+        error: `O status do chamado deve ser um dos seguintes: ${Object.keys(
+          Status
+        ).join(', ')}`,
+      }),
+    })
+
+    const { status } = bodySchema.parse(request.body)
+
+    if (clientRequest.status === status) {
+      throw new AppError(`O status desse chamado já é "${status}"`)
+    }
+
+    await prisma.request.update({ where: { id }, data: { status } })
 
     return response.json()
   }

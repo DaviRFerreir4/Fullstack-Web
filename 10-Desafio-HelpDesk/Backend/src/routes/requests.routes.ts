@@ -26,5 +26,10 @@ requestsRoutes.post(
   verifyUserAuthorization(['technician']),
   requestsController.createRequestService
 )
+requestsRoutes.patch(
+  '/:id/status',
+  verifyUserAuthorization(['technician']),
+  requestsController.patch
+)
 
 export { requestsRoutes }
