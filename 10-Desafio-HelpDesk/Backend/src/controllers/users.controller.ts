@@ -329,6 +329,19 @@ export class UsersController {
       throw new AppError('Usuário a ser removido não encontrado')
     }
 
+    const userRequests = await prisma.request.findMany({
+      where: { requestedBy: id },
+    })
+
+    if (userRequests.length > 0) {
+      userRequests.forEach(async (userRequest) => {
+        await prisma.requestService.deleteMany({
+          where: { requestId: userRequest.id },
+        })
+        await prisma.request.delete({ where: { id: userRequest.id } })
+      })
+    }
+
     await prisma.user.delete({ where: { id } })
 
     return response.json()
