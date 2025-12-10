@@ -11,11 +11,7 @@ requestsRoutes.get(
   verifyUserAuthorization(['admin']),
   requestsController.index
 )
-requestsRoutes.get(
-  '/:userId',
-  verifyUserAuthorization(['client', 'technician']),
-  requestsController.show
-)
+requestsRoutes.get('/:id', requestsController.show)
 requestsRoutes.post(
   '/',
   verifyUserAuthorization(['client']),

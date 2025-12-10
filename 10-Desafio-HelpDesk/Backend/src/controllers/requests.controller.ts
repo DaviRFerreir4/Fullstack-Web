@@ -45,37 +45,17 @@ export class RequestsController {
 
   async show(request: Request, response: Response) {
     const paramsSchema = z.object({
-      userId: z.uuid({ error: 'Informe um usuário válido' }),
+      id: z.coerce.number({ error: 'Informe um chamado existente' }),
     })
 
-    const { userId } = paramsSchema.parse(request.params)
+    const { id } = paramsSchema.parse(request.params)
 
-    if (
-      !request.user ||
-      (request.user.role !== 'admin' && userId !== request.user.id)
-    ) {
-      throw new AppError(
-        'Você não tem permissão para visualizar esses chamados',
-        401
-      )
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    })
-
-    if (!user) {
-      throw new AppError('Usuário não encontrado')
-    }
-
-    const requests = await prisma.request.findMany({
-      where: {
-        assignedTo: user.role === 'technician' ? userId : undefined,
-        requestedBy: user.role === 'client' ? userId : undefined,
-      },
+    const userRequest = await prisma.request.findUnique({
+      where: { id },
       include: {
         client: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -83,6 +63,7 @@ export class RequestsController {
           select: {
             service: {
               select: {
+                id: true,
                 type: true,
                 value: true,
                 isActive: true,
@@ -92,15 +73,30 @@ export class RequestsController {
         },
         technician: {
           select: {
+            id: true,
             name: true,
           },
         },
       },
     })
 
-    console.log(requests)
+    if (!userRequest) {
+      throw new AppError('Chamado não encontrado')
+    }
 
-    return response.json({ requests })
+    if (
+      !request.user ||
+      (request.user.role !== 'admin' &&
+        userRequest.assignedTo !== request.user.id &&
+        userRequest.requestedBy !== request.user.id)
+    ) {
+      throw new AppError(
+        'Você não tem permissão para visualizar esse chamado',
+        401
+      )
+    }
+
+    return response.json({ request: userRequest })
   }
 
   async create(request: Request, response: Response) {
