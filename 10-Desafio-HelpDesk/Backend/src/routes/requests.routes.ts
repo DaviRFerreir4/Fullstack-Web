@@ -6,6 +6,11 @@ import { verifyUserAuthorization } from '../middlewares/verify-user-authorizatio
 const requestsRoutes = Router()
 const requestsController = new RequestsController()
 
+requestsRoutes.get(
+  '/:userId',
+  verifyUserAuthorization(['client', 'technician']),
+  requestsController.show
+)
 requestsRoutes.post(
   '/',
   verifyUserAuthorization(['client']),

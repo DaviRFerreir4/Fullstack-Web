@@ -5,6 +5,65 @@ import { prisma } from '../database/prisma'
 import { AppError } from '../utils/app-error'
 
 export class RequestsController {
+  async show(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      userId: z.uuid({ error: 'Informe um usuário válido' }),
+    })
+
+    const { userId } = paramsSchema.parse(request.params)
+
+    if (
+      !request.user ||
+      (request.user.role !== 'admin' && userId !== request.user.id)
+    ) {
+      throw new AppError(
+        'Você não tem permissão para visualizar esses chamados',
+        401
+      )
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!user) {
+      throw new AppError('Usuário não encontrado')
+    }
+
+    const requests = await prisma.request.findMany({
+      where: {
+        assignedTo: user.role === 'technician' ? userId : undefined,
+        requestedBy: user.role === 'client' ? userId : undefined,
+      },
+      include: {
+        client: {
+          select: {
+            name: true,
+          },
+        },
+        services: {
+          select: {
+            service: {
+              select: {
+                type: true,
+                value: true,
+              },
+            },
+          },
+        },
+        technician: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    })
+
+    console.log(requests)
+
+    return response.json({ requests })
+  }
+
   async create(request: Request, response: Response) {
     if (!request.user) {
       throw new AppError('Usuário não encontrado')
