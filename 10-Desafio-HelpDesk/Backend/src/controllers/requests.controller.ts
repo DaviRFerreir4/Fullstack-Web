@@ -132,14 +132,14 @@ export class RequestsController {
     }
 
     if (!service.isActive) {
-      throw new AppError('Serviço não está mais ativo para atendimento')
+      throw new AppError('Esse serviço não está mais ativo para atendimento')
     }
 
     const userRequest = await prisma.request.create({
       data: { requestedBy: request.user.id, assignedTo },
     })
 
-    const requestService = await prisma.requestService.create({
+    await prisma.requestService.create({
       data: { requestId: userRequest.id, serviceId },
     })
 
@@ -156,5 +156,57 @@ export class RequestsController {
         service,
       },
     })
+  }
+
+  async createRequestService(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.coerce.number({ error: 'Informe um chamado existente' }).min(1),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const clientRequest = await prisma.request.findUnique({ where: { id } })
+
+    if (!clientRequest) {
+      throw new AppError('Chamado não encontrado')
+    }
+
+    if (!request.user || clientRequest.assignedTo !== request.user.id) {
+      throw new AppError('Você não é o técnico responsável por esse chamado')
+    }
+
+    const bodySchema = z.object({
+      serviceId: z.uuid({ error: 'Informe um serviço válido' }),
+    })
+
+    const { serviceId } = bodySchema.parse(request.body)
+
+    const service = await prisma.service.findUnique({
+      where: { id: serviceId },
+    })
+
+    if (!service) {
+      throw new AppError('O serviço informado não existe')
+    }
+
+    if (!service.isActive) {
+      throw new AppError(
+        'Esse serviço não pode ser adicionado pois está desativado'
+      )
+    }
+
+    const requestServiceAlreadyExists = await prisma.requestService.findFirst({
+      where: { requestId: id, serviceId },
+    })
+
+    if (requestServiceAlreadyExists) {
+      throw new AppError(
+        'Esse serviço não pode ser adicionado porque ele já faz parte do chamado'
+      )
+    }
+
+    await prisma.requestService.create({ data: { requestId: id, serviceId } })
+
+    return response.json()
   }
 }

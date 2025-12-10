@@ -21,5 +21,10 @@ requestsRoutes.post(
   verifyUserAuthorization(['client']),
   requestsController.create
 )
+requestsRoutes.post(
+  '/:id',
+  verifyUserAuthorization(['technician']),
+  requestsController.createRequestService
+)
 
 export { requestsRoutes }
