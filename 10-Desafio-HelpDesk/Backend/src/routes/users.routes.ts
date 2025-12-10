@@ -17,6 +17,7 @@ usersRoutes.post(
 )
 usersRoutes.get('/', verifyUserAuthorization(['admin']), usersController.index)
 usersRoutes.get('/:id', usersController.show)
+usersRoutes.get('/:id/requests', usersController.showRequests)
 usersRoutes.put('/:id', usersController.update)
 usersRoutes.delete('/:id', usersController.remove)
 

@@ -77,6 +77,69 @@ export class UsersController {
     return response.json(user)
   }
 
+  async showRequests(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Informe um usuário válido' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    if (
+      !request.user ||
+      (request.user.role !== 'admin' && id !== request.user.id)
+    ) {
+      throw new AppError(
+        'Você não tem permissão para visualizar esses chamados',
+        401
+      )
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+    })
+
+    if (!user) {
+      throw new AppError('Usuário não encontrado')
+    }
+
+    const requests = await prisma.request.findMany({
+      where: {
+        assignedTo: user.role === 'technician' ? id : undefined,
+        requestedBy: user.role === 'client' ? id : undefined,
+      },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        services: {
+          select: {
+            service: {
+              select: {
+                id: true,
+                type: true,
+                value: true,
+                isActive: true,
+              },
+            },
+          },
+        },
+        technician: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    })
+
+    console.log(requests)
+
+    return response.json({ requests })
+  }
+
   async create(request: Request, response: Response) {
     const bodySchema = z
       .object({
