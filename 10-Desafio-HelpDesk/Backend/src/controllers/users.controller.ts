@@ -89,55 +89,47 @@ export class UsersController {
       (request.user.role !== 'admin' && id !== request.user.id)
     ) {
       throw new AppError(
-        'Você não tem permissão para visualizar esses chamados',
+        'Você não tem permissão para visualizar os chamados desse usuário',
         401
       )
     }
 
     const user = await prisma.user.findUnique({
       where: { id },
+      omit: { password: true },
+      include: {
+        clientRequest: request.user.role === 'client' && {
+          omit: {
+            requestedBy: true,
+          },
+          include: {
+            technician: {
+              omit: {
+                password: true,
+              },
+            },
+          },
+        },
+        technicianRequest: request.user.role === 'technician' && {
+          omit: {
+            assignedTo: true,
+          },
+          include: {
+            client: {
+              omit: {
+                password: true,
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!user) {
       throw new AppError('Usuário não encontrado')
     }
 
-    const requests = await prisma.request.findMany({
-      where: {
-        assignedTo: user.role === 'technician' ? id : undefined,
-        requestedBy: user.role === 'client' ? id : undefined,
-      },
-      include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        services: {
-          select: {
-            service: {
-              select: {
-                id: true,
-                type: true,
-                value: true,
-                isActive: true,
-              },
-            },
-          },
-        },
-        technician: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    })
-
-    console.log(requests)
-
-    return response.json({ requests })
+    return response.json(user)
   }
 
   async create(request: Request, response: Response) {
