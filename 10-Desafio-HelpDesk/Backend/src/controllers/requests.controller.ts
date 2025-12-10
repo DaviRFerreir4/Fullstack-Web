@@ -5,6 +5,43 @@ import { prisma } from '../database/prisma'
 import { AppError } from '../utils/app-error'
 
 export class RequestsController {
+  async index(request: Request, response: Response) {
+    const requests = await prisma.request.findMany({
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        services: {
+          select: {
+            service: {
+              select: {
+                id: true,
+                type: true,
+                value: true,
+                isActive: true,
+              },
+            },
+          },
+        },
+        technician: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      omit: {
+        requestedBy: true,
+        assignedTo: true,
+      },
+    })
+
+    return response.json(requests)
+  }
+
   async show(request: Request, response: Response) {
     const paramsSchema = z.object({
       userId: z.uuid({ error: 'Informe um usuário válido' }),
@@ -47,6 +84,7 @@ export class RequestsController {
               select: {
                 type: true,
                 value: true,
+                isActive: true,
               },
             },
           },

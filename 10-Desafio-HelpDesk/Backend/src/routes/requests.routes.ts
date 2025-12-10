@@ -7,6 +7,11 @@ const requestsRoutes = Router()
 const requestsController = new RequestsController()
 
 requestsRoutes.get(
+  '/',
+  verifyUserAuthorization(['admin']),
+  requestsController.index
+)
+requestsRoutes.get(
   '/:userId',
   verifyUserAuthorization(['client', 'technician']),
   requestsController.show
