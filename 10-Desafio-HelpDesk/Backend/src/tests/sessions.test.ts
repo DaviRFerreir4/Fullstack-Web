@@ -2,15 +2,9 @@ import request from 'supertest'
 
 import { app } from '../app'
 import { prisma } from '../database/prisma'
+import { userData } from './utils/requestData'
 
 describe('SessionsController', () => {
-  const userData = {
-    name: 'Test User',
-    email: 'test.user@email.com',
-    password: 'TestPassword123.',
-    confirm_password: 'TestPassword123.',
-  }
-
   beforeAll(async () => {
     await request(app)
       .post('/users')
