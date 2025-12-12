@@ -5,6 +5,7 @@ import { hash } from 'bcrypt'
 import { Role } from '@prisma/client'
 import { AppError } from '../utils/app-error'
 import { prisma } from '../database/prisma'
+import { DiskStorage } from '../providers/disk-storage'
 
 export class UsersController {
   async index(request: Request, response: Response) {
@@ -328,49 +329,54 @@ export class UsersController {
       },
     })
 
-    if (userRequests.length === 0) {
-      await prisma.user.delete({ where: { id } })
+    if (userRequests.length > 0) {
+      if (user.role === 'client') {
+        for (const userRequest of userRequests) {
+          await prisma.requestService.deleteMany({
+            where: { requestId: userRequest.id },
+          })
 
-      return response.json()
-    }
-
-    if (user.role === 'client') {
-      for (const userRequest of userRequests) {
-        await prisma.requestService.deleteMany({
-          where: { requestId: userRequest.id },
-        })
-
-        await prisma.request.delete({ where: { id: userRequest.id } })
+          await prisma.request.delete({ where: { id: userRequest.id } })
+        }
       }
-    }
 
-    if (user.role === 'technician') {
-      for (const userRequest of userRequests) {
-        const technicians = await prisma.user.findMany({
-          where: {
-            id: { not: user.id },
-            role: 'technician',
-          },
-          orderBy: {
-            technicianRequest: { _count: 'asc' },
-          },
-        })
+      if (user.role === 'technician') {
+        for (const userRequest of userRequests) {
+          const technicians = await prisma.user.findMany({
+            where: {
+              id: { not: user.id },
+              role: 'technician',
+            },
+            orderBy: {
+              technicianRequest: { _count: 'asc' },
+            },
+          })
 
-        if (technicians.length === 0) {
-          throw new AppError(
-            'Não será possível excluir esse técnico pois não há outros técnicos para receberem os chamados dele'
-          )
+          if (technicians.length === 0) {
+            throw new AppError(
+              'Não será possível excluir esse técnico pois não há outros técnicos para receberem os chamados dele'
+            )
+          }
+
+          const newTechnician = technicians[0]
+
+          await prisma.request.update({
+            where: { id: userRequest.id },
+            data: { assignedTo: newTechnician.id },
+          })
         }
 
-        const newTechnician = technicians[0]
-
-        await prisma.request.update({
-          where: { id: userRequest.id },
-          data: { assignedTo: newTechnician.id },
-        })
+        await prisma.openingHour.delete({ where: { userId: user.id } })
       }
+    }
 
-      await prisma.openingHour.delete({ where: { userId: user.id } })
+    console.log(user.profilePicture)
+
+    if (user.profilePicture) {
+      console.log('passou aqui')
+      const diskStorage = new DiskStorage()
+
+      diskStorage.deleteFile(user.profilePicture, 'uploads')
     }
 
     await prisma.user.delete({ where: { id } })
