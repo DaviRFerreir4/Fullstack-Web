@@ -57,4 +57,15 @@ describe('SessionsController', () => {
     )
     expect(sessionResponse.body.message).toBe('Erro de validação')
   })
+
+  it('should throw an error about wrong email or password', async () => {
+    const sessionResponse = await request(app).post('/sessions').send({
+      email: 'test@eamil.com',
+      password: userData.password,
+    })
+
+    expect(sessionResponse.statusCode).toBe(400)
+    expect(sessionResponse.body).toHaveProperty('message')
+    expect(sessionResponse.body.message).toBe('E-mail ou senha errados')
+  })
 })
