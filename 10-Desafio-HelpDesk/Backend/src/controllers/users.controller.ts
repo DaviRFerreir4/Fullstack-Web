@@ -294,7 +294,22 @@ export class UsersController {
       })
     }
 
-    await prisma.user.update({ where: { id }, data: { name, email, password } })
+    if (email) {
+      const userWithSameEmail = await prisma.user.findUnique({
+        where: { email },
+      })
+
+      if (userWithSameEmail) {
+        throw new AppError('Já existe um usuário com esse e-mail')
+      }
+    }
+
+    const hashedPassword = password ? await hash(password, 10) : undefined
+
+    await prisma.user.update({
+      where: { id },
+      data: { name, email, password: hashedPassword },
+    })
 
     return response.json()
   }
