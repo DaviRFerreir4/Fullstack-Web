@@ -3,9 +3,11 @@ import request from 'supertest'
 import { app } from '../app'
 import { prisma } from '../database/prisma'
 import { userData } from './utils/requestData'
+import { email } from 'zod'
 
 describe('UsersController', () => {
   let adminToken: string
+  let userToken: string
   let userId: string
 
   beforeAll(async () => {
@@ -18,7 +20,7 @@ describe('UsersController', () => {
   })
 
   afterAll(async () => {
-    await prisma.user.delete({ where: { email: userData.email } })
+    await prisma.user.delete({ where: { id: userId } })
   })
 
   it('should create a new user successfully', async () => {
@@ -52,14 +54,37 @@ describe('UsersController', () => {
   })
 
   it('should show only one user', async () => {
+    const sessionResponse = await request(app)
+      .post('/sessions')
+      .send({ email: userData.email, password: userData.password })
+
+    userToken = sessionResponse.body.token
+
     const userResponse = await request(app)
       .get(`/users/${userId}`)
-      .auth(adminToken, { type: 'bearer' })
+      .auth(userToken, { type: 'bearer' })
 
     expect(userResponse.statusCode).toBe(200)
     expect(userResponse.body).toHaveProperty('id')
     expect(userResponse.body).toEqual(
       expect.objectContaining({ name: userData.name, email: userData.email })
     )
+  })
+
+  it('should update information about the user', async () => {
+    const userResponse = await request(app)
+      .put(`/users/${userId}`)
+      .send({
+        name: 'Test User Update',
+        email: 'roberto@email.com',
+        password: 'TestUpdatePassword2.',
+        confirm_password: 'TestUpdatePassword2.',
+      })
+      .auth(userToken, { type: 'bearer' })
+
+    console.log(userResponse.body)
+
+    expect(userResponse.statusCode).toBe(200)
+    expect(1).toBe(1)
   })
 })

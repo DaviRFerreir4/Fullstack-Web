@@ -23,8 +23,6 @@ describe('SessionsController', () => {
       password: userData.password,
     })
 
-    console.log(sessionResponse.body)
-
     expect(sessionResponse.statusCode).toBe(201)
     expect(sessionResponse.body).toHaveProperty('token')
     expect(sessionResponse.body).toHaveProperty('user')
