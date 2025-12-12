@@ -5,7 +5,7 @@ import { prisma } from '../database/prisma'
 import { userData } from './utils/requestData'
 
 describe('UsersController', () => {
-  let adminToken
+  let adminToken: string
 
   beforeAll(async () => {
     const adminResponse = await request(app).post('/sessions').send({
@@ -27,6 +27,23 @@ describe('UsersController', () => {
     expect(userResponse.body).toHaveProperty('user')
     expect(userResponse.body.user).toEqual(
       expect.objectContaining({ name: userData.name, email: userData.email })
+    )
+  })
+
+  it('should list all users', async () => {
+    const userResponse = await request(app)
+      .get('/users')
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(200)
+    expect(userResponse.body).toHaveProperty('users')
+    expect(userResponse.body.users).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: userData.name,
+          email: userData.email,
+        }),
+      ])
     )
   })
 })
