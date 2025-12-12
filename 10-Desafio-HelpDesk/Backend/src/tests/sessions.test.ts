@@ -35,4 +35,26 @@ describe('SessionsController', () => {
     expect(sessionResponse.body).toHaveProperty('token')
     expect(sessionResponse.body).toHaveProperty('user')
   })
+
+  it('should throw a validation error', async () => {
+    const sessionResponse = await request(app).post('/sessions').send({
+      email: 'asd',
+      password: 12,
+    })
+
+    expect(sessionResponse.statusCode).toBe(400)
+    expect(sessionResponse.body).toHaveProperty('message')
+    expect(sessionResponse.body).toHaveProperty('issues')
+    expect(sessionResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: expect.arrayContaining(['email']) }),
+      ])
+    )
+    expect(sessionResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: expect.arrayContaining(['password']) }),
+      ])
+    )
+    expect(sessionResponse.body.message).toBe('Erro de validação')
+  })
 })
