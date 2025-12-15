@@ -219,6 +219,19 @@ describe('UsersController', () => {
     )
   })
 
+  it('should throw an error when trying to create a technician user without the available hours information', async () => {
+    const userResponse = await request(app)
+      .post('/users/technician')
+      .send({ ...userData, email: 'test.user4@email.com', role: 'technician' })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(400)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toBe(
+      'Informe os horários disponíveis do técnico'
+    )
+  })
+
   it('should throw an error when sending a non existing user as a route param', async () => {
     const userResponse = await request(app)
       .get('/users/f97c3dc8-92d7-452f-a977-0a25a93ca833')
