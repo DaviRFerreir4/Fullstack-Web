@@ -3,7 +3,6 @@ import request from 'supertest'
 import { app } from '../app'
 import { prisma } from '../database/prisma'
 import { userData } from './utils/requestData'
-import { email } from 'zod'
 
 describe('UsersController', () => {
   let adminToken: string
@@ -118,12 +117,23 @@ describe('UsersController', () => {
     expect(1).toBe(1)
   })
 
-  it('should delete the user', async () => {
-    const userResponse = await request(app)
-      .delete(`/users/${usersId[0]}`)
-      .auth(userToken, { type: 'bearer' })
+  it('should delete an user', async () => {
+    const user = await request(app)
+      .post('/users')
+      .send({ ...userData, email: 'test.user3@email.com' })
 
-    usersId.splice(0, 1)
+    const id = user.body.user.id
+
+    const session = await request(app).post('/sessions').send({
+      email: 'test.user3@email.com',
+      password: userData.password,
+    })
+
+    const token = session.body.token
+
+    const userResponse = await request(app)
+      .delete(`/users/${id}`)
+      .auth(token, { type: 'bearer' })
 
     expect(userResponse.statusCode).toBe(200)
   })
@@ -134,8 +144,6 @@ describe('UsersController', () => {
       email: 'test.not.email',
       password: 'password',
     })
-
-    console.log(userResponse.body)
 
     expect(userResponse.statusCode).toBe(400)
     expect(userResponse.body).toHaveProperty('message')
@@ -162,5 +170,16 @@ describe('UsersController', () => {
       ])
     )
     expect(userResponse.body.message).toBe('Erro de validação')
+  })
+
+  it('should throw an authorization error trying to access a route without admin credentials', async () => {
+    const userResponse = await request(app)
+      .post('/users/technician')
+      .send({ ...userData })
+      .auth(userToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(401)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toBe('Não Autorizado')
   })
 })
