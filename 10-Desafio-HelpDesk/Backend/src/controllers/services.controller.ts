@@ -106,7 +106,7 @@ export class ServicesController {
       data: { type, value: value && Number(value.toFixed(2)) },
     })
 
-    return response.json({ service: serviceUpdated })
+    return response.json({ ...serviceUpdated })
   }
 
   async patch(request: Request, response: Response) {

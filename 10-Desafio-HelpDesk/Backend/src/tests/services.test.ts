@@ -66,4 +66,15 @@ describe('ServicesController', () => {
     expect(serviceResponse.body.services.length).toBe(0)
     expect(serviceResponse.body).toHaveProperty('pagination')
   })
+
+  it('should update informations about the service', async () => {
+    const serviceResponse = await request(app)
+      .put(`/services/${servicesId[0]}`)
+      .send({ type: 'Test Service 2', value: 12.1 })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(200)
+    expect(serviceResponse.body).toHaveProperty('id')
+    expect(serviceResponse.body.type).toBe('Test Service 2')
+  })
 })
