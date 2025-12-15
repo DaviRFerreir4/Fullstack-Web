@@ -172,7 +172,7 @@ describe('UsersController', () => {
     expect(userResponse.body.message).toBe('Erro de validação')
   })
 
-  it('should throw an authorization error when trying to access a route without admin credentials', async () => {
+  it('should throw an authorization error when trying to access a restricted route without admin credentials', async () => {
     const userResponse = await request(app)
       .post('/users/technician')
       .send({ ...userData })
@@ -181,6 +181,18 @@ describe('UsersController', () => {
     expect(userResponse.statusCode).toBe(401)
     expect(userResponse.body).toHaveProperty('message')
     expect(userResponse.body.message).toBe('Não Autorizado')
+  })
+
+  it('should throw an authorization error when trying to create a non client user without admin credentials', async () => {
+    const userResponse = await request(app)
+      .post('/users')
+      .send({ ...userData, email: 'test.user3@email.com', role: 'technician' })
+
+    expect(userResponse.statusCode).toBe(400)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toBe(
+      'Somente administradores do sistema podem criar usuários com esse papel'
+    )
   })
 
   it('should throw an authorization error when non admin users try to see information about other users', async () => {
