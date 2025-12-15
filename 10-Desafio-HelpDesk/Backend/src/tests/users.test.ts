@@ -207,6 +207,18 @@ describe('UsersController', () => {
     )
   })
 
+  it('should throw an error when trying to create an user with the same email as another', async () => {
+    const userResponse = await request(app)
+      .post('/users')
+      .send({ ...userData, email: 'test.user2@email.com' })
+
+    expect(userResponse.statusCode).toBe(400)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toBe(
+      'Já existe um usuário com esse e-mail'
+    )
+  })
+
   it('should throw an error when sending a non existing user as a route param', async () => {
     const userResponse = await request(app)
       .get('/users/f97c3dc8-92d7-452f-a977-0a25a93ca833')
