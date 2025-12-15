@@ -127,4 +127,40 @@ describe('UsersController', () => {
 
     expect(userResponse.statusCode).toBe(200)
   })
+
+  it('should throw a validation error', async () => {
+    const userResponse = await request(app).post('/users').send({
+      name: 123,
+      email: 'test.not.email',
+      password: 'password',
+    })
+
+    console.log(userResponse.body)
+
+    expect(userResponse.statusCode).toBe(400)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: expect.arrayContaining(['name']) }),
+      ])
+    )
+    expect(userResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: expect.arrayContaining(['email']) }),
+      ])
+    )
+    expect(userResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: expect.arrayContaining(['password']) }),
+      ])
+    )
+    expect(userResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          path: expect.arrayContaining(['confirmPassword']),
+        }),
+      ])
+    )
+    expect(userResponse.body.message).toBe('Erro de validação')
+  })
 })
