@@ -130,7 +130,23 @@ export class UsersController {
       throw new AppError('Usuário não encontrado')
     }
 
-    return response.json(user)
+    const requests = await prisma.request.findMany({
+      where: {
+        requestedBy: user.role === 'client' ? id : undefined,
+        assignedTo: user.role === 'technician' ? id : undefined,
+      },
+      include: {
+        technician: user.role === 'client' && {
+          omit: { password: true },
+        },
+
+        client: user.role === 'technician' && {
+          omit: { password: true },
+        },
+      },
+    })
+
+    return response.json(requests)
   }
 
   async create(request: Request, response: Response) {
