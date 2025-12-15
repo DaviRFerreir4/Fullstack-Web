@@ -54,4 +54,16 @@ describe('ServicesController', () => {
     )
     expect(serviceResponse.body).toHaveProperty('pagination')
   })
+
+  it('should list services based on filters', async () => {
+    const serviceResponse = await request(app)
+      .get('/services')
+      .query({ gt: 1500 })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(200)
+    expect(serviceResponse.body).toHaveProperty('services')
+    expect(serviceResponse.body.services.length).toBe(0)
+    expect(serviceResponse.body).toHaveProperty('pagination')
+  })
 })
