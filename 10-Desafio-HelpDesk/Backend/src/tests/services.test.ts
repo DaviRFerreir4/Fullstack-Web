@@ -88,4 +88,14 @@ describe('ServicesController', () => {
     expect(serviceResponse.body).toHaveProperty('id')
     expect(serviceResponse.body.isActive).toBe(false)
   })
+
+  it('should throw an authentication error when trying to interact with services without any JWT', async () => {
+    const serviceResponse = await request(app)
+      .post('/services')
+      .send({ ...serviceData })
+
+    expect(serviceResponse.statusCode).toBe(400)
+    expect(serviceResponse.body).toHaveProperty('message')
+    expect(serviceResponse.body.message).toBe('JWT não encontrado')
+  })
 })
