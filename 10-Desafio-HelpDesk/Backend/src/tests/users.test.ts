@@ -138,7 +138,7 @@ describe('UsersController', () => {
     expect(userResponse.statusCode).toBe(200)
   })
 
-  it('should throw a validation error', async () => {
+  it('should throw a validation error when sending wrong information to create an user', async () => {
     const userResponse = await request(app).post('/users').send({
       name: 123,
       email: 'test.not.email',
@@ -172,7 +172,7 @@ describe('UsersController', () => {
     expect(userResponse.body.message).toBe('Erro de validação')
   })
 
-  it('should throw an authorization error trying to access a route without admin credentials', async () => {
+  it('should throw an authorization error when trying to access a route without admin credentials', async () => {
     const userResponse = await request(app)
       .post('/users/technician')
       .send({ ...userData })
@@ -181,5 +181,17 @@ describe('UsersController', () => {
     expect(userResponse.statusCode).toBe(401)
     expect(userResponse.body).toHaveProperty('message')
     expect(userResponse.body.message).toBe('Não Autorizado')
+  })
+
+  it('should throw an authorization error when non admin users try to see information about other users', async () => {
+    const userResponse = await request(app)
+      .get(`/users/${usersId[1]}`)
+      .auth(userToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(401)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toBe(
+      'Você não tem permissão para ver os dados desse usuário'
+    )
   })
 })
