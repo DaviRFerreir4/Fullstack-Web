@@ -194,4 +194,14 @@ describe('UsersController', () => {
       'Você não tem permissão para ver os dados desse usuário'
     )
   })
+
+  it('should throw an error when sending a non existing user as a route param', async () => {
+    const userResponse = await request(app)
+      .get('/users/f97c3dc8-92d7-452f-a977-0a25a93ca833')
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(400)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toBe('Usuário não encontrado')
+  })
 })
