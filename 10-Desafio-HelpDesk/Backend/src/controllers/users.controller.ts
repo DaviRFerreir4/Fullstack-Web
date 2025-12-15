@@ -203,7 +203,7 @@ export class UsersController {
 
     const { password: _, ...userWithoutPassword } = user
 
-    return response.status(201).json({ user: userWithoutPassword })
+    return response.status(201).json({ ...userWithoutPassword })
   }
 
   async update(request: Request, response: Response) {

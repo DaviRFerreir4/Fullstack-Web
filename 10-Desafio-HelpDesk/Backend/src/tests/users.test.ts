@@ -35,10 +35,10 @@ describe('UsersController', () => {
 
     expect(userResponse.statusCode).toBe(201)
 
-    usersId.push(userResponse.body.user.id)
+    usersId.push(userResponse.body.id)
 
-    expect(userResponse.body).toHaveProperty('user')
-    expect(userResponse.body.user).toEqual(
+    expect(userResponse.body).toHaveProperty('id')
+    expect(userResponse.body).toEqual(
       expect.objectContaining({ name: userData.name, email: userData.email })
     )
   })
@@ -56,10 +56,10 @@ describe('UsersController', () => {
 
     expect(userResponse.statusCode).toBe(201)
 
-    usersId.push(userResponse.body.user.id)
+    usersId.push(userResponse.body.id)
 
-    expect(userResponse.body).toHaveProperty('user')
-    expect(userResponse.body.user).toEqual(
+    expect(userResponse.body).toHaveProperty('id')
+    expect(userResponse.body).toEqual(
       expect.objectContaining({ role: 'technician' })
     )
   })
@@ -122,7 +122,7 @@ describe('UsersController', () => {
       .post('/users')
       .send({ ...userData, email: 'test.user3@email.com' })
 
-    const id = user.body.user.id
+    const id = user.body.id
 
     const session = await request(app).post('/sessions').send({
       email: 'test.user3@email.com',
@@ -245,8 +245,10 @@ describe('UsersController', () => {
   it('should throw an error when sending no data in an user update request', async () => {
     const userResponse = await request(app)
       .put(`/users/${usersId[0]}`)
-      .send()
+      .send({})
       .auth(userToken, { type: 'bearer' })
+
+    console.log(userResponse.body)
 
     expect(userResponse.statusCode).toBe(400)
     expect(userResponse.body).toHaveProperty('message')
