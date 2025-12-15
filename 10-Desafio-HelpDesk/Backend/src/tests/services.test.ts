@@ -35,4 +35,23 @@ describe('ServicesController', () => {
 
     servicesId.push(serviceResponse.body.id)
   })
+
+  it('should list all services', async () => {
+    const serviceResponse = await request(app)
+      .get('/services')
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(200)
+    expect(serviceResponse.body).toHaveProperty('services')
+    expect(serviceResponse.body.services.length).toBeGreaterThan(0)
+    expect(serviceResponse.body.services).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: serviceData.type,
+          value: serviceData.value,
+        }),
+      ])
+    )
+    expect(serviceResponse.body).toHaveProperty('pagination')
+  })
 })
