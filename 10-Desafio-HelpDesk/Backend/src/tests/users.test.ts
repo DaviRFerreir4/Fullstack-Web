@@ -34,13 +34,12 @@ describe('UsersController', () => {
     const userResponse = await request(app).post('/users').send(userData)
 
     expect(userResponse.statusCode).toBe(201)
-
-    usersId.push(userResponse.body.id)
-
     expect(userResponse.body).toHaveProperty('id')
     expect(userResponse.body).toEqual(
       expect.objectContaining({ name: userData.name, email: userData.email })
     )
+
+    usersId.push(userResponse.body.id)
   })
 
   it('should create a technician user', async () => {
@@ -55,13 +54,12 @@ describe('UsersController', () => {
       .auth(adminToken, { type: 'bearer' })
 
     expect(userResponse.statusCode).toBe(201)
-
-    usersId.push(userResponse.body.id)
-
     expect(userResponse.body).toHaveProperty('id')
     expect(userResponse.body).toEqual(
       expect.objectContaining({ role: 'technician' })
     )
+
+    usersId.push(userResponse.body.id)
   })
 
   it('should list all users', async () => {
