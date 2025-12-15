@@ -218,7 +218,7 @@ export class UsersController {
       (request.user.role !== 'admin' && id !== request.user.id)
     ) {
       throw new AppError(
-        'Você não tem permissão para excluir esse usuário',
+        'Você não tem permissão para atualizar dados desse usuário',
         401
       )
     }
@@ -226,7 +226,7 @@ export class UsersController {
     const user = await prisma.user.findUnique({ where: { id } })
 
     if (!user) {
-      throw new AppError('Usuário a ser removido não encontrado')
+      throw new AppError('Usuário a ser atualizado não encontrado')
     }
 
     const bodySchema = z
@@ -377,7 +377,6 @@ export class UsersController {
     console.log(user.profilePicture)
 
     if (user.profilePicture) {
-      console.log('passou aqui')
       const diskStorage = new DiskStorage()
 
       diskStorage.deleteFile(user.profilePicture, 'uploads')

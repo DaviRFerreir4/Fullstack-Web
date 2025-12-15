@@ -180,7 +180,7 @@ describe('UsersController', () => {
 
     expect(userResponse.statusCode).toBe(401)
     expect(userResponse.body).toHaveProperty('message')
-    expect(userResponse.body.message).toBe('Não Autorizado')
+    expect(userResponse.body.message).toBe('Não autorizado')
   })
 
   it('should throw an authorization error when trying to create a non client user without admin credentials', async () => {
@@ -240,5 +240,18 @@ describe('UsersController', () => {
     expect(userResponse.statusCode).toBe(400)
     expect(userResponse.body).toHaveProperty('message')
     expect(userResponse.body.message).toBe('Usuário não encontrado')
+  })
+
+  it('should throw an error when sending no data in an user update request', async () => {
+    const userResponse = await request(app)
+      .put(`/users/${usersId[0]}`)
+      .send()
+      .auth(userToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(400)
+    expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toContain(
+      'Informe algum dado a ser atualizado'
+    )
   })
 })
