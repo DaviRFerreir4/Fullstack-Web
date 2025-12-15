@@ -126,4 +126,21 @@ describe('ServicesController', () => {
     expect(serviceResponse.body).toHaveProperty('message')
     expect(serviceResponse.body.message).toBe('Não autorizado')
   })
+
+  it('should throw a validation error when sending wrong query params', async () => {
+    const serviceResponse = await request(app)
+      .get('/services')
+      .query({ gt: true, isActive: 'Test' })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(400)
+    expect(serviceResponse.body).toHaveProperty('message')
+    expect(serviceResponse.body.message).toBe('Erro de validação')
+    expect(serviceResponse.body).toHaveProperty('issues')
+    expect(serviceResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: expect.arrayContaining(['gt']) }),
+      ])
+    )
+  })
 })

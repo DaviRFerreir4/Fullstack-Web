@@ -145,6 +145,8 @@ describe('UsersController', () => {
 
     expect(userResponse.statusCode).toBe(400)
     expect(userResponse.body).toHaveProperty('message')
+    expect(userResponse.body.message).toBe('Erro de validação')
+    expect(userResponse.body).toHaveProperty('issues')
     expect(userResponse.body.issues).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ path: expect.arrayContaining(['name']) }),
@@ -167,7 +169,6 @@ describe('UsersController', () => {
         }),
       ])
     )
-    expect(userResponse.body.message).toBe('Erro de validação')
   })
 
   it('should throw an authorization error when trying to access a restricted route without admin credentials', async () => {
