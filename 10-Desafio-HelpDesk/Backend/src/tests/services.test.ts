@@ -77,4 +77,15 @@ describe('ServicesController', () => {
     expect(serviceResponse.body).toHaveProperty('id')
     expect(serviceResponse.body.type).toBe('Test Service 2')
   })
+
+  it('should change the status of a service to inactive', async () => {
+    const serviceResponse = await request(app)
+      .patch(`/services/${servicesId[0]}/isActive`)
+      .send({ isActive: false })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(200)
+    expect(serviceResponse.body).toHaveProperty('id')
+    expect(serviceResponse.body.isActive).toBe(false)
+  })
 })
