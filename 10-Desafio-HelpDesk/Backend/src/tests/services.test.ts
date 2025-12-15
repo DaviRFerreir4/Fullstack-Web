@@ -2,11 +2,13 @@ import request from 'supertest'
 
 import { app } from '../app'
 import { prisma } from '../database/prisma'
-import { serviceData } from './utils/requestData'
+import { serviceData, userData } from './utils/requestData'
 
 describe('ServicesController', () => {
   let adminToken: string
+  let userToken: string
   let servicesId: string[] = []
+  let usersId: string[] = []
 
   beforeAll(async () => {
     const adminResponse = await request(app).post('/sessions').send({
@@ -15,11 +17,27 @@ describe('ServicesController', () => {
     })
 
     adminToken = adminResponse.body.token
+
+    const userResponse = await request(app)
+      .post('/users')
+      .send({ ...userData })
+
+    usersId.push(userResponse.body.id)
+
+    const sessionResponse = await await request(app)
+      .post('/sessions')
+      .send({ email: userData.email, password: userData.password })
+
+    userToken = sessionResponse.body.token
   })
 
   afterAll(async () => {
     for (const id of servicesId) {
       await prisma.service.delete({ where: { id } })
+    }
+
+    for (const id of usersId) {
+      await prisma.user.delete({ where: { id } })
     }
   })
 
@@ -97,5 +115,15 @@ describe('ServicesController', () => {
     expect(serviceResponse.statusCode).toBe(400)
     expect(serviceResponse.body).toHaveProperty('message')
     expect(serviceResponse.body.message).toBe('JWT não encontrado')
+  })
+
+  it('should throw an authorization error when trying to interact with routes that require admin credentials', async () => {
+    const serviceResponse = await request(app)
+      .post('/services')
+      .auth(userToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(401)
+    expect(serviceResponse.body).toHaveProperty('message')
+    expect(serviceResponse.body.message).toBe('Não autorizado')
   })
 })
