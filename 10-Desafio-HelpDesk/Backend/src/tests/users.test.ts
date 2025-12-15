@@ -19,10 +19,6 @@ describe('UsersController', () => {
     adminToken = adminResponse.body.token
   })
 
-  afterAll(async () => {
-    await prisma.user.delete({ where: { id: userId } })
-  })
-
   it('should create a new user successfully', async () => {
     const userResponse = await request(app).post('/users').send(userData)
 
@@ -86,5 +82,13 @@ describe('UsersController', () => {
 
     expect(userResponse.statusCode).toBe(200)
     expect(1).toBe(1)
+  })
+
+  it('should delete the user', async () => {
+    const userResponse = await request(app)
+      .delete(`/users/${userId}`)
+      .auth(userToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(200)
   })
 })
