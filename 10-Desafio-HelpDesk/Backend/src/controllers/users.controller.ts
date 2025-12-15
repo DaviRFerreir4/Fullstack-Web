@@ -98,32 +98,6 @@ export class UsersController {
     const user = await prisma.user.findUnique({
       where: { id },
       omit: { password: true },
-      include: {
-        clientRequest: request.user.role === 'client' && {
-          omit: {
-            requestedBy: true,
-          },
-          include: {
-            technician: {
-              omit: {
-                password: true,
-              },
-            },
-          },
-        },
-        technicianRequest: request.user.role === 'technician' && {
-          omit: {
-            assignedTo: true,
-          },
-          include: {
-            client: {
-              omit: {
-                password: true,
-              },
-            },
-          },
-        },
-      },
     })
 
     if (!user) {
@@ -139,7 +113,6 @@ export class UsersController {
         technician: user.role === 'client' && {
           omit: { password: true },
         },
-
         client: user.role === 'technician' && {
           omit: { password: true },
         },
@@ -164,7 +137,7 @@ export class UsersController {
             error:
               'Senha inválida.\nUma senha deve conter 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
           }),
-        confirm_password: z.string({ error: 'Informe a confirmação da senha' }),
+        confirmPassword: z.string({ error: 'Informe a confirmação da senha' }),
         role: z
           .enum(Object.values(Role), {
             error: `O papel do usuário deve ser um dos seguintes: ${Object.keys(
@@ -172,7 +145,7 @@ export class UsersController {
             ).join(', ')}`,
           })
           .default('client'),
-        available_hours: z
+        availableHours: z
           .array(
             z
               .int({ error: 'Horário deve ser um número' })
@@ -182,13 +155,13 @@ export class UsersController {
           .default([]),
       })
       .refine(
-        ({ password, confirm_password }) => {
-          return password === confirm_password
+        ({ password, confirmPassword }) => {
+          return password === confirmPassword
         },
         { error: 'A senha e a confirmação não são iguais' }
       )
 
-    const { name, email, password, role, available_hours } = bodySchema.parse(
+    const { name, email, password, role, availableHours } = bodySchema.parse(
       request.body
     )
 
@@ -205,11 +178,11 @@ export class UsersController {
     }
 
     if (role === 'technician') {
-      if (available_hours.length < 1) {
+      if (availableHours.length < 1) {
         throw new AppError('Informe os horários disponíveis do técnico')
       }
 
-      if (available_hours.length > 8) {
+      if (availableHours.length > 8) {
         throw new AppError(
           'Um técnico não pode trabalhar mais que 8 horas no dia'
         )
@@ -224,7 +197,7 @@ export class UsersController {
 
     if (role === 'technician') {
       await prisma.openingHour.create({
-        data: { userId: user.id, availableHours: available_hours },
+        data: { userId: user.id, availableHours: availableHours },
       })
     }
 
@@ -272,10 +245,10 @@ export class UsersController {
               'Senha inválida.\nUma senha deve conter 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
           })
           .optional(),
-        confirm_password: z
+        confirmPassword: z
           .string({ error: 'Informe a confirmação da senha' })
           .optional(),
-        available_hours: z
+        availableHours: z
           .array(
             z
               .int({ error: 'Horário deve ser um número' })
@@ -285,17 +258,17 @@ export class UsersController {
           .default([]),
       })
       .refine(
-        ({ password, confirm_password }) => {
-          return password === confirm_password
+        ({ password, confirmPassword }) => {
+          return password === confirmPassword
         },
         { error: 'A senha e a confirmação não são iguais' }
       )
 
-    const { name, email, password, available_hours } = bodySchema.parse(
+    const { name, email, password, availableHours } = bodySchema.parse(
       request.body
     )
 
-    if (!name && !email && !password && available_hours.length === 0) {
+    if (!name && !email && !password && availableHours.length === 0) {
       throw new AppError(
         `Informe algum dado a ser atualizado (${Object.values(
           bodySchema.keyof().enum
@@ -303,10 +276,10 @@ export class UsersController {
       )
     }
 
-    if (user.role === 'technician' && available_hours.length > 0) {
+    if (user.role === 'technician' && availableHours.length > 0) {
       await prisma.openingHour.update({
         where: { userId: id },
-        data: { availableHours: available_hours },
+        data: { availableHours: availableHours },
       })
     }
 

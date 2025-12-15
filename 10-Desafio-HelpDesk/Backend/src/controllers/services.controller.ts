@@ -8,14 +8,14 @@ export class ServicesController {
   async index(request: Request, response: Response) {
     const querySchema = z.object({
       type: z.string().optional(),
-      is_active: z.coerce.boolean().optional(),
+      isActive: z.coerce.boolean().optional(),
       gt: z.coerce.number().optional(),
       lt: z.coerce.number().optional(),
       page: z.coerce.number().default(1),
       perPage: z.coerce.number().default(10),
     })
 
-    const { type, is_active, gt, lt, page, perPage } = querySchema.parse(
+    const { type, isActive, gt, lt, page, perPage } = querySchema.parse(
       request.query
     )
 
@@ -25,7 +25,7 @@ export class ServicesController {
       skip,
       where: {
         type: { contains: type, mode: 'insensitive' },
-        isActive: { equals: is_active },
+        isActive: { equals: isActive },
         value: { gt, lt },
       },
     })
@@ -33,7 +33,7 @@ export class ServicesController {
     const totalRecords = await prisma.service.count({
       where: {
         type: { contains: type, mode: 'insensitive' },
-        isActive: { equals: is_active },
+        isActive: { equals: isActive },
         value: { gt, lt },
       },
     })
