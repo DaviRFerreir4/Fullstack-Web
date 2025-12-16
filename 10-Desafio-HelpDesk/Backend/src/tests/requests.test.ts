@@ -200,6 +200,34 @@ describe('RequestsController', () => {
     expect(requestResponse.body.message).toBe('Não autorizado')
   })
 
+  it("should throw an authorization error when trying to get any request that isn't related to the user", async () => {
+    const userResponse = await request(app)
+      .post('/users')
+      .send({ ...userData, email: 'test.user2@email.com' })
+
+    expect(userResponse.statusCode).toBe(201)
+    expect(userResponse.body).toHaveProperty('id')
+
+    usersId.push(userResponse.body.id)
+
+    const sessionResponse = await request(app)
+      .post('/sessions')
+      .send({ email: 'test.user2@email.com', password: userData.password })
+
+    expect(sessionResponse.statusCode).toBe(201)
+    expect(sessionResponse.body).toHaveProperty('token')
+
+    const requestResponse = await request(app)
+      .get(`/requests/${requestsId[0]}`)
+      .auth(sessionResponse.body.token, { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(401)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe(
+      'Você não tem permissão para visualizar esse chamado'
+    )
+  })
+
   it('should throw a validation error when sending wrong data in the request body', async () => {
     const requestResponse = await request(app)
       .post('/requests')
