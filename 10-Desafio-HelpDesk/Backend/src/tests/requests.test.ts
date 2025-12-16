@@ -145,4 +145,16 @@ describe('RequestsController', () => {
     expect(requestResponse.body).toHaveProperty('services')
     expect(requestResponse.body.services.length).toBeGreaterThan(1)
   })
+
+  it('should change the request status', async () => {
+    const requestResponse = await request(app)
+      .patch(`/requests/${requestsId[0]}/status`)
+      .send({ status: 'in_progress' })
+      .auth(usersToken[1], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(200)
+    expect(requestResponse.body).toHaveProperty('id')
+    expect(requestResponse.body).toHaveProperty('status')
+    expect(requestResponse.body.status).toBe('in_progress')
+  })
 })

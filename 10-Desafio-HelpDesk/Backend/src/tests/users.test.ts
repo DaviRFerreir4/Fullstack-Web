@@ -109,8 +109,6 @@ describe('UsersController', () => {
       })
       .auth(userToken, { type: 'bearer' })
 
-    console.log(userResponse.body)
-
     expect(userResponse.statusCode).toBe(200)
     expect(1).toBe(1)
   })
@@ -246,8 +244,6 @@ describe('UsersController', () => {
       .put(`/users/${usersId[0]}`)
       .send({})
       .auth(userToken, { type: 'bearer' })
-
-    console.log(userResponse.body)
 
     expect(userResponse.statusCode).toBe(400)
     expect(userResponse.body).toHaveProperty('message')

@@ -273,8 +273,11 @@ export class RequestsController {
       throw new AppError(`O status desse chamado já é "${status}"`)
     }
 
-    await prisma.request.update({ where: { id }, data: { status } })
+    const updatedRequest = await prisma.request.update({
+      where: { id },
+      data: { status },
+    })
 
-    return response.json()
+    return response.json({ ...updatedRequest })
   }
 }

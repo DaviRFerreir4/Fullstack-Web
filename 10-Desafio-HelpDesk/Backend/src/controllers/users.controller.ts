@@ -374,8 +374,6 @@ export class UsersController {
       }
     }
 
-    console.log(user.profilePicture)
-
     if (user.profilePicture) {
       const diskStorage = new DiskStorage()
 
