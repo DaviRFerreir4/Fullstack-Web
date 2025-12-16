@@ -2,6 +2,7 @@ import request from 'supertest'
 
 import { app } from '../app'
 import { prisma } from '../database/prisma'
+import { User } from '@prisma/client'
 import { serviceData, userData } from './utils/requestData'
 
 describe('RequestsController', () => {
@@ -19,20 +20,23 @@ describe('RequestsController', () => {
 
     adminToken = adminResponse.body.token
 
-    const users = [
+    const users: Partial<User>[] & { confirmPassword: string }[] = [
       {
         ...userData,
       },
       {
         ...userData,
         email: 'test.user.technician@email.com',
+        role: 'technician',
+        availableHours: [8, 9, 10, 11, 13, 14, 15, 16],
       },
     ]
 
     for (const user of users) {
       const userResponse = await request(app)
-        .post('/users')
+        .post(user?.role === 'technician' ? '/users/technician' : '/users')
         .send({ ...user })
+        .auth(adminToken, { type: 'bearer' })
 
       usersId.push(userResponse.body.id)
 
@@ -43,12 +47,24 @@ describe('RequestsController', () => {
       usersToken.push(sessionResponse.body.token)
     }
 
-    const serviceResponse = await request(app)
-      .post('/services')
-      .send({ ...serviceData })
-      .auth(adminToken, { type: 'bearer' })
+    const services = [
+      {
+        ...serviceData,
+      },
+      {
+        type: 'Test Service 2',
+        value: 12.1,
+      },
+    ]
 
-    servicesId.push(serviceResponse.body.id)
+    for (const service of services) {
+      const serviceResponse = await request(app)
+        .post('/services')
+        .send({ ...service })
+        .auth(adminToken, { type: 'bearer' })
+
+      servicesId.push(serviceResponse.body.id)
+    }
   })
 
   afterAll(async () => {
@@ -62,6 +78,12 @@ describe('RequestsController', () => {
     }
 
     for (const id of usersId) {
+      const user = await prisma.user.findFirst({ where: { id } })
+
+      if (user && user.role === 'technician') {
+        await prisma.openingHour.delete({ where: { userId: id } })
+      }
+
       await prisma.user.delete({ where: { id } })
     }
   })
@@ -110,5 +132,17 @@ describe('RequestsController', () => {
     expect(requestResponse.body).toHaveProperty('services')
     expect(requestResponse.body).toHaveProperty('status')
     expect(requestResponse.body.status).toBe('opened')
+  })
+
+  it('should add another service to a request', async () => {
+    const requestResponse = await request(app)
+      .post(`/requests/${requestsId[0]}`)
+      .send({ serviceId: servicesId[1] })
+      .auth(usersToken[1], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(201)
+    expect(requestResponse.body).toHaveProperty('id')
+    expect(requestResponse.body).toHaveProperty('services')
+    expect(requestResponse.body.services.length).toBeGreaterThan(1)
   })
 })
