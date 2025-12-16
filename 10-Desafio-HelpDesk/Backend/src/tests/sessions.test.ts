@@ -39,12 +39,8 @@ describe('SessionsController', () => {
     expect(sessionResponse.body).toHaveProperty('issues')
     expect(sessionResponse.body.issues).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ path: expect.arrayContaining(['email']) }),
-      ])
-    )
-    expect(sessionResponse.body.issues).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ path: expect.arrayContaining(['password']) }),
+        expect.objectContaining({ path: ['email'] }),
+        expect.objectContaining({ path: ['password'] }),
       ])
     )
     expect(sessionResponse.body.message).toBe('Erro de validação')

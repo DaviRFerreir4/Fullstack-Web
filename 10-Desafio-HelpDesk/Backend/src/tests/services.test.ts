@@ -138,9 +138,7 @@ describe('ServicesController', () => {
     expect(serviceResponse.body.message).toBe('Erro de validação')
     expect(serviceResponse.body).toHaveProperty('issues')
     expect(serviceResponse.body.issues).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ path: expect.arrayContaining(['gt']) }),
-      ])
+      expect.arrayContaining([expect.objectContaining({ path: ['gt'] })])
     )
   })
 
@@ -155,10 +153,10 @@ describe('ServicesController', () => {
     expect(serviceResponse.body.message).toBe('Erro de validação')
     expect(serviceResponse.body).toHaveProperty('issues')
     expect(serviceResponse.body.issues).toEqual(
-      expect.arrayContaining([expect.objectContaining({ path: ['type'] })])
-    )
-    expect(serviceResponse.body.issues).toEqual(
-      expect.arrayContaining([expect.objectContaining({ path: ['value'] })])
+      expect.arrayContaining([
+        expect.objectContaining({ path: ['type'] }),
+        expect.objectContaining({ path: ['value'] }),
+      ])
     )
   })
 

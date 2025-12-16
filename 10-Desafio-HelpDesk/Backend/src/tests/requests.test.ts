@@ -199,4 +199,22 @@ describe('RequestsController', () => {
     expect(requestResponse.body).toHaveProperty('message')
     expect(requestResponse.body.message).toBe('Não autorizado')
   })
+
+  it('should throw a validation error when sending wrong data in the request body', async () => {
+    const requestResponse = await request(app)
+      .post('/requests')
+      .send({ assignedTo: 'akglsa-gara2-ghg-a3', serviceId: true })
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(400)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe('Erro de validação')
+    expect(requestResponse.body).toHaveProperty('issues')
+    expect(requestResponse.body.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: ['assignedTo'] }),
+        expect.objectContaining({ path: ['serviceId'] }),
+      ])
+    )
+  })
 })

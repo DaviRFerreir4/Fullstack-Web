@@ -148,20 +148,8 @@ describe('UsersController', () => {
     expect(userResponse.body.issues).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ path: expect.arrayContaining(['name']) }),
-      ])
-    )
-    expect(userResponse.body.issues).toEqual(
-      expect.arrayContaining([
         expect.objectContaining({ path: expect.arrayContaining(['email']) }),
-      ])
-    )
-    expect(userResponse.body.issues).toEqual(
-      expect.arrayContaining([
         expect.objectContaining({ path: expect.arrayContaining(['password']) }),
-      ])
-    )
-    expect(userResponse.body.issues).toEqual(
-      expect.arrayContaining([
         expect.objectContaining({
           path: expect.arrayContaining(['confirmPassword']),
         }),
