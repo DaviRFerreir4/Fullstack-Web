@@ -44,7 +44,6 @@ export class RequestsController {
   }
 
   async show(request: Request, response: Response) {
-    console.log(request.params)
     const paramsSchema = z.object({
       id: z.coerce.number({ error: 'Informe um chamado existente' }),
     })
@@ -119,7 +118,7 @@ export class RequestsController {
     const { serviceId, assignedTo } = bodySchema.parse(request.body)
 
     const technician = await prisma.user.findUnique({
-      where: { id: assignedTo },
+      where: { id: assignedTo, role: 'technician' },
       omit: { password: true, profilePicture: true },
     })
 
@@ -209,7 +208,38 @@ export class RequestsController {
 
     await prisma.requestService.create({ data: { requestId: id, serviceId } })
 
-    return response.json()
+    const userRequest = await prisma.request.findUnique({
+      where: { id },
+      omit: { requestedBy: true, assignedTo: true },
+      include: {
+        services: {
+          select: {
+            service: {
+              select: {
+                id: true,
+                type: true,
+                value: true,
+                isActive: true,
+              },
+            },
+          },
+        },
+        client: request.user?.role !== 'client' && {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        technician: request.user?.role !== 'technician' && {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    })
+
+    return response.status(201).json({ ...userRequest })
   }
 
   async patch(request: Request, response: Response) {
