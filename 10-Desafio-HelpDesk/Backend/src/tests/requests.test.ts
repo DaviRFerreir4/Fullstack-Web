@@ -86,6 +86,18 @@ describe('RequestsController', () => {
     expect(requestResponse.body.service.id).toBe(servicesId[0])
   })
 
+  it('should list all requests', async () => {
+    const requestResponse = await request(app)
+      .get('/requests')
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(200)
+    expect(requestResponse.body.length).toBeGreaterThan(0)
+    expect(requestResponse.body).toEqual(
+      expect.arrayContaining([expect.objectContaining({ id: requestsId[0] })])
+    )
+  })
+
   it('should show a specific request and all relevant data related to it', async () => {
     const requestResponse = await request(app)
       .get(`/requests/${requestsId[0]}`)
