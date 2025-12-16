@@ -44,6 +44,7 @@ export class RequestsController {
   }
 
   async show(request: Request, response: Response) {
+    console.log(request.params)
     const paramsSchema = z.object({
       id: z.coerce.number({ error: 'Informe um chamado existente' }),
     })
@@ -52,13 +53,8 @@ export class RequestsController {
 
     const userRequest = await prisma.request.findUnique({
       where: { id },
+      omit: { requestedBy: true, assignedTo: true },
       include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
         services: {
           select: {
             service: {
@@ -71,7 +67,13 @@ export class RequestsController {
             },
           },
         },
-        technician: {
+        client: request.user?.role !== 'client' && {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        technician: request.user?.role !== 'technician' && {
           select: {
             id: true,
             name: true,
@@ -80,15 +82,20 @@ export class RequestsController {
       },
     })
 
-    if (!userRequest) {
+    const isUserAuthorized = await prisma.request.findUnique({
+      where: { id },
+      select: { requestedBy: true, assignedTo: true },
+    })
+
+    if (!userRequest || !isUserAuthorized) {
       throw new AppError('Chamado não encontrado')
     }
 
     if (
       !request.user ||
       (request.user.role !== 'admin' &&
-        userRequest.assignedTo !== request.user.id &&
-        userRequest.requestedBy !== request.user.id)
+        isUserAuthorized.assignedTo !== request.user.id &&
+        isUserAuthorized.requestedBy !== request.user.id)
     ) {
       throw new AppError(
         'Você não tem permissão para visualizar esse chamado',
@@ -96,7 +103,7 @@ export class RequestsController {
       )
     }
 
-    return response.json({ request: userRequest })
+    return response.json({ ...userRequest })
   }
 
   async create(request: Request, response: Response) {
