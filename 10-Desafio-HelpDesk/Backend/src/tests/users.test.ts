@@ -241,7 +241,7 @@ describe('UsersController', () => {
     expect(userResponse.body.message).toBe('Usuário não encontrado')
   })
 
-  it('should throw an error when sending no data in an user update request', async () => {
+  it('should throw an error when sending no data in an user put request', async () => {
     const userResponse = await request(app)
       .put(`/users/${usersId[0]}`)
       .send({})

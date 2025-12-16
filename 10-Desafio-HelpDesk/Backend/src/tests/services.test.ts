@@ -171,4 +171,17 @@ describe('ServicesController', () => {
     expect(serviceResponse.body).toHaveProperty('message')
     expect(serviceResponse.body.message).toBe('Serviço não encontrado')
   })
+
+  it('should throw an error when sending no data in an user put request', async () => {
+    const serviceResponse = await request(app)
+      .put(`/services/${servicesId[0]}`)
+      .send({})
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(400)
+    expect(serviceResponse.body).toHaveProperty('message')
+    expect(serviceResponse.body.message).toContain(
+      'Informe algum dado a ser atualizado'
+    )
+  })
 })
