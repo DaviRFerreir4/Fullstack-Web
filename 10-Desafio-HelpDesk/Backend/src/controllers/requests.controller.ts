@@ -146,12 +146,10 @@ export class RequestsController {
     })
 
     return response.status(201).json({
-      request: {
-        ...userRequest,
-        assignedTo: technician,
-        requestedBy: user,
-        service,
-      },
+      ...userRequest,
+      assignedTo: technician,
+      requestedBy: user,
+      service,
     })
   }
 
