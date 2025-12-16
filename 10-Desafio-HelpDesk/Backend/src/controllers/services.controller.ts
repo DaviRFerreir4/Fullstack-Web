@@ -95,7 +95,7 @@ export class ServicesController {
 
     if (!type && !value) {
       throw new AppError(
-        `Informe algum dado a ser atualizado: (${Object.values(
+        `Informe algum dado a ser atualizado (${Object.values(
           bodySchema.keyof().enum
         ).join(', ')})`
       )

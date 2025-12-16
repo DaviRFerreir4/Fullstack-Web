@@ -184,4 +184,15 @@ describe('ServicesController', () => {
       'Informe algum dado a ser atualizado'
     )
   })
+
+  it('should throw an error when trying to deactivate an already deactivated service, or vice versa', async () => {
+    const serviceResponse = await request(app)
+      .patch(`/services/${servicesId[0]}/isActive`)
+      .send({ isActive: false })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(400)
+    expect(serviceResponse.body).toHaveProperty('message')
+    expect(serviceResponse.body.message).toContain('Esse serviço já está')
+  })
 })
