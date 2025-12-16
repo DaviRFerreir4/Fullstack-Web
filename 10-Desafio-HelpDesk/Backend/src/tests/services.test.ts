@@ -161,4 +161,14 @@ describe('ServicesController', () => {
       expect.arrayContaining([expect.objectContaining({ path: ['value'] })])
     )
   })
+
+  it('should throw an error when sending a non existing service as a route param', async () => {
+    const serviceResponse = await request(app)
+      .put('/services/77332d88-b562-4047-ade0-73eecfaac90a')
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(400)
+    expect(serviceResponse.body).toHaveProperty('message')
+    expect(serviceResponse.body.message).toBe('Serviço não encontrado')
+  })
 })
