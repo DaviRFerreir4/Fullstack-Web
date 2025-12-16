@@ -157,4 +157,14 @@ describe('RequestsController', () => {
     expect(requestResponse.body).toHaveProperty('status')
     expect(requestResponse.body.status).toBe('in_progress')
   })
+
+  it('should throw an authentication error', async () => {
+    const requestResponse = await request(app)
+      .post('/requests')
+      .send({ serviceId: servicesId[1], assignedTo: usersId[1] })
+
+    expect(requestResponse.statusCode).toBe(400)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe('JWT não encontrado')
+  })
 })
