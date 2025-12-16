@@ -245,4 +245,15 @@ describe('RequestsController', () => {
       ])
     )
   })
+
+  it('should throw an error when sending a non existing request as a route param', async () => {
+    const requestResponse = await request(app)
+      .patch('/requests/7/status')
+      .send({ status: 'closed' })
+      .auth(usersToken[1], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(400)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe('Chamado não encontrado')
+  })
 })
