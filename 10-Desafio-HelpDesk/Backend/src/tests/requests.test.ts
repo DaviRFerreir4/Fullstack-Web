@@ -167,4 +167,36 @@ describe('RequestsController', () => {
     expect(requestResponse.body).toHaveProperty('message')
     expect(requestResponse.body.message).toBe('JWT não encontrado')
   })
+
+  it('should throw an authorization error when trying to interact with routes that require admin credentials', async () => {
+    const requestResponse = await request(app)
+      .get('/requests')
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(401)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe('Não autorizado')
+  })
+
+  it('should throw an authorization error when trying to interact with routes that require client credentials', async () => {
+    const requestResponse = await request(app)
+      .post('/requests')
+      .send({ serviceId: servicesId[1], assignedTo: usersId[1] })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(401)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe('Não autorizado')
+  })
+
+  it('should throw an authorization error when trying to interact with routes that require technician credentials', async () => {
+    const requestResponse = await request(app)
+      .post(`/requests/${requestsId[0]}`)
+      .send({ serviceId: servicesId[0] })
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(401)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe('Não autorizado')
+  })
 })
