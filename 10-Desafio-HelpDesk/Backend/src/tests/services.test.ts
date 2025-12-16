@@ -143,4 +143,22 @@ describe('ServicesController', () => {
       ])
     )
   })
+
+  it('should throw a validation error when sending wrong data in the request body', async () => {
+    const serviceResponse = await request(app)
+      .post('/services')
+      .send({ type: 45, value: 'Test' })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(400)
+    expect(serviceResponse.body).toHaveProperty('message')
+    expect(serviceResponse.body.message).toBe('Erro de validação')
+    expect(serviceResponse.body).toHaveProperty('issues')
+    expect(serviceResponse.body.issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ path: ['type'] })])
+    )
+    expect(serviceResponse.body.issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ path: ['value'] })])
+    )
+  })
 })

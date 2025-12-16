@@ -142,6 +142,6 @@ export class ServicesController {
       data: { isActive },
     })
 
-    return response.json(serviceUpdated)
+    return response.json({ ...serviceUpdated })
   }
 }
