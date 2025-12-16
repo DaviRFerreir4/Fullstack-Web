@@ -85,4 +85,18 @@ describe('RequestsController', () => {
     expect(requestResponse.body.service).toHaveProperty('id')
     expect(requestResponse.body.service.id).toBe(servicesId[0])
   })
+
+  it('should show a specific request and all relevant data related to it', async () => {
+    const requestResponse = await request(app)
+      .get(`/requests/${requestsId[0]}`)
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(200)
+    expect(requestResponse.body).toHaveProperty('id')
+    expect(requestResponse.body).toHaveProperty('client')
+    expect(requestResponse.body).toHaveProperty('technician')
+    expect(requestResponse.body).toHaveProperty('services')
+    expect(requestResponse.body).toHaveProperty('status')
+    expect(requestResponse.body.status).toBe('opened')
+  })
 })
