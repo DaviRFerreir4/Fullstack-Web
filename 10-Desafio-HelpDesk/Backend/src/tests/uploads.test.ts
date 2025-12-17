@@ -11,6 +11,7 @@ describe('UploadsController', () => {
   let adminToken: string
   const usersToken: string[] = []
   const usersId: string[] = []
+  let imagePathOnUploadsFolder: string
 
   beforeAll(async () => {
     const adminResponse = await request(app)
@@ -48,13 +49,14 @@ describe('UploadsController', () => {
       .attach('file', imagePath)
       .auth(usersToken[0], { type: 'bearer' })
 
+    imagePathOnUploadsFolder = path.resolve(
+      uploadsConfig.UPLOADS_FOLDER,
+      uploadResponse.body
+    )
+
     expect(uploadResponse.statusCode).toBe(201)
     expect(uploadResponse.body).toContain(usersId[0])
-    expect(
-      fs.existsSync(
-        path.resolve(uploadsConfig.UPLOADS_FOLDER, uploadResponse.body)
-      )
-    ).toBe(true)
+    expect(fs.existsSync(imagePathOnUploadsFolder)).toBe(true)
 
     const user = await prisma.user.findUnique({ where: { id: usersId[0] } })
 
@@ -73,5 +75,14 @@ describe('UploadsController', () => {
 
     expect(uploadResponse.statusCode).toBe(200)
     expect(uploadResponse.headers).toHaveProperty('content-type', 'image/png')
+  })
+
+  it('should delete the image when deleting the user', async () => {
+    const userResponse = await request(app)
+      .delete(`/users/${usersId[0]}`)
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(200)
+    expect(fs.existsSync(imagePathOnUploadsFolder)).toBe(false)
   })
 })
