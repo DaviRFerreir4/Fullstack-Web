@@ -156,4 +156,15 @@ describe('UploadsController', () => {
       'Formato de arquivo inválido.'
     )
   })
+
+  it('should throw an error when sending a non existing user as a route param', async () => {
+    const uploadResponse = await request(app)
+      .post(`/uploads/51d01930-62d3-4039-95e9-b4d1633e3b21`)
+      .attach('file', imagePath)
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(uploadResponse.statusCode).toBe(400)
+    expect(uploadResponse.body).toHaveProperty('message')
+    expect(uploadResponse.body.message).toContain('Usuário não encontrado')
+  })
 })
