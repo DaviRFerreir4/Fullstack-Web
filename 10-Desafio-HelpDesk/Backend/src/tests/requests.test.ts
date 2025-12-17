@@ -256,4 +256,26 @@ describe('RequestsController', () => {
     expect(requestResponse.body).toHaveProperty('message')
     expect(requestResponse.body.message).toBe('Chamado não encontrado')
   })
+
+  it('should throw an error when trying to create a request with a deactivated service', async () => {
+    const serviceResponse = await request(app)
+      .patch(`/services/${servicesId[0]}/isActive`)
+      .send({ isActive: false })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(serviceResponse.statusCode).toBe(200)
+    expect(serviceResponse.body).toHaveProperty('isActive')
+    expect(serviceResponse.body.isActive).toBe(false)
+
+    const requestResponse = await request(app)
+      .post('/requests')
+      .send({ assignedTo: usersId[1], serviceId: servicesId[0] })
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(400)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe(
+      'Esse serviço não está mais ativo para atendimento'
+    )
+  })
 })
