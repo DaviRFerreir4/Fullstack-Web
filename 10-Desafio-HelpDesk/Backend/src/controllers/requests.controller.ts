@@ -173,7 +173,10 @@ export class RequestsController {
     }
 
     if (!request.user || clientRequest.assignedTo !== request.user.id) {
-      throw new AppError('Você não é o técnico responsável por esse chamado')
+      throw new AppError(
+        'Você não é o técnico responsável por esse chamado',
+        401
+      )
     }
 
     const bodySchema = z.object({
@@ -256,7 +259,10 @@ export class RequestsController {
     }
 
     if (!request.user || clientRequest.assignedTo !== request.user.id) {
-      throw new AppError('Você não é o técnico responsável por esse chamado')
+      throw new AppError(
+        'Você não é o técnico responsável por esse chamado',
+        401
+      )
     }
 
     const bodySchema = z.object({

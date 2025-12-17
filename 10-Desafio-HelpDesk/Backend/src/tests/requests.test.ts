@@ -278,4 +278,39 @@ describe('RequestsController', () => {
       'Esse serviço não está mais ativo para atendimento'
     )
   })
+
+  it("should throw an error when trying to alter a request with credentials of a technician that isn't related to it", async () => {
+    const userResponse = await request(app)
+      .post('/users/technician')
+      .send({
+        ...userData,
+        email: 'test.user3@email.com',
+        role: 'technician',
+        availableHours: [9, 10, 11, 12, 14, 15, 16, 17],
+      })
+      .auth(adminToken, { type: 'bearer' })
+
+    expect(userResponse.statusCode).toBe(201)
+    expect(userResponse.body).toHaveProperty('id')
+
+    usersId.push(userResponse.body.id)
+
+    const sessionResponse = await request(app)
+      .post('/sessions')
+      .send({ email: 'test.user3@email.com', password: userData.password })
+
+    expect(sessionResponse.statusCode).toBe(201)
+    expect(sessionResponse.body).toHaveProperty('token')
+
+    const requestResponse = await request(app)
+      .post(`/requests/${requestsId[0]}`)
+      .send({ serviceId: servicesId[1] })
+      .auth(sessionResponse.body.token, { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(401)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe(
+      'Você não é o técnico responsável por esse chamado'
+    )
+  })
 })
