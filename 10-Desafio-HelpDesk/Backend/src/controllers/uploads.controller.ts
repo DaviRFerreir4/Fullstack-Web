@@ -64,7 +64,7 @@ export class UploadsController {
         data: { profilePicture: file.filename },
       })
 
-      return response.json(filename)
+      return response.status(201).json(filename)
     } catch (error) {
       if (request.file) {
         await diskStorage.deleteFile(request.file.filename)

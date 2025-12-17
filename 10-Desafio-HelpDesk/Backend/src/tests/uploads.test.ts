@@ -48,12 +48,30 @@ describe('UploadsController', () => {
       .attach('file', imagePath)
       .auth(usersToken[0], { type: 'bearer' })
 
-    expect(uploadResponse.statusCode).toBe(200)
+    expect(uploadResponse.statusCode).toBe(201)
     expect(uploadResponse.body).toContain(usersId[0])
     expect(
       fs.existsSync(
         path.resolve(uploadsConfig.UPLOADS_FOLDER, uploadResponse.body)
       )
     ).toBe(true)
+
+    const user = await prisma.user.findUnique({ where: { id: usersId[0] } })
+
+    expect(user).toBeTruthy()
+    expect(user?.profilePicture).toBe(uploadResponse.body)
+  })
+
+  it('should return the requested user image', async () => {
+    const user = await prisma.user.findUnique({ where: { id: usersId[0] } })
+
+    expect(user).toBeTruthy()
+
+    const uploadResponse = await request(app)
+      .get(`/uploads/${user?.profilePicture}`)
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(uploadResponse.statusCode).toBe(200)
+    expect(uploadResponse.headers).toHaveProperty('content-type', 'image/png')
   })
 })
