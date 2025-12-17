@@ -12,6 +12,8 @@ RUN npx prisma generate
 
 COPY . .
 
+EXPOSE 3333
+
 CMD ["npm", "run", "dev"]
 
 FROM node:20.19-alpine AS production
