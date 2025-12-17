@@ -143,4 +143,17 @@ describe('UploadsController', () => {
       'Você não tem permissão para alterar a foto desse usuário'
     )
   })
+
+  it('should throw a validation error based on the type of the file sent', async () => {
+    const uploadResponse = await request(app)
+      .post(`/uploads/${usersId[0]}`)
+      .attach('file', path.resolve(__dirname, 'utils', 'not_an_user_image.txt'))
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(uploadResponse.statusCode).toBe(400)
+    expect(uploadResponse.body).toHaveProperty('message')
+    expect(uploadResponse.body.message).toContain(
+      'Formato de arquivo inválido.'
+    )
+  })
 })
