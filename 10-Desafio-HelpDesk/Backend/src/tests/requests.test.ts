@@ -313,4 +313,17 @@ describe('RequestsController', () => {
       'Você não é o técnico responsável por esse chamado'
     )
   })
+
+  it('should throw an error when adding a service to a request that already has it', async () => {
+    const requestResponse = await request(app)
+      .post(`/requests/${requestsId[0]}`)
+      .send({ serviceId: servicesId[1] })
+      .auth(usersToken[1], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(400)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toBe(
+      'Esse serviço não pode ser adicionado porque ele já faz parte do chamado'
+    )
+  })
 })
