@@ -1,6 +1,5 @@
 import multer from 'multer'
 import path from 'node:path'
-import crypto from 'node:crypto'
 
 const TMP_FOLDER = path.resolve(__dirname, '..', 'tmp')
 const UPLOADS_FOLDER = path.resolve(TMP_FOLDER, '..', 'uploads')
