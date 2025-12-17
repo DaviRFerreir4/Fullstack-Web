@@ -38,7 +38,7 @@ describe('UploadsController', () => {
     for (const id of usersId) {
       await request(app)
         .delete(`/users/${id}`)
-        .auth(usersToken[0], { type: 'bearer' })
+        .auth(adminToken, { type: 'bearer' })
     }
   })
 
@@ -84,6 +84,7 @@ describe('UploadsController', () => {
     expect(userResponse.statusCode).toBe(200)
 
     usersId.pop()
+    usersToken.pop()
 
     expect(fs.existsSync(imagePathOnUploadsFolder)).toBe(false)
   })
@@ -98,5 +99,48 @@ describe('UploadsController', () => {
     expect(uploadResponse.statusCode).toBe(400)
     expect(uploadResponse.body).toHaveProperty('message')
     expect(uploadResponse.body.message).toBe('JWT não encontrado')
+  })
+
+  it('should throw an authorization error when trying to change an image from another user', async () => {
+    const users = [
+      {
+        ...userData,
+      },
+      {
+        ...userData,
+        email: 'test.user2@email.com',
+      },
+    ]
+
+    for (const user of users) {
+      const userResponse = await request(app)
+        .post('/users')
+        .send({ ...user })
+
+      expect(userResponse.statusCode).toBe(201)
+      expect(userResponse.body).toHaveProperty('id')
+
+      usersId.push(userResponse.body.id)
+
+      const sessionResponse = await request(app)
+        .post('/sessions')
+        .send({ email: user.email, password: user.password })
+
+      expect(sessionResponse.statusCode).toBe(201)
+      expect(sessionResponse.body).toHaveProperty('token')
+
+      usersToken.push(sessionResponse.body.token)
+    }
+
+    const uploadResponse = await request(app)
+      .post(`/uploads/${usersId[0]}`)
+      .attach('file', imagePath)
+      .auth(usersToken[1], { type: 'bearer' })
+
+    expect(uploadResponse.statusCode).toBe(401)
+    expect(uploadResponse.body).toHaveProperty('message')
+    expect(uploadResponse.body.message).toBe(
+      'Você não tem permissão para alterar a foto desse usuário'
+    )
   })
 })

@@ -8,34 +8,34 @@ import { AppError } from '../utils/app-error'
 
 export class UploadsController {
   async create(request: Request, response: Response) {
-    const paramsSchema = z.object({
-      id: z.uuid({ error: 'Informe um usuário válido' }),
-    })
-
-    const { id } = paramsSchema.parse(request.params)
-
-    if (
-      !request.user ||
-      (request.user.id !== id && request.user.role !== 'admin')
-    ) {
-      throw new AppError(
-        'Você não tem permissão para alterar a foto desse usuário',
-        401
-      )
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id },
-      omit: { password: true },
-    })
-
-    if (!user) {
-      throw new AppError('Usuário não encontrado')
-    }
-
     const diskStorage = new DiskStorage()
 
     try {
+      const paramsSchema = z.object({
+        id: z.uuid({ error: 'Informe um usuário válido' }),
+      })
+
+      const { id } = paramsSchema.parse(request.params)
+
+      if (
+        !request.user ||
+        (request.user.id !== id && request.user.role !== 'admin')
+      ) {
+        throw new AppError(
+          'Você não tem permissão para alterar a foto desse usuário',
+          401
+        )
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { id },
+        omit: { password: true },
+      })
+
+      if (!user) {
+        throw new AppError('Usuário não encontrado')
+      }
+
       const fileSchema = z.looseObject({
         filename: z.string({ error: 'Arquivo é obrigatório' }).min(1),
         mimetype: z
