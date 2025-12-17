@@ -10,5 +10,6 @@ const uploadsRoutes = Router()
 const uploadsController = new UploadsController()
 
 uploadsRoutes.post('/:id', upload.single('file'), uploadsController.create)
+uploadsRoutes.delete('/:id', uploadsController.remove)
 
 export { uploadsRoutes }

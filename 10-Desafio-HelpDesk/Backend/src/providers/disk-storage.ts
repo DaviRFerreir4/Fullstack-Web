@@ -18,7 +18,7 @@ export class DiskStorage {
     await fs.promises.mkdir(uploadConfig.UPLOADS_FOLDER, { recursive: true })
     await fs.promises.rename(tmpPath, destPath)
 
-    if (profilePicture) {
+    if (profilePicture && profilePicture !== file) {
       await this.deleteFile(profilePicture, 'uploads')
     }
 

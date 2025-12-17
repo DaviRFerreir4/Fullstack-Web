@@ -54,6 +54,7 @@ export class UploadsController {
       })
 
       const file = fileSchema.parse(request.file)
+
       const filename = await diskStorage.saveFile(
         file.filename,
         user.profilePicture
@@ -76,5 +77,44 @@ export class UploadsController {
 
       throw error
     }
+  }
+
+  async remove(request: Request, response: Response) {
+    const diskStorage = new DiskStorage()
+
+    const paramsSchema = z.object({
+      id: z.uuid({ error: 'Informe um usuário válido' }),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    if (
+      !request.user ||
+      (request.user.id !== id && request.user.role !== 'admin')
+    ) {
+      throw new AppError(
+        'Você não tem permissão para alterar a foto desse usuário',
+        401
+      )
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      omit: { password: true },
+    })
+
+    if (!user) {
+      throw new AppError('Usuário não encontrado')
+    }
+
+    if (!user.profilePicture) {
+      throw new AppError('Esse usuário não tem uma foto a ser excluída')
+    }
+
+    await prisma.user.update({ where: { id }, data: { profilePicture: null } })
+
+    diskStorage.deleteFile(user.profilePicture, 'uploads')
+
+    return response.json()
   }
 }
