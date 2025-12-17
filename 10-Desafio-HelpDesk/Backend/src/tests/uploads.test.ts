@@ -11,6 +11,7 @@ describe('UploadsController', () => {
   let adminToken: string
   const usersToken: string[] = []
   const usersId: string[] = []
+  const imagePath = path.resolve(__dirname, 'utils', 'user_image_test.png')
   let imagePathOnUploadsFolder: string
 
   beforeAll(async () => {
@@ -42,8 +43,6 @@ describe('UploadsController', () => {
   })
 
   it('should send a user image to the backend', async () => {
-    const imagePath = path.resolve(__dirname, 'utils', 'user_image_test.png')
-
     const uploadResponse = await request(app)
       .post(`/uploads/${usersId[0]}`)
       .attach('file', imagePath)
@@ -83,6 +82,21 @@ describe('UploadsController', () => {
       .auth(usersToken[0], { type: 'bearer' })
 
     expect(userResponse.statusCode).toBe(200)
+
+    usersId.pop()
+
     expect(fs.existsSync(imagePathOnUploadsFolder)).toBe(false)
+  })
+
+  it('should throw an authentication error when trying to send a image without credentials', async () => {
+    const uploadResponse = await request(app).post(
+      `/uploads/dbf57204-15be-4c3f-9eb7-7edca15aba87`
+    )
+
+    // Testando sem .attach porque o supertest começa a stream do arquivo assim que a requisição é feita, e lançar um erro durante esse processo gerar um erro 'read ECONNRESET'
+
+    expect(uploadResponse.statusCode).toBe(400)
+    expect(uploadResponse.body).toHaveProperty('message')
+    expect(uploadResponse.body.message).toBe('JWT não encontrado')
   })
 })
