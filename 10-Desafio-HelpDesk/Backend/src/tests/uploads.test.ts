@@ -76,7 +76,23 @@ describe('UploadsController', () => {
     expect(uploadResponse.headers).toHaveProperty('content-type', 'image/png')
   })
 
+  it('should delete the image from an user', async () => {
+    const uploadResponse = await request(app)
+      .delete(`/uploads/${usersId[0]}`)
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(uploadResponse.statusCode).toBe(200)
+  })
+
   it('should delete the image when deleting the user', async () => {
+    const uploadResponse = await request(app)
+      .post(`/uploads/${usersId[0]}`)
+      .attach('file', imagePath)
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(uploadResponse.statusCode).toBe(201)
+    expect(uploadResponse.body).toContain(usersId[0])
+
     const userResponse = await request(app)
       .delete(`/users/${usersId[0]}`)
       .auth(usersToken[0], { type: 'bearer' })
@@ -166,5 +182,17 @@ describe('UploadsController', () => {
     expect(uploadResponse.statusCode).toBe(400)
     expect(uploadResponse.body).toHaveProperty('message')
     expect(uploadResponse.body.message).toContain('Usuário não encontrado')
+  })
+
+  it('should throw an error when trying to delete an image from a user that has none', async () => {
+    const uploadResponse = await request(app)
+      .delete(`/uploads/${usersId[0]}`)
+      .auth(usersToken[0], { type: 'bearer' })
+
+    expect(uploadResponse.statusCode).toBe(400)
+    expect(uploadResponse.body).toHaveProperty('message')
+    expect(uploadResponse.body.message).toBe(
+      'Esse usuário não tem uma foto a ser excluída'
+    )
   })
 })
