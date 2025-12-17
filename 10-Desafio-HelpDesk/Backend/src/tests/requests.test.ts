@@ -326,4 +326,17 @@ describe('RequestsController', () => {
       'Esse serviço não pode ser adicionado porque ele já faz parte do chamado'
     )
   })
+
+  it('should throw an error when trying to change a request status to a status that it already has', async () => {
+    const requestResponse = await request(app)
+      .patch(`/requests/${requestsId[0]}/status`)
+      .send({ status: 'in_progress' })
+      .auth(usersToken[1], { type: 'bearer' })
+
+    expect(requestResponse.statusCode).toBe(400)
+    expect(requestResponse.body).toHaveProperty('message')
+    expect(requestResponse.body.message).toContain(
+      'O status desse chamado já é'
+    )
+  })
 })
