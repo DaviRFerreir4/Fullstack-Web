@@ -1,4 +1,5 @@
 import type { Config } from 'jest'
+import { createDefaultPreset } from 'ts-jest'
 
 const config: Config = {
   // Stop running tests after `n` failures
@@ -11,7 +12,7 @@ const config: Config = {
   coverageProvider: 'v8',
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest',
+  ...createDefaultPreset(),
 
   // The test environment that will be used for testing
   testEnvironment: 'node',
