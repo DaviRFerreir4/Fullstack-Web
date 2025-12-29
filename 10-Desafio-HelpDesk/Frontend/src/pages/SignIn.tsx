@@ -1,5 +1,5 @@
-import { Input } from '../components/form/Input'
+import { Button } from '../components/form/Button'
 
 export function SignIn() {
-  return <Input label="Test" />
+  return <Button text="Test" />
 }
