@@ -1,3 +1,5 @@
+import { Input } from '../components/form/Input'
+
 export function SignIn() {
-  return <h1>Sign in</h1>
+  return <Input label="Test" />
 }
