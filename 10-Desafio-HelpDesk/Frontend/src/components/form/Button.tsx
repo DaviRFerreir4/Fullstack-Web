@@ -12,7 +12,7 @@ export function Button({ text, variant = 'primary', ...rest }: Props) {
   return (
     <button
       {...rest}
-      className={`py-2.5 rounded-md text-sm font-bold ${variants[variant]}`}
+      className={`w-full py-2.5 rounded-md text-sm font-bold ${variants[variant]}`}
     >
       {text}
     </button>

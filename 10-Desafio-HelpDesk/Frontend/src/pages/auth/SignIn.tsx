@@ -1,10 +1,10 @@
-import { Input } from '../components/form/Input'
-import { Button } from '../components/form/Button'
+import { Input } from '../../components/form/Input'
+import { Button } from '../../components/form/Button'
 
 export function SignIn() {
   return (
     <div className="w-full">
-      <form className="mt-6 p-6 border border-gray-500 rounded-[0.625rem] grid gap-8">
+      <form className="p-6 border border-gray-500 rounded-[0.625rem] grid gap-8">
         <div>
           <h2 className="text-lg text-gray-200 font-bold">Acesse o portal</h2>
           <p className="text-xs text-gray-300">
@@ -15,7 +15,7 @@ export function SignIn() {
           <Input
             label="E-mail"
             id="email"
-            type="text"
+            type="email"
             placeholder="exemplo@mail.com"
           />
           <Input
@@ -24,6 +24,7 @@ export function SignIn() {
             type="password"
             placeholder="Digite sua senha"
             error={true}
+            helperText="Senha não informada"
           />
         </div>
         <Button text="Entrar" />
@@ -33,7 +34,9 @@ export function SignIn() {
           <h3 className="text-gray-200 font-bold">Ainda não tem uma conta?</h3>
           <p className="text-xs text-gray-300">Cadastre agora mesmo</p>
         </div>
-        <Button text="Criar conta" variant="secondary" />
+        <a href="/signup" className="block">
+          <Button text="Criar conta" variant="secondary" />
+        </a>
       </div>
     </div>
   )
