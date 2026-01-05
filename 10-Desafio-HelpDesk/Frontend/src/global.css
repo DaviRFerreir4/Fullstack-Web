@@ -24,3 +24,28 @@
   --text-heading-md: 1rem;
   --text-xxs: 0.625rem;
 }
+
+#user-menu {
+  position: absolute;
+  position-anchor: user-menu;
+  position-area: bottom left;
+  right: anchor(right);
+}
+
+#screen-menu {
+  position: absolute;
+  position-anchor: screen-menu;
+  position-area: bottom right;
+  left: anchor(left);
+}
+
+@media (width >= 1024px) {
+  #user-menu {
+    position-area: top right;
+    right: unset;
+  }
+
+  #screen-menu {
+    position: initial;
+  }
+}
