@@ -4,6 +4,9 @@ import { Request } from '../components/table/Request'
 export function RequestList() {
   return (
     <div>
+      <h1 className="mb-4 lg:mb-6 text-lg lg:text-xl font-bold text-blue-dark">
+        Chamados
+      </h1>
       <table className="w-full border border-gray-500 rounded-xl border-separate">
         <thead>
           <tr>

@@ -71,10 +71,12 @@ export function Request({ requestData }: Props) {
         </div>
       </td>
       <td className="px-3 border-t border-gray-500 text-xs font-bold">
-        <StatusTag status={requestData.status} className="mx-auto" />
+        <StatusTag status={requestData.status} className="mx-auto lg:mx-0" />
       </td>
       <td className="px-3 border-t border-gray-500">
-        <Button Icon={EditIcon} variant="secondary" size="sm" />
+        <div className="flex justify-end">
+          <Button Icon={EditIcon} variant="secondary" size="sm" />
+        </div>
       </td>
     </tr>
   )

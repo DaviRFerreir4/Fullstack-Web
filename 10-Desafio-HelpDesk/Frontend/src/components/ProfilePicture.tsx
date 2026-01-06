@@ -5,7 +5,7 @@ type Props = React.ComponentProps<'div'> & {
 }
 
 const sizes = {
-  md: 'w-5 h-5 text-[0.5rem]',
+  md: 'min-w-5 w-5 h-5 text-[0.5rem]',
   lg: 'w-10 lg:w-8 h-10 lg:h-8',
 }
 
