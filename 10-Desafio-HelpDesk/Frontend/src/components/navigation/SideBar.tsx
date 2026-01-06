@@ -1,18 +1,29 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 
+// @ts-expect-error TS2307
 import Logo from '../../assets/logo-dark.svg?react'
+// @ts-expect-error TS2307
 import RequestIcon from '../../assets/icons/clipboard-list.svg?react'
+// @ts-expect-error TS2307
 import TechnicianIcon from '../../assets/icons/users.svg?react'
+// @ts-expect-error TS2307
 import ClientIcon from '../../assets/icons/briefcase-business.svg?react'
+// @ts-expect-error TS2307
 import ServicesIcon from '../../assets/icons/wrench.svg?react'
+// @ts-expect-error TS2307
 import CreateIcon from '../../assets/icons/plus.svg?react'
+// @ts-expect-error TS2307
 import UserCircleIcon from '../../assets/icons/circle-user.svg?react'
+// @ts-expect-error TS2307
 import LeaveIcon from '../../assets/icons/log-out.svg?react'
+// @ts-expect-error TS2307
 import MenuIcon from '../../assets/icons/menu.svg?react'
+// @ts-expect-error TS2307
 import CloseIcon from '../../assets/icons/close.svg?react'
 
 import { SubMenu } from './SubMenu'
+import { ProfilePicture } from '../ProfilePicture'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
 const userRole: string = 'admin'
@@ -123,13 +134,11 @@ export function SideBar() {
       </div>
       <div>
         <button
-          className="w-full lg:px-4 py-5 flex items-center gap-3 text-start outline-none"
+          className="w-full lg:px-4 lg:py-5 flex items-center gap-3 text-start outline-none"
           popoverTarget="user-menu"
           style={{ anchorName: '--user-menu' }}
         >
-          <span className="w-10 lg:w-8 h-10 lg:h-8 rounded-full flex justify-center items-center bg-blue-dark text-gray-600">
-            UA
-          </span>
+          <ProfilePicture username="Usuario Admin" size="lg" />
           <div className="hidden lg:grid">
             <span className="text-sm text-gray-600">Usuário Adm</span>
             <span className="text-xs text-gray-400">user.adm@test.com</span>
@@ -138,22 +147,22 @@ export function SideBar() {
         <div
           className="min-w-[calc(100vw-48px)] lg:min-w-50 px-5 py-4 border-2 border-gray-200 rounded-xl bottom-[anchor(bottom)] bg-gray-100"
           id="user-menu"
-          popover=""
+          popover="auto"
         >
-          <span className="text-xxs text-gray-400 uppercase font-bold">
+          <span className="mb-4 block text-xxs text-gray-400 uppercase font-bold">
             Opções
           </span>
           <SubMenu
             Icon={UserCircleIcon}
             href=""
             text="Perfil"
-            className="text-gray-500"
+            colorClasses="text-gray-500"
           />
           <SubMenu
             Icon={LeaveIcon}
             href=""
             text="Sair"
-            className="text-feedback-danger"
+            colorClasses="text-feedback-danger"
           />
         </div>
       </div>

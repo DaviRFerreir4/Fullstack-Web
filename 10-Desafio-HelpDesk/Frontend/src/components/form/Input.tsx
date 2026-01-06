@@ -1,4 +1,5 @@
-import alertSvg from '../../assets/icons/circle-alert.svg'
+// @ts-expect-error TS2307
+import AlertIcon from '../../assets/icons/circle-alert.svg?react'
 
 type Props = React.ComponentProps<'input'> & {
   label: string
@@ -23,20 +24,16 @@ export function Input({
       </label>
       <input
         id={id}
-        {...rest}
         className="pb-2 border-b border-gray-500 text-gray-200 placeholder:text-gray-400 focus-within:outline-0 focus:border-blue-base hover:border-blue-base"
+        {...rest}
       />
       <div
-        className={`items-center gap-1 ${info || error ? 'flex' : 'hidden'}`}
+        className={`items-center gap-1 ${info || error ? 'flex' : 'hidden'} ${
+          info ? 'text-gray-400 italic' : 'text-feedback-danger'
+        }`}
       >
-        <img src={alertSvg} className={`w-4 h-4 ${info && 'hidden'}`} />
-        <span
-          className={`text-xs ${
-            info ? 'text-gray-400 italic' : 'text-feedback-danger'
-          }`}
-        >
-          {helperText}
-        </span>
+        <AlertIcon className={`w-4 h-4 ${info && 'hidden'}`} />
+        <span className="text-xs">{helperText}</span>
       </div>
     </div>
   )
