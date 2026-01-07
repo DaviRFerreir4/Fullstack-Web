@@ -18,7 +18,7 @@ type Props = {
       profilePicture?: string
     },
     action: { action: 'save' | 'remove'; title: string }
-  ) => undefined
+  ) => void
 }
 
 export function Client({ clientData, clientOperations }: Props) {
