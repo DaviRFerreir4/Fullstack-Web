@@ -11,9 +11,14 @@ type Props = {
     name: string
     email: string
   }
+  editClient: (client: {
+    name: string
+    email: string
+    profilePicture?: string
+  }) => undefined
 }
 
-export function Client({ clientData }: Props) {
+export function Client({ clientData, editClient }: Props) {
   return (
     <tr className="h-16 text-gray-200">
       <td className="px-3 border-t border-gray-500 text-sm font-bold">
@@ -33,7 +38,17 @@ export function Client({ clientData }: Props) {
             size="sm"
             iconColor="text-feedback-danger"
           />
-          <Button Icon={EditIcon} variant="secondary" size="sm" />
+          <Button
+            Icon={EditIcon}
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              editClient({
+                name: clientData.name,
+                email: clientData.email,
+              })
+            }
+          />
         </div>
       </td>
     </tr>
