@@ -13,12 +13,46 @@ export function ClientList() {
     email: string
     profilePicture?: string
   }>(null)
+  const [action, setAction] = useState<null | {
+    action: 'save' | 'remove'
+    title: string
+    handleAction: () => void
+  }>(null)
 
-  function handleOpenDialog(client: {
-    name: string
-    email: string
-    profilePicture?: string
-  }) {
+  function editClient() {
+    alert('Cliente editado')
+    handleCloseDialog()
+  }
+
+  function removeClient() {
+    alert('Cliente removido')
+    handleCloseDialog()
+  }
+
+  function handleOpenDialog(
+    client: {
+      name: string
+      email: string
+      profilePicture?: string
+    },
+    clientAction: { action: 'save' | 'remove'; title: string }
+  ) {
+    switch (clientAction.action) {
+      case 'save':
+        setAction({
+          action: clientAction.action,
+          title: clientAction.title,
+          handleAction: editClient,
+        })
+        break
+      case 'remove':
+        setAction({
+          action: clientAction.action,
+          title: clientAction.title,
+          handleAction: removeClient,
+        })
+        break
+    }
     setClient(client)
     setOpenDialog(true)
     return undefined
@@ -48,70 +82,85 @@ export function ClientList() {
               name: 'André Costa',
               email: 'andre.costa@client.com',
             }}
-            editClient={handleOpenDialog}
+            clientOperations={handleOpenDialog}
           />
           <Client
             clientData={{
               name: 'Julia Maria',
               email: 'julia.maria@client.com',
             }}
-            editClient={handleOpenDialog}
+            clientOperations={handleOpenDialog}
           />
           <Client
             clientData={{
               name: 'Aline Souza',
               email: 'aline.souza@client.com',
             }}
-            editClient={handleOpenDialog}
+            clientOperations={handleOpenDialog}
           />
           <Client
             clientData={{
               name: 'Marcelo Andrade',
               email: 'marcelo.andrade@client.com',
             }}
-            editClient={handleOpenDialog}
+            clientOperations={handleOpenDialog}
           />
           <Client
             clientData={{
               name: 'Suzane Moura',
               email: 'suzane.moura@client.com',
             }}
-            editClient={handleOpenDialog}
+            clientOperations={handleOpenDialog}
           />
         </tbody>
       </table>
       <Dialog
-        title="Cliente"
+        title={action?.title}
         open={openDialog}
         dialogRef={dialogRef}
         closeDialog={handleCloseDialog}
-        handleAction={() => {
-          alert('Usuário salvo com sucesso')
-          handleCloseDialog()
-        }}
+        action={action?.action}
+        handleAction={action ? action.handleAction : () => {}}
       >
         <div className="px-7 mb-6 py-7 border-y border-gray-500">
-          <ProfilePicture username={client?.name} size="xl" />
-          <div className="mt-5 grid gap-4">
-            <Input
-              label="Nome"
-              value={client?.name}
-              onChange={(event) =>
-                setClient(
-                  client ? { ...client, name: event.target.value } : null
-                )
-              }
-            />
-            <Input
-              label="E-mail"
-              value={client?.email}
-              onChange={(event) =>
-                setClient(
-                  client ? { ...client, email: event.target.value } : null
-                )
-              }
-            />
-          </div>
+          {action?.action === 'save' ? (
+            <div>
+              <ProfilePicture username={client?.name} size="xl" />
+              <div className="mt-5 grid gap-4">
+                <Input
+                  label="Nome"
+                  value={client?.name}
+                  placeholder="Nome completo"
+                  onChange={(event) =>
+                    setClient(
+                      client ? { ...client, name: event.target.value } : null
+                    )
+                  }
+                />
+                <Input
+                  label="E-mail"
+                  value={client?.email}
+                  placeholder="exemplo@mail.com"
+                  onChange={(event) =>
+                    setClient(
+                      client ? { ...client, email: event.target.value } : null
+                    )
+                  }
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="grid gap-5">
+              <p>
+                Deseja realmente excluir <strong>{client?.name}</strong>?
+              </p>
+
+              <p>
+                Ao excluir, todos os chamados deste cliente serão removidos e
+                esta ação não poderá ser desfeita.
+              </p>
+            </div>
+          )}
         </div>
       </Dialog>
     </div>

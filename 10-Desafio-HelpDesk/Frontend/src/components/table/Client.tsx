@@ -11,14 +11,17 @@ type Props = {
     name: string
     email: string
   }
-  editClient: (client: {
-    name: string
-    email: string
-    profilePicture?: string
-  }) => undefined
+  clientOperations: (
+    client: {
+      name: string
+      email: string
+      profilePicture?: string
+    },
+    action: { action: 'save' | 'remove'; title: string }
+  ) => undefined
 }
 
-export function Client({ clientData, editClient }: Props) {
+export function Client({ clientData, clientOperations }: Props) {
   return (
     <tr className="h-16 text-gray-200">
       <td className="px-3 border-t border-gray-500 text-sm font-bold">
@@ -37,16 +40,28 @@ export function Client({ clientData, editClient }: Props) {
             variant="secondary"
             size="sm"
             iconColor="text-feedback-danger"
+            onClick={() =>
+              clientOperations(
+                {
+                  name: clientData.name,
+                  email: clientData.email,
+                },
+                { action: 'remove', title: 'Excluir cliente' }
+              )
+            }
           />
           <Button
             Icon={EditIcon}
             variant="secondary"
             size="sm"
             onClick={() =>
-              editClient({
-                name: clientData.name,
-                email: clientData.email,
-              })
+              clientOperations(
+                {
+                  name: clientData.name,
+                  email: clientData.email,
+                },
+                { action: 'save', title: 'Cliente' }
+              )
             }
           />
         </div>

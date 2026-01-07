@@ -7,7 +7,7 @@ import { useEffect, type RefObject } from 'react'
 type Props = React.ComponentProps<'dialog'> & {
   open?: boolean
   title?: string
-  action?: 'save' | 'remove'
+  action?: 'save' | 'remove' | 'disable' | undefined
   handleAction: () => void
   dialogRef: RefObject<null | HTMLDialogElement>
   closeDialog: () => void
@@ -38,12 +38,20 @@ export function Dialog({
     >
       <div className="px-7 pb-5 flex justify-between gap-3">
         <h1 className="font-bold">{title}</h1>
-        <CloseIcon className="text-gray-300 w-6 h-6" onClick={closeDialog} />
+        <CloseIcon
+          className="text-gray-300 w-6 h-6 cursor-pointer"
+          onClick={closeDialog}
+        />
       </div>
       {children}
       {action === 'save' ? (
         <div className="px-7">
           <Button text="Salvar" onClick={handleAction} />
+        </div>
+      ) : action === 'remove' ? (
+        <div className="px-7 flex gap-2">
+          <Button text="Cancelar" variant="secondary" onClick={closeDialog} />
+          <Button text="Sim, excluir" onClick={handleAction} />
         </div>
       ) : (
         ''
