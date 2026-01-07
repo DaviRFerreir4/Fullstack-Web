@@ -8,7 +8,6 @@ import TrashIcon from '../../assets/icons/trash.svg?react'
 import { ProfilePicture } from '../ProfilePicture'
 import { TimeTag } from '../TimeTag'
 import { Button } from '../form/Button'
-import { useIsMobile } from '../../hooks/useIsMobile'
 
 type Props = {
   technicianData: {
