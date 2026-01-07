@@ -12,7 +12,7 @@ export function ClientList() {
           <tr>
             <TableHeader text="Nome" />
             <TableHeader text="E-mail" />
-            <TableHeader text="" />
+            <TableHeader text="" className="w-21" />
           </tr>
         </thead>
         <tbody>

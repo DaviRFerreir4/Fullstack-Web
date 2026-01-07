@@ -27,8 +27,8 @@ export function TechnicianList() {
           <tr>
             <TableHeader text="Nome" />
             <TableHeader text="E-mail" desktopOnly />
-            <TableHeader text="Disponibilidade" />
-            <TableHeader text="" />
+            <TableHeader text="Disponibilidade" className="lg:w-85" />
+            <TableHeader text="" className="w-21" />
           </tr>
         </thead>
         <tbody>

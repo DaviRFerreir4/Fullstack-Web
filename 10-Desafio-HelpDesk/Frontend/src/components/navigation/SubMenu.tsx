@@ -16,9 +16,10 @@ export function SubMenu({
 }: Props) {
   return (
     <a
-      className={`p-3 rounded-md flex items-center gap-3 ${
-        selected ? 'bg-blue-dark text-gray-600' : 'hover:bg-gray-200'
-      } ${colorClasses ? colorClasses : 'text-gray-400 hover:text-gray-500'}`}
+      className={`p-3 rounded-md flex items-center gap-3
+        ${selected ? 'bg-blue-dark text-gray-600' : 'hover:bg-gray-200'}
+        ${colorClasses ? colorClasses : 'text-gray-400 hover:text-gray-500'}
+      `}
       {...rest}
     >
       <Icon className="w-5 h-5" />

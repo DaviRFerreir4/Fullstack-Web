@@ -11,11 +11,13 @@ type Props = React.ComponentProps<'button'> & {
 const variants = {
   primary: 'bg-gray-200 text-gray-600 hover:bg-gray-100',
   secondary: 'bg-gray-500 text-gray-200 hover:bg-gray-400 hover:text-gray-100',
+  link: 'bg-transparent text-gray-100 hover:bg-gray-500',
 }
 
 const sizes = {
   md: 'p-2.5',
   sm: 'p-1.5',
+  xs: 'p-0.5',
 }
 
 export function Button({
@@ -29,16 +31,19 @@ export function Button({
 }: Props) {
   return (
     <button
-      className={`rounded-md flex justify-center items-center gap-2 text-sm font-bold transition ${
-        variants[variant]
-      } ${size === 'custom' ? className : sizes[size]} ${!Icon && 'w-full'}`}
+      className={`rounded-md flex justify-center items-center gap-2 text-sm font-bold transition
+        ${variants[variant]}
+        ${size === 'custom' ? className : sizes[size]}
+        ${!Icon && 'w-full'}
+      `}
       {...rest}
     >
       {Icon && (
         <Icon
-          className={`${
-            size === 'md' ? 'w-4.5 h-4.5' : 'w-3.5 h-3.5'
-          } ${iconColor}`}
+          className={`
+            ${size === 'md' ? 'w-4.5 h-4.5' : 'w-3.5 h-3.5'}
+            ${iconColor}
+          `}
         />
       )}
       {text}

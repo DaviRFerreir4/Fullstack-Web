@@ -28,9 +28,10 @@ export function Input({
         {...rest}
       />
       <div
-        className={`items-center gap-1 ${info || error ? 'flex' : 'hidden'} ${
-          info ? 'text-gray-400 italic' : 'text-feedback-danger'
-        }`}
+        className={`items-center gap-1
+          ${info || error ? 'flex' : 'hidden'}
+          ${info ? 'text-gray-400 italic' : 'text-feedback-danger'}
+        `}
       >
         <AlertIcon className={`w-4 h-4 ${info && 'hidden'}`} />
         <span className="text-xs">{helperText}</span>
