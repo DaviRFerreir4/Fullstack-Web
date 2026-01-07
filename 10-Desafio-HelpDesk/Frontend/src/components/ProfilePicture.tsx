@@ -7,6 +7,7 @@ type Props = React.ComponentProps<'div'> & {
 const sizes = {
   md: 'min-w-5 w-5 h-5 text-[0.5rem]',
   lg: 'w-10 lg:w-8 h-10 lg:h-8',
+  xl: 'w-12 h-12 text-lg',
 }
 
 export function ProfilePicture({
@@ -16,9 +17,11 @@ export function ProfilePicture({
   ...rest
 }: Props) {
   const names = username?.split(' ')
-  const initials = names?.map((name) => {
-    return name.substring(0, 1)
-  })
+  const initials = names
+    ?.map((name) => {
+      return name.substring(0, 1)
+    })
+    .slice(0, 2)
 
   return (
     <div
