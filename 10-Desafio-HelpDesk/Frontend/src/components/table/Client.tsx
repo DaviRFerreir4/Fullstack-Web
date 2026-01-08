@@ -6,19 +6,20 @@ import TrashIcon from '../../assets/icons/trash.svg?react'
 import { ProfilePicture } from '../ProfilePicture'
 import { Button } from '../form/Button'
 
+export interface IClient {
+  name: string
+  email: string
+  profilePicture?: string
+}
+
+export interface IClientAction {
+  action: 'edit' | 'remove'
+  title: string
+}
+
 type Props = {
-  clientData: {
-    name: string
-    email: string
-  }
-  clientOperations: (
-    client: {
-      name: string
-      email: string
-      profilePicture?: string
-    },
-    action: { action: 'save' | 'remove'; title: string }
-  ) => void
+  clientData: IClient
+  clientOperations: (client: IClient, clientAction: IClientAction) => void
 }
 
 export function Client({ clientData, clientOperations }: Props) {
@@ -60,7 +61,7 @@ export function Client({ clientData, clientOperations }: Props) {
                   name: clientData.name,
                   email: clientData.email,
                 },
-                { action: 'save', title: 'Cliente' }
+                { action: 'edit', title: 'Cliente' }
               )
             }
           />

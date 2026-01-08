@@ -11,7 +11,14 @@ import { useEffect, type RefObject } from 'react'
 type Props = React.ComponentProps<'dialog'> & {
   open?: boolean
   title?: string
-  action?: 'save' | 'remove' | 'disable' | 'success' | 'failure'
+  action?:
+    | 'create'
+    | 'edit'
+    | 'remove'
+    | 'disable'
+    | 'enable'
+    | 'success'
+    | 'failure'
   handleAction: () => void
   dialogRef: RefObject<null | HTMLDialogElement>
   closeDialog: () => void
@@ -21,13 +28,24 @@ type Props = React.ComponentProps<'dialog'> & {
 export function Dialog({
   open = false,
   title,
-  action = 'save',
+  action = 'create',
   handleAction,
   dialogRef,
   closeDialog,
   children,
   ...rest
 }: Props) {
+  let buttonText = ''
+
+  if (action === 'create' || action === 'edit') buttonText = 'Salvar'
+  else if (action === 'enable') buttonText = 'Sim, reativar'
+  else if (action === 'disable') buttonText = 'Sim, desativar'
+  else if (action === 'remove') buttonText = 'Sim, excluir'
+  else if (action === 'failure' || action === 'success') buttonText = 'Fechar'
+
+  const cancelAction =
+    action === 'remove' || action === 'enable' || action === 'disable'
+
   useEffect(() => {
     if (open) {
       dialogRef.current?.showModal()
@@ -66,18 +84,12 @@ export function Dialog({
         )}
       </div>
       <div className="px-7">
-        {action === 'save' ? (
-          <Button text="Salvar" onClick={handleAction} />
-        ) : action === 'remove' ? (
-          <div className="flex gap-2">
+        <div className={cancelAction ? `flex gap-2` : undefined}>
+          {cancelAction && (
             <Button text="Cancelar" variant="secondary" onClick={closeDialog} />
-            <Button text="Sim, excluir" onClick={handleAction} />
-          </div>
-        ) : action === 'success' || action === 'failure' ? (
-          <Button text="Fechar" onClick={closeDialog} />
-        ) : (
-          ''
-        )}
+          )}
+          <Button text={buttonText} onClick={handleAction} />
+        </div>
       </div>
     </dialog>
   )

@@ -7,15 +7,23 @@ import { StatusTag } from '../StatusTag'
 import { Button } from '../form/Button'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
-type Props = {
-  serviceData: {
-    title: string
-    value: number
-    status: 'active' | 'inactive'
-  }
+export interface IService {
+  title: string
+  value: string
+  status: 'active' | 'inactive'
 }
 
-export function Service({ serviceData }: Props) {
+export interface IServiceAction {
+  action: 'create' | 'edit' | 'disable' | 'enable'
+  title: string
+}
+
+type Props = {
+  serviceData: IService
+  serviceOperations: (service: IService, serviceAction: IServiceAction) => void
+}
+
+export function Service({ serviceData, serviceOperations }: Props) {
   const isMobile = useIsMobile()
 
   return (
@@ -25,7 +33,7 @@ export function Service({ serviceData }: Props) {
       </td>
       <td className="px-3 border-t border-gray-500 text-sm">
         <span className="line-clamp-1 wrap-anywhere">
-          {serviceData.value.toLocaleString('pt-br', {
+          {Number(serviceData.value).toLocaleString('pt-br', {
             minimumFractionDigits: 2,
             style: 'currency',
             currency: 'BRL',
@@ -46,8 +54,27 @@ export function Service({ serviceData }: Props) {
             })}
             variant="link"
             size="xs"
+            onClick={() =>
+              serviceOperations(serviceData, {
+                action: serviceData.status === 'active' ? 'disable' : 'enable',
+                title:
+                  serviceData.status === 'active'
+                    ? 'Desativar serviço'
+                    : 'Ativar serviço',
+              })
+            }
           />
-          <Button Icon={EditIcon} variant="secondary" size="sm" />
+          <Button
+            Icon={EditIcon}
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              serviceOperations(serviceData, {
+                action: 'edit',
+                title: 'Serviço',
+              })
+            }
+          />
         </div>
       </td>
     </tr>

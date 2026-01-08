@@ -78,11 +78,9 @@ export function SideBar() {
         ref={popoverRef}
         {...(isMobile && { popover: 'auto' })}
       >
-        {isMobile && (
-          <h3 className="mb-4 text-xxs font-bold text-gray-400 uppercase">
-            Menu
-          </h3>
-        )}
+        <h3 className="mb-4 text-xxs font-bold text-gray-400 uppercase lg:hidden">
+          Menu
+        </h3>
         <div className={`${userRole !== 'admin' && 'hidden'}`}>
           <SubMenu
             Icon={RequestIcon}
