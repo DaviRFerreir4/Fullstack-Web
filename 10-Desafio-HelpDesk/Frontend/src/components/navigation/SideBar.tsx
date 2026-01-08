@@ -155,12 +155,18 @@ export function SideBar() {
             href=""
             text="Perfil"
             colorClasses="text-gray-500"
+            onClick={(event) => {
+              event.preventDefault()
+            }}
           />
           <SubMenu
             Icon={LeaveIcon}
             href=""
             text="Sair"
             colorClasses="text-feedback-danger"
+            onClick={(event) => {
+              event.preventDefault()
+            }}
           />
         </div>
       </div>

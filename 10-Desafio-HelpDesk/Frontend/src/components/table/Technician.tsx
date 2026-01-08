@@ -9,15 +9,27 @@ import { ProfilePicture } from '../ProfilePicture'
 import { TimeTag } from '../TimeTag'
 import { Button } from '../form/Button'
 
-type Props = {
-  technicianData: {
-    name: string
-    email: string
-    availability: number[]
-  }
+export interface ITechnician {
+  name: string
+  email: string
+  availability: number[]
+  profilePicture?: string
 }
 
-export function Technician({ technicianData }: Props) {
+export interface ITechnicianAction {
+  action: 'remove'
+  title: string
+}
+
+type Props = {
+  technicianData: ITechnician
+  technicianOperations: (
+    technician: ITechnician,
+    technicianAction: ITechnicianAction
+  ) => void
+}
+
+export function Technician({ technicianData, technicianOperations }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [maxVisible, setMaxVisible] = useState(
     technicianData.availability.length
@@ -85,6 +97,12 @@ export function Technician({ technicianData }: Props) {
             variant="secondary"
             size="sm"
             iconColor="text-feedback-danger"
+            onClick={() =>
+              technicianOperations(technicianData, {
+                action: 'remove',
+                title: 'Excluir Técnico',
+              })
+            }
           />
           <Button Icon={EditIcon} variant="secondary" size="sm" />
         </div>
