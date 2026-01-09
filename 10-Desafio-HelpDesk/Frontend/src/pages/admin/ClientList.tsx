@@ -9,6 +9,8 @@ import { ProfilePicture } from '../../components/ProfilePicture'
 import { Input } from '../../components/form/Input'
 import { useState, useRef } from 'react'
 
+import { users } from '../../data/users'
+
 export function ClientList() {
   const dialogRef = useRef<null | HTMLDialogElement>(null)
   const [openDialog, setOpenDialog] = useState(false)
@@ -76,41 +78,19 @@ export function ClientList() {
           </tr>
         </thead>
         <tbody>
-          <Client
-            clientData={{
-              name: 'André Costa',
-              email: 'andre.costa@client.com',
-            }}
-            clientOperations={clientOperations}
-          />
-          <Client
-            clientData={{
-              name: 'Julia Maria',
-              email: 'julia.maria@client.com',
-            }}
-            clientOperations={clientOperations}
-          />
-          <Client
-            clientData={{
-              name: 'Aline Souza',
-              email: 'aline.souza@client.com',
-            }}
-            clientOperations={clientOperations}
-          />
-          <Client
-            clientData={{
-              name: 'Marcelo Andrade',
-              email: 'marcelo.andrade@client.com',
-            }}
-            clientOperations={clientOperations}
-          />
-          <Client
-            clientData={{
-              name: 'Suzane Moura',
-              email: 'suzane.moura@client.com',
-            }}
-            clientOperations={clientOperations}
-          />
+          {users
+            .filter((user) => {
+              return user.role === 'client'
+            })
+            .map((user) => (
+              <Client
+                clientData={{
+                  name: user.name,
+                  email: user.email,
+                }}
+                clientOperations={clientOperations}
+              />
+            ))}
         </tbody>
       </table>
       <Dialog

@@ -1,6 +1,10 @@
 import { TableHeader } from '../components/table/TableHeader'
 import { Request } from '../components/table/Request'
 
+import dayjs from 'dayjs'
+
+import { requests } from '../data/requests'
+
 export function RequestList() {
   return (
     <div>
@@ -21,73 +25,31 @@ export function RequestList() {
           </tr>
         </thead>
         <tbody>
-          <Request
-            requestData={{
-              date: '13/04/25 20:56',
-              id: 3,
-              text: { title: 'Rede lenta', service: 'Instalação de Rede' },
-              value: 180,
-              client: { name: 'André Costa' },
-              technician: { name: 'Carlos Silva' },
-              status: 'opened',
-            }}
-          />
-          <Request
-            requestData={{
-              date: '12/04/25 15:20',
-              id: 4,
-              text: {
-                title: 'Backup não está funcionando',
-                service: 'Recuperação de Dados',
-              },
-              value: 200,
-              client: { name: 'André Costa' },
-              technician: { name: 'Carlos Silva' },
-              status: 'opened',
-            }}
-          />
-          <Request
-            requestData={{
-              date: '12/04/25 09:01',
-              id: 1,
-              text: {
-                title: 'Computador não liga',
-                service: 'Manutenção de Hardware',
-              },
-              value: 150,
-              client: { name: 'Aline Souza' },
-              technician: { name: 'Carlos Silva' },
-              status: 'in_progress',
-            }}
-          />
-          <Request
-            requestData={{
-              date: '10/04/25 10:15',
-              id: 2,
-              text: {
-                title: 'Instalação de software de gestão',
-                service: 'Suporte de Software',
-              },
-              value: 200,
-              client: { name: 'Julia Maria' },
-              technician: { name: 'Ana Oliveira' },
-              status: 'closed',
-            }}
-          />
-          <Request
-            requestData={{
-              date: '11/04/25 15:16',
-              id: 5,
-              text: {
-                title: 'Meu fone não conecta no computador',
-                service: 'Suporte de Software',
-              },
-              value: 80,
-              client: { name: 'Suzane Moura' },
-              technician: { name: 'Ana Oliveira' },
-              status: 'closed',
-            }}
-          />
+          {requests.map((request) => (
+            <Request
+              requestData={{
+                id: request.id,
+                text: {
+                  title: request.title,
+                  service: request.services
+                    .map((service) => service.title)
+                    .join(', '),
+                },
+                status: 'opened',
+                value: Number(
+                  request.services
+                    .map((service) => service.value)
+                    .reduce(
+                      (accumulator, currentValue) => accumulator + currentValue,
+                      0
+                    )
+                ),
+                client: { name: request.client.name },
+                technician: { name: request.technician.name },
+                date: dayjs(request.createdAt).format('DD/MM/YYYY HH:mm'),
+              }}
+            />
+          ))}
         </tbody>
       </table>
     </div>

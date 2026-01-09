@@ -13,6 +13,8 @@ import { Input } from '../../components/form/Input'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useState, useRef } from 'react'
 
+import { services } from '../../data/services'
+
 export function ServiceList() {
   const isMobile = useIsMobile()
 
@@ -145,38 +147,16 @@ export function ServiceList() {
           </tr>
         </thead>
         <tbody>
-          <Service
-            serviceData={{
-              title: 'Instalação de Rede',
-              value: '180',
-              status: 'active',
-            }}
-            serviceOperations={serviceOperations}
-          />
-          <Service
-            serviceData={{
-              title: 'Recuperação de Dados',
-              value: '200',
-              status: 'inactive',
-            }}
-            serviceOperations={serviceOperations}
-          />
-          <Service
-            serviceData={{
-              title: 'Manutenção de Hardware',
-              value: '150',
-              status: 'active',
-            }}
-            serviceOperations={serviceOperations}
-          />
-          <Service
-            serviceData={{
-              title: 'Suporte de Software',
-              value: '200',
-              status: 'active',
-            }}
-            serviceOperations={serviceOperations}
-          />
+          {services.map((service) => (
+            <Service
+              serviceData={{
+                title: service.title,
+                value: service.value.toString(),
+                status: service.isActive ? 'active' : 'inactive',
+              }}
+              serviceOperations={serviceOperations}
+            />
+          ))}
         </tbody>
       </table>
       <Dialog

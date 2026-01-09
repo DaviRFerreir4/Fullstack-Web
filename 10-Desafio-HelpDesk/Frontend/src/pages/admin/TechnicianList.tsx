@@ -12,6 +12,8 @@ import { Dialog } from '../../components/Dialog'
 import { useState, useRef } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
+import { users } from '../../data/users'
+
 export function TechnicianList() {
   const isMobile = useIsMobile()
 
@@ -84,38 +86,20 @@ export function TechnicianList() {
           </tr>
         </thead>
         <tbody>
-          <Technician
-            technicianData={{
-              name: 'Carlo Silva',
-              email: 'carlos.silva@email.com',
-              availability: [8, 9, 10, 11, 13, 14, 15, 16],
-            }}
-            technicianOperations={technicianOperations}
-          />
-          <Technician
-            technicianData={{
-              name: 'Ana Oliveira',
-              email: 'ana.oliveira@test.com',
-              availability: [13, 14, 15, 16],
-            }}
-            technicianOperations={technicianOperations}
-          />
-          <Technician
-            technicianData={{
-              name: 'Cíntia Lúcia',
-              email: 'cintia.lucia@test.com',
-              availability: [8, 9, 14, 15, 18],
-            }}
-            technicianOperations={technicianOperations}
-          />
-          <Technician
-            technicianData={{
-              name: 'Marcos Alves',
-              email: 'marcos.alves@test.com',
-              availability: [7, 9, 11, 15, 17, 19, 20],
-            }}
-            technicianOperations={technicianOperations}
-          />
+          {users
+            .filter((user) => {
+              return user.role === 'technician'
+            })
+            .map((user) => (
+              <Technician
+                technicianData={{
+                  name: user.name,
+                  email: user.email,
+                  availability: user.openingHours ? user.openingHours : [],
+                }}
+                technicianOperations={technicianOperations}
+              />
+            ))}
         </tbody>
       </table>
       <Dialog

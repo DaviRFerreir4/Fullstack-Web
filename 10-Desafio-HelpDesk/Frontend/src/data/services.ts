@@ -1,0 +1,43 @@
+export type Service = {
+  id: string
+  title: string
+  value: number
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export const services: Service[] = [
+  {
+    id: 'b445b89f-e9ef-442f-8b72-e173cbc06c3b',
+    title: 'Instalação de Rede',
+    value: 180,
+    isActive: true,
+    createdAt: '2025-12-15T13:02:23.846Z',
+    updatedAt: '2025-12-15T13:02:23.846Z',
+  },
+  {
+    id: '4d9993c1-e04d-4c1d-ac15-7c6966d3c866',
+    title: 'Recuperação de Dados',
+    value: 200,
+    isActive: false,
+    createdAt: '2025-12-15T13:02:23.846Z',
+    updatedAt: '2025-12-15T13:02:23.846Z',
+  },
+  {
+    id: 'e4d4136c-6c9c-4418-b434-14b4326e1d67',
+    title: 'Manutenção de Hardware',
+    value: 150,
+    isActive: true,
+    createdAt: '2025-12-15T13:02:23.846Z',
+    updatedAt: '2025-12-15T13:02:23.846Z',
+  },
+  {
+    id: '65db6e86-833f-4376-9712-3f7e5e2ecbee',
+    title: 'Suporte de Software',
+    value: 200,
+    isActive: true,
+    createdAt: '2025-12-15T13:02:23.846Z',
+    updatedAt: '2025-12-15T13:02:23.846Z',
+  },
+]
