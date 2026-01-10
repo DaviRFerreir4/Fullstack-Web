@@ -17,6 +17,7 @@ export class RequestsController {
         },
         services: {
           select: {
+            createdAt: true,
             service: {
               select: {
                 id: true,
@@ -56,6 +57,7 @@ export class RequestsController {
       include: {
         services: {
           select: {
+            createdAt: true,
             service: {
               select: {
                 id: true,
