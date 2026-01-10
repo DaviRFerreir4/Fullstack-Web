@@ -19,7 +19,9 @@ export function TableHeader({
       `}
       {...rest}
     >
-      <span className={`w-fit line-clamp-1 ${textCenter && 'mx-auto'}`}>
+      <span
+        className={`text-start w-fit line-clamp-1 ${textCenter && 'mx-auto'}`}
+      >
         {text}
       </span>
     </th>

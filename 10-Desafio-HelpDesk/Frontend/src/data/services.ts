@@ -40,4 +40,20 @@ export const services: Service[] = [
     createdAt: '2025-12-15T13:02:23.846Z',
     updatedAt: '2025-12-15T13:02:23.846Z',
   },
+  {
+    id: '21c1cca3-7cfa-4e67-8711-6da5832fec7b',
+    title: 'Assinatura de backup',
+    value: 120,
+    isActive: true,
+    createdAt: '2025-12-15T13:02:23.846Z',
+    updatedAt: '2025-12-15T13:02:23.846Z',
+  },
+  {
+    id: 'a37a0630-9d2c-471c-9796-81d7d672aadd',
+    title: 'Formatação de computador',
+    value: 75,
+    isActive: false,
+    createdAt: '2025-12-15T13:02:23.846Z',
+    updatedAt: '2025-12-15T13:02:23.846Z',
+  },
 ]

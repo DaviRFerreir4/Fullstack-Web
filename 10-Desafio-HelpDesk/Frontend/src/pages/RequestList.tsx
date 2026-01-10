@@ -4,8 +4,11 @@ import { Request } from '../components/table/Request'
 import dayjs from 'dayjs'
 
 import { requests } from '../data/requests'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 export function RequestList() {
+  const isMobile = useIsMobile()
+
   return (
     <div>
       <h1 className="mb-4 lg:mb-6 text-lg lg:text-xl font-bold text-blue-dark">
@@ -20,7 +23,11 @@ export function RequestList() {
             <TableHeader text="Valor total" desktopOnly />
             <TableHeader text="Cliente" desktopOnly />
             <TableHeader text="Técnico" desktopOnly />
-            <TableHeader text="Status" />
+            <TableHeader
+              text="Status"
+              className="lg:w-36.5"
+              textCenter={isMobile}
+            />
             <TableHeader text="" />
           </tr>
         </thead>
@@ -31,14 +38,14 @@ export function RequestList() {
                 id: request.id,
                 text: {
                   title: request.title,
-                  service: request.services
-                    .map((service) => service.title)
-                    .join(', '),
+                  service: request.services.sort((a, b) => {
+                    return dayjs(a.createdAt).diff(dayjs(b.createdAt))
+                  })[0].service.title,
                 },
-                status: 'opened',
+                status: request.status,
                 value: Number(
                   request.services
-                    .map((service) => service.value)
+                    .map((service) => service.service.value)
                     .reduce(
                       (accumulator, currentValue) => accumulator + currentValue,
                       0
@@ -46,7 +53,7 @@ export function RequestList() {
                 ),
                 client: { name: request.client.name },
                 technician: { name: request.technician.name },
-                date: dayjs(request.createdAt).format('DD/MM/YYYY HH:mm'),
+                date: dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm'),
               }}
             />
           ))}

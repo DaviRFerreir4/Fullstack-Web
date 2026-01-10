@@ -42,7 +42,7 @@ export function Service({ serviceData, serviceOperations }: Props) {
       </td>
       <td className="px-3 border-t border-gray-500 text-xs">
         <div className="w-fit flex mx-auto">
-          <StatusTag status={serviceData.status} />
+          <StatusTag status={serviceData.status} includeText={!isMobile} />
         </div>
       </td>
       <td className="px-3 border-t border-gray-500 text-xs font-bold">

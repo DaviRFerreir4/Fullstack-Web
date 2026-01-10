@@ -9,6 +9,7 @@ import BanIcon from '../assets/icons/ban.svg?react'
 
 type Props = React.ComponentProps<'label'> & {
   status: keyof typeof statusData
+  includeText?: boolean
 }
 
 const statusData = {
@@ -34,7 +35,12 @@ const statusData = {
   },
 }
 
-export function StatusTag({ status, className, ...rest }: Props) {
+export function StatusTag({
+  status,
+  includeText = true,
+  className,
+  ...rest
+}: Props) {
   return (
     <span
       className={`p-1.5 rounded-4xl flex w-fit items-center gap-1
@@ -55,7 +61,9 @@ export function StatusTag({ status, className, ...rest }: Props) {
       ) : (
         <QuestionIcon className="w-4 h-4" />
       )}
-      <span className="hidden lg:block">{statusData[status].text}</span>
+      <span className={`text-xs font-bold ${includeText ? 'block' : 'hidden'}`}>
+        {statusData[status].text}
+      </span>
     </span>
   )
 }
