@@ -19,4 +19,6 @@ Desafio Responsividade 📱
   </ul>
 <a href="https://davirferreir4.github.io/Fullstack-Web/02-Avancando-no-HTML-e-CSS/14-Projeto-Landing-Page-de-Patins/">Projeto Landing Page de Patins 🛼🎞️</a><br>
 <a href="https://davirferreir4.github.io/Fullstack-Web/02-Avancando-no-HTML-e-CSS/15-Desafio-Clube-de-Assinatura/">Desafio Clube de Assinatura 📖🎞️</a><br>
+<a href="https://davirferreir4.github.io/Fullstack-Web/03-JavaScript/08-Desafio-Lista-de-Compras/">Desafio Lista de Compras 📋</a><br>
+<a href="https://davirferreir4.github.io/Fullstack-Web/03-JavaScript/16-Desafio-Sorteador-de-Numeros/">Desafio Sorteador de Números 🎲</a><br>
 </ul>
