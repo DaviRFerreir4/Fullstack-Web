@@ -3,7 +3,7 @@ import { type User } from './users'
 import { users } from './users'
 import { services } from './services'
 
-type Request = {
+export type Request = {
   id: number
   title: string
   description: string

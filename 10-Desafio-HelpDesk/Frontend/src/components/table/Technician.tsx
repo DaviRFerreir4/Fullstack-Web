@@ -8,6 +8,8 @@ import TrashIcon from '../../assets/icons/trash.svg?react'
 import { ProfilePicture } from '../ProfilePicture'
 import { TimeTag } from '../TimeTag'
 import { Button } from '../form/Button'
+import { useNavigate } from 'react-router'
+import { type User } from '../../data/users'
 
 export interface ITechnician {
   name: string
@@ -22,7 +24,9 @@ export interface ITechnicianAction {
 }
 
 type Props = {
-  technicianData: ITechnician
+  technicianData: Pick<User, 'id' | 'name' | 'email' | 'profilePicture'> & {
+    availability: NonNullable<User['openingHours']>
+  }
   technicianOperations: (
     technician: ITechnician,
     technicianAction: ITechnicianAction
@@ -30,6 +34,8 @@ type Props = {
 }
 
 export function Technician({ technicianData, technicianOperations }: Props) {
+  const navigate = useNavigate()
+
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [maxVisible, setMaxVisible] = useState(
     technicianData.availability.length
@@ -85,7 +91,7 @@ export function Technician({ technicianData, technicianOperations }: Props) {
           ref={containerRef}
         >
           {visibleHours.map((hour) => {
-            return <TimeTag hour={hour} disabled />
+            return <TimeTag hour={hour} disabled key={hour} />
           })}
           {hiddenHours > 0 && <TimeTag excess={hiddenHours} disabled />}
         </div>
@@ -104,7 +110,12 @@ export function Technician({ technicianData, technicianOperations }: Props) {
               })
             }
           />
-          <Button Icon={EditIcon} variant="secondary" size="sm" />
+          <Button
+            Icon={EditIcon}
+            variant="secondary"
+            size="sm"
+            onClick={() => navigate(`/technicians/${technicianData.id}`)}
+          />
         </div>
       </td>
     </tr>

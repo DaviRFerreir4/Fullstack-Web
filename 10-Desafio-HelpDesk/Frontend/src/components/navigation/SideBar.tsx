@@ -86,25 +86,41 @@ export function SideBar() {
             Icon={RequestIcon}
             text="Chamados"
             href="/requests"
-            selected={location.pathname === '/requests' ? true : false}
+            selected={
+              ['/requests', '/requests/'].includes(location.pathname)
+                ? true
+                : false
+            }
           />
           <SubMenu
             Icon={TechnicianIcon}
             text="Técnicos"
             href="/technicians"
-            selected={location.pathname === '/technicians' ? true : false}
+            selected={
+              ['/technicians', '/technicians/'].includes(location.pathname)
+                ? true
+                : false
+            }
           />
           <SubMenu
             Icon={ClientIcon}
             text="Clientes"
             href="/clients"
-            selected={location.pathname === '/clients' ? true : false}
+            selected={
+              ['/clients', '/clients/'].includes(location.pathname)
+                ? true
+                : false
+            }
           />
           <SubMenu
             Icon={ServicesIcon}
             text="Serviços"
             href="/services"
-            selected={location.pathname === '/services' ? true : false}
+            selected={
+              ['/services', '/services/'].includes(location.pathname)
+                ? true
+                : false
+            }
           />
         </div>
         <div className={`${userRole !== 'technician' && 'hidden'}`}>
@@ -112,7 +128,11 @@ export function SideBar() {
             Icon={RequestIcon}
             text="Meus chamados"
             href="/requests"
-            selected={location.pathname === '/requests' ? true : false}
+            selected={
+              ['/requests', '/requests/'].includes(location.pathname)
+                ? true
+                : false
+            }
           />
         </div>
         <div className={`${userRole !== 'client' && 'hidden'}`}>
@@ -120,19 +140,25 @@ export function SideBar() {
             Icon={RequestIcon}
             text="Meus chamados"
             href="/requests"
-            selected={location.pathname === '/requests' ? true : false}
+            selected={
+              ['/requests', '/requests/'].includes(location.pathname)
+                ? true
+                : false
+            }
           />
           <SubMenu
             Icon={CreateIcon}
             text="Criar chamado"
             href="/create"
-            selected={location.pathname === '/create' ? true : false}
+            selected={
+              ['/create', '/create/'].includes(location.pathname) ? true : false
+            }
           />
         </div>
       </div>
       <div>
         <button
-          className="w-full lg:px-4 lg:py-5 flex items-center gap-3 text-start outline-none"
+          className="w-full lg:px-4 lg:py-5 flex items-center gap-3 text-start"
           popoverTarget="user-menu"
           style={{ anchorName: '--user-menu' }}
         >

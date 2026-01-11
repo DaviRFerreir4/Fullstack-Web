@@ -55,6 +55,7 @@ export function RequestList() {
                 technician: { name: request.technician.name },
                 date: dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm'),
               }}
+              key={request.id}
             />
           ))}
         </tbody>

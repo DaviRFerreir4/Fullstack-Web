@@ -58,7 +58,7 @@ export function RequestDetails() {
           />
         </div>
       </div>
-      <div className="lg:flex lg:items-start lg:gap-6">
+      <div className="contents lg:flex lg:items-start lg:gap-6">
         <div className="p-5 border border-gray-500 rounded-[0.625rem] grid gap-5 lg:flex-3">
           <div>
             <div className="mb-0.5 flex justify-between items-center">

@@ -13,8 +13,10 @@ import { useState, useRef } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
 import { users } from '../../data/users'
+import { useNavigate } from 'react-router'
 
 export function TechnicianList() {
+  const navigate = useNavigate()
   const isMobile = useIsMobile()
 
   const dialogRef = useRef<null | HTMLDialogElement>(null)
@@ -74,6 +76,7 @@ export function TechnicianList() {
           Icon={PlusIcon}
           size="custom"
           className="px-4 py-2.5 h-10"
+          onClick={() => navigate('/technicians/create')}
         />
       </div>
       <table className="w-full border border-gray-500 rounded-xl border-separate">
@@ -93,11 +96,13 @@ export function TechnicianList() {
             .map((user) => (
               <Technician
                 technicianData={{
+                  id: user.id,
                   name: user.name,
                   email: user.email,
                   availability: user.openingHours ? user.openingHours : [],
                 }}
                 technicianOperations={technicianOperations}
+                key={user.id}
               />
             ))}
         </tbody>

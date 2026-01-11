@@ -89,6 +89,7 @@ export function ClientList() {
                   email: user.email,
                 }}
                 clientOperations={clientOperations}
+                key={user.id}
               />
             ))}
         </tbody>

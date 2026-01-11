@@ -5,6 +5,7 @@ export type User = {
   profilePicture?: string
   role: 'admin' | 'technician' | 'client'
   openingHours?: number[]
+  password?: string
   createdAt: string
   updatedAt: string
 }

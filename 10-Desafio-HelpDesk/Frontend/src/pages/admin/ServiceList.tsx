@@ -119,7 +119,7 @@ export function ServiceList() {
     <div>
       <div className="flex justify-between items-center mb-4 lg:mb-6">
         <h1 className="text-lg lg:text-xl font-bold text-blue-dark">
-          Técnicos
+          Serviços
         </h1>
         <Button
           text={isMobile ? undefined : 'Novo'}
@@ -155,6 +155,7 @@ export function ServiceList() {
                 status: service.isActive ? 'active' : 'inactive',
               }}
               serviceOperations={serviceOperations}
+              key={service.id}
             />
           ))}
         </tbody>

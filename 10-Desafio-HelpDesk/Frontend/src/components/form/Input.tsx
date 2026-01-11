@@ -31,6 +31,7 @@ export function Input({
           className={`w-full pb-2 border-b border-gray-500 text-gray-200 placeholder:text-gray-400 focus-within:outline-0 focus:border-blue-base hover:border-blue-base
             ${currency && 'pl-6'}
           `}
+          type={type}
           {...rest}
         />
       </div>
