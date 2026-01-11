@@ -103,7 +103,7 @@ export function ServiceList() {
       value:
         service.value === ''
           ? service.value
-          : Number(service.value).toLocaleString('en-us', {
+          : Number(service.value).toLocaleString('pt-br', {
               minimumFractionDigits: 2,
             }),
     })
@@ -174,7 +174,7 @@ export function ServiceList() {
             <Input
               label="Título"
               id="title"
-              defaultValue={'a'}
+              placeholder="Nome do serviço"
               value={service?.title}
               onChange={(event) =>
                 setService({
@@ -187,10 +187,11 @@ export function ServiceList() {
               label="Valor"
               id="value"
               currency
-              value={service?.value}
+              placeholder="0,00"
+              value={service.value}
               onChange={(event) => {
                 const value = event.target.value
-                const decimalRegex = /^\d+(\.\d*)?$/
+                const decimalRegex = /^\d+(\,\d*)?$/
 
                 if (value === '') {
                   setService({ ...service, value: '' })

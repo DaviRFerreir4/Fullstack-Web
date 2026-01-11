@@ -56,7 +56,7 @@ export const users: User[] = [
     name: 'Carlo Silva',
     email: 'carlos.silva@email.com',
     role: 'technician',
-    openingHours: [8, 9, 10, 11, 13, 14, 15, 16],
+    openingHours: [9, 10, 11, 14, 15, 16, 20, 21],
     createdAt: '2025-12-15T13:02:23.846Z',
     updatedAt: '2025-12-15T13:02:23.846Z',
   },
