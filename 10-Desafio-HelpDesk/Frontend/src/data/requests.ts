@@ -60,7 +60,7 @@ export const requests: Request[] = [
     updatedAt: '2025-04-12T09:01:00.000Z',
   },
   {
-    id: 1,
+    id: 12,
     title: 'Computador não liga',
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum id sapiente, cumque voluptatibus.',
@@ -72,7 +72,7 @@ export const requests: Request[] = [
     updatedAt: '2025-04-12T09:01:00.000Z',
   },
   {
-    id: 1,
+    id: 123,
     title: 'Computador não liga',
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum id sapiente, cumque voluptatibus.',

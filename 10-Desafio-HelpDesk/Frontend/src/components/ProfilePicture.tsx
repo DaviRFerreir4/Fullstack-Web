@@ -30,7 +30,7 @@ export function ProfilePicture({
       {...rest}
     >
       {profilePicture ? (
-        <img />
+        <img src={profilePicture} />
       ) : (
         <span className="w-full h-full flex justify-center items-center bg-blue-dark text-gray-600">
           {initials?.map((initial) => initial.toUpperCase())}

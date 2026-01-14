@@ -1,6 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router'
-
 // @ts-expect-error TS2307
 import Logo from '../../assets/logo-dark.svg?react'
 // @ts-expect-error TS2307
@@ -21,21 +18,70 @@ import LeaveIcon from '../../assets/icons/log-out.svg?react'
 import MenuIcon from '../../assets/icons/menu.svg?react'
 // @ts-expect-error TS2307
 import CloseIcon from '../../assets/icons/close.svg?react'
+// @ts-expect-error TS2307
+import UploadIcon from '../../assets/icons/upload.svg?react'
+// @ts-expect-error TS2307
+import TrashIcon from '../../assets/icons/trash.svg?react'
 
 import { SubMenu } from './SubMenu'
 import { ProfilePicture } from '../ProfilePicture'
+import { Dialog } from '../Dialog'
+import { Input } from '../form/Input'
+import { TimeTag } from '../TimeTag'
+
+import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { users } from '../../data/users'
+import { Button } from '../form/Button'
+
+interface IUserActions {
+  action: 'edit'
+  title: string
+}
 
 const user = users.find((user) => user.id === localStorage.getItem('userid'))
 const userRole = user?.role
 
 export function SideBar() {
+  if (!user) return
+
   const location = useLocation()
   const isMobile = useIsMobile()
 
   const popoverRef = useRef<HTMLDivElement | null>(null)
   const [isScreenMenuOpen, setIsScreenMenuOpen] = useState(false)
+
+  const dialogRef = useRef<null | HTMLDialogElement>(null)
+  const [openDialog, setOpenDialog] = useState(false)
+
+  const [currentAction, setCurrentAction] = useState<null | {
+    action: 'edit' | 'success' | 'failure'
+    title: string
+    handleAction: () => void
+  }>(null)
+
+  function editUser() {
+    setCurrentAction({
+      action: 'success',
+      title: 'Usuário editado com sucesso',
+      handleAction: handleCloseDialog,
+    })
+  }
+
+  function userOperations(serviceAction: IUserActions) {
+    setCurrentAction({
+      action: serviceAction.action,
+      title: serviceAction.title,
+      handleAction: editUser,
+    })
+    setOpenDialog(true)
+  }
+
+  function handleCloseDialog() {
+    dialogRef.current?.close()
+    setOpenDialog(false)
+  }
 
   useEffect(() => {
     const popover = popoverRef.current
@@ -164,10 +210,14 @@ export function SideBar() {
           popoverTarget="user-menu"
           style={{ anchorName: '--user-menu' }}
         >
-          <ProfilePicture username={user?.name} size="lg" />
+          <ProfilePicture
+            username={user.name}
+            profilePicture={user.profilePicture}
+            size="lg"
+          />
           <div className="hidden lg:grid">
-            <span className="text-sm text-gray-600">{user?.name}</span>
-            <span className="text-xs text-gray-400">{user?.name}</span>
+            <span className="text-sm text-gray-600">{user.name}</span>
+            <span className="text-xs text-gray-400">{user.name}</span>
           </div>
         </button>
         <div
@@ -185,6 +235,7 @@ export function SideBar() {
             colorClasses="text-gray-500"
             onClick={(event) => {
               event.preventDefault()
+              userOperations({ action: 'edit', title: 'Perfil' })
             }}
           />
           <SubMenu
@@ -198,6 +249,89 @@ export function SideBar() {
           />
         </div>
       </div>
+      <Dialog
+        title={currentAction?.title}
+        open={openDialog}
+        dialogRef={dialogRef}
+        closeDialog={handleCloseDialog}
+        action={currentAction?.action}
+        handleAction={currentAction ? currentAction.handleAction : () => {}}
+        useSamePadding={false}
+      >
+        {currentAction?.action === 'edit' ? (
+          <div>
+            <div className="mb-5 px-7 flex items-center gap-3">
+              <ProfilePicture
+                username={user.name}
+                profilePicture={user.profilePicture}
+                size="xl"
+              />
+              <div className="h-8 flex items-center gap-1">
+                <Button
+                  variant="secondary"
+                  text="Nova Imagem"
+                  Icon={UploadIcon}
+                  size="custom"
+                  className="h-full px-2"
+                />
+                {user.profilePicture && (
+                  <Button
+                    variant="secondary"
+                    Icon={TrashIcon}
+                    iconColor="text-feedback-danger"
+                    size="custom"
+                    className="h-full aspect-square"
+                  />
+                )}
+              </div>
+            </div>
+            <form className="px-7 grid gap-4">
+              <Input label="Nome" value={user.name} />
+              <Input label="E-mail" value={user.email} />
+              <div className="relative">
+                <Input
+                  label="Senha"
+                  type="password"
+                  value={'password'}
+                  disabled
+                />
+                <div className="absolute bottom-1/2 right-0 translate-y-2/3">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    text="Alterar"
+                    onClick={(event) => {
+                      event.preventDefault()
+                    }}
+                  />
+                </div>
+              </div>
+            </form>
+            {user.role === 'technician' && (
+              <div className="mt-8">
+                <hr className="mb-5 border-gray-500" />
+                <div className="px-7 grid gap-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-200">
+                      Disponibilidade
+                    </h3>
+                    <p className="text-xs text-gray-300">
+                      Horários de atendimento definidos pelo admin
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-1 gap-y-2">
+                    {user.openingHours?.map((hour) => (
+                      <TimeTag hour={hour} disabled />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          ''
+        )}
+      </Dialog>
     </aside>
   )
 }

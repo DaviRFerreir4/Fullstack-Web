@@ -71,7 +71,7 @@ export function RequestCard({ request, className }: Props) {
               })}
           </span>
         </div>
-        <hr className="border-t border-gray-500" />
+        <hr className="border-gray-500" />
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1.5">
             <ProfilePicture username={request.client.name} />

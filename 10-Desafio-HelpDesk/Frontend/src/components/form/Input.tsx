@@ -28,7 +28,7 @@ export function Input({
         {currency && <span className="absolute font-bold">R$</span>}
         <input
           id={id}
-          className={`w-full pb-2 border-b border-gray-500 text-gray-200 placeholder:text-gray-400 focus-within:outline-0 focus:border-blue-base hover:border-blue-base
+          className={`w-full pb-2 border-b border-gray-500 text-gray-200 placeholder:text-gray-400 focus-within:outline-0 focus:border-blue-base hover:border-blue-base disabled:hover:border-gray-500
             ${currency && 'pl-6'}
           `}
           type={type}

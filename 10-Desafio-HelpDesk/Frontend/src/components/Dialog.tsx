@@ -23,6 +23,7 @@ type Props = React.ComponentProps<'dialog'> & {
   dialogRef: RefObject<null | HTMLDialogElement>
   closeDialog: () => void
   children: React.ReactNode
+  useSamePadding?: boolean
 }
 
 export function Dialog({
@@ -33,6 +34,7 @@ export function Dialog({
   dialogRef,
   closeDialog,
   children,
+  useSamePadding = true,
   ...rest
 }: Props) {
   let buttonText = ''
@@ -65,7 +67,11 @@ export function Dialog({
           onClick={closeDialog}
         />
       </div>
-      <div className="px-7 mb-6 py-7 border-y border-gray-500">
+      <div
+        className={`mb-6 py-7 border-y border-gray-500 ${
+          useSamePadding && 'px-7'
+        }`}
+      >
         {action === 'success' ? (
           <div className="grid justify-center justify-items-center gap-4">
             <SuccessIcon className="w-12 h-12 text-feedback-done/70" />
