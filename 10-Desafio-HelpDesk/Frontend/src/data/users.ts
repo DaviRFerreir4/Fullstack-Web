@@ -87,4 +87,12 @@ export const users: User[] = [
     createdAt: '2025-12-15T13:02:23.846Z',
     updatedAt: '2025-12-15T13:02:23.846Z',
   },
+  {
+    id: '9c058855-9351-45a4-aae0-32b4becc1172',
+    name: 'Usuário Admin',
+    email: 'user.adm@test.com',
+    role: 'admin',
+    createdAt: '2025-12-15T13:02:23.846Z',
+    updatedAt: '2025-12-15T13:02:23.846Z',
+  },
 ]

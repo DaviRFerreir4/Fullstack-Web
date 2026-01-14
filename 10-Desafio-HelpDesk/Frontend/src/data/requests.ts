@@ -36,7 +36,7 @@ export const requests: Request[] = [
     title: 'Backup não está funcionando',
     description:
       'O sistema de backup automático parou de funcionar. Última execução bem-sucedida foi há uma semana.',
-    status: 'opened',
+    status: 'closed',
     services: [
       { createdAt: '2025-04-12T09:12:00.000Z', service: services[1] },
       { createdAt: '2025-04-12T13:25:00.000Z', service: services[4] },
@@ -46,6 +46,30 @@ export const requests: Request[] = [
     technician: users[5],
     createdAt: '2025-04-12T09:12:00.000Z',
     updatedAt: '2025-04-12T15:20:00.000Z',
+  },
+  {
+    id: 1,
+    title: 'Computador não liga',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum id sapiente, cumque voluptatibus.',
+    status: 'in_progress',
+    services: [{ createdAt: '2025-04-12T09:01:00.000Z', service: services[2] }],
+    client: users[2],
+    technician: users[5],
+    createdAt: '2025-04-12T09:01:00.000Z',
+    updatedAt: '2025-04-12T09:01:00.000Z',
+  },
+  {
+    id: 1,
+    title: 'Computador não liga',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum id sapiente, cumque voluptatibus.',
+    status: 'in_progress',
+    services: [{ createdAt: '2025-04-12T09:01:00.000Z', service: services[2] }],
+    client: users[2],
+    technician: users[5],
+    createdAt: '2025-04-12T09:01:00.000Z',
+    updatedAt: '2025-04-12T09:01:00.000Z',
   },
   {
     id: 1,

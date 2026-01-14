@@ -25,8 +25,10 @@ import CloseIcon from '../../assets/icons/close.svg?react'
 import { SubMenu } from './SubMenu'
 import { ProfilePicture } from '../ProfilePicture'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { users } from '../../data/users'
 
-const userRole: string = 'admin'
+const user = users.find((user) => user.id === localStorage.getItem('userid'))
+const userRole = user?.role
 
 export function SideBar() {
   const location = useLocation()
@@ -49,7 +51,7 @@ export function SideBar() {
   }, [])
 
   return (
-    <aside className="pr-6 lg:pr-0 flex items-center justify-between lg:grid lg:grid-rows-[auto_1fr_auto] lg:items-start bg-gray-100">
+    <aside className="lg:h-[calc(100vh-12px)] lg:sticky lg:top-3 pr-6 lg:pr-0 flex items-center justify-between lg:grid lg:grid-rows-[auto_1fr_auto] lg:items-start bg-gray-100">
       <div className="pl-6 lg:pl-0 flex items-center">
         <button
           className="w-min p-2.5 lg:hidden bg-gray-200 text-gray-600"
@@ -162,10 +164,10 @@ export function SideBar() {
           popoverTarget="user-menu"
           style={{ anchorName: '--user-menu' }}
         >
-          <ProfilePicture username="Usuario Admin" size="lg" />
+          <ProfilePicture username={user?.name} size="lg" />
           <div className="hidden lg:grid">
-            <span className="text-sm text-gray-600">Usuário Adm</span>
-            <span className="text-xs text-gray-400">user.adm@test.com</span>
+            <span className="text-sm text-gray-600">{user?.name}</span>
+            <span className="text-xs text-gray-400">{user?.name}</span>
           </div>
         </button>
         <div
