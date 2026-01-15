@@ -9,6 +9,7 @@ import { StatusTag } from './StatusTag'
 
 import { type Request } from '../data/requests'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router'
 
 type Props = {
   request: Request
@@ -16,6 +17,8 @@ type Props = {
 }
 
 export function RequestCard({ request, className }: Props) {
+  const navigate = useNavigate()
+
   return (
     <div
       className={`flex-[1_0_100%] lg:flex-none lg:w-86.5 p-5 border border-gray-500 rounded-[0.625rem] text-gray-200 ${className}`}
@@ -33,6 +36,7 @@ export function RequestCard({ request, className }: Props) {
             variant="secondary"
             size="custom"
             className="p-2"
+            onClick={() => navigate(`/requests/${request.id}`)}
           />
           {request.status !== 'closed' && (
             <Button

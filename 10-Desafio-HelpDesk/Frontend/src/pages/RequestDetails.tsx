@@ -1,20 +1,30 @@
-import { useNavigate, useParams } from 'react-router'
-import { requests } from '../data/requests'
-
-import { Button } from '../components/form/Button'
-import { StatusTag } from '../components/StatusTag'
-import { InfoField } from '../components/InfoField'
-import { ProfilePicture } from '../components/ProfilePicture'
-
 // @ts-expect-error TS2307
 import BackIcon from '../assets/icons/arrow-left.svg?react'
 // @ts-expect-error TS2307
 import ClockIcon from '../assets/icons/clock.svg?react'
 // @ts-expect-error TS2307
 import DoneIcon from '../assets/icons/circle-check-big.svg?react'
+// @ts-expect-error TS2307
+import AddIcon from '../assets/icons/plus.svg?react'
+// @ts-expect-error TS2307
+import RemoveIcon from '../assets/icons/trash.svg?react'
+
+import { Button } from '../components/form/Button'
+import { StatusTag } from '../components/StatusTag'
+import { InfoField } from '../components/InfoField'
+import { ProfilePicture } from '../components/ProfilePicture'
+
+import { useNavigate, useParams } from 'react-router'
+import { requests } from '../data/requests'
 import dayjs from 'dayjs'
+import { users } from '../data/users'
+
+const user = users.find((user) => user.id === localStorage.getItem('userid'))
+const userRole = user?.role
 
 export function RequestDetails() {
+  if (!user) return
+
   const navigate = useNavigate()
   const params = useParams()
 
@@ -41,63 +51,77 @@ export function RequestDetails() {
             Chamado detalhado
           </h1>
         </div>
-        <div className="flex gap-2">
-          <Button
-            Icon={ClockIcon}
-            text="Em atendimento"
-            variant="secondary"
-            size="custom"
-            className="w-full lg:w-auto lg:px-4 py-2.5 whitespace-nowrap"
-          />
-          <Button
-            Icon={DoneIcon}
-            text="Encerrado"
-            variant="secondary"
-            size="custom"
-            className="w-full lg:w-auto lg:px-4 py-2.5"
-          />
-        </div>
+        {userRole !== 'client' && (
+          <div className="flex gap-2">
+            {userRole === 'admin' && (
+              <Button
+                Icon={ClockIcon}
+                text="Em atendimento"
+                variant="secondary"
+                size="custom"
+                className="w-full lg:w-auto lg:px-4 py-2.5 whitespace-nowrap"
+              />
+            )}
+            <Button
+              Icon={DoneIcon}
+              text={userRole === 'admin' ? 'Encerrado' : 'Encerrar'}
+              variant="secondary"
+              size="custom"
+              className="w-full lg:w-auto lg:px-4 py-2.5"
+            />
+            {userRole === 'technician' && (
+              <Button
+                Icon={ClockIcon}
+                text="Iniciar atendimento"
+                size="custom"
+                className="w-full lg:w-auto lg:px-4 py-2.5"
+              />
+            )}
+          </div>
+        )}
       </div>
-      <div className="contents lg:flex lg:items-start lg:gap-6">
-        <div className="p-5 border border-gray-500 rounded-[0.625rem] grid gap-5 lg:flex-3">
-          <div>
-            <div className="mb-0.5 flex justify-between items-center">
-              <span className="text-xs font-bold text-gray-300">
-                {request.id.toLocaleString('pt-br', {
-                  minimumIntegerDigits: 5,
-                  useGrouping: false,
-                })}
-              </span>
-              <StatusTag status={request.status} />
+      <div className="contents lg:grid lg:items-start lg:grid-cols-[3fr_2fr] lg:gap-x-6 lg:gap-y-3">
+        <div className="grid gap-3">
+          <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-5">
+            <div>
+              <div className="mb-0.5 flex justify-between items-center">
+                <span className="text-xs font-bold text-gray-300">
+                  {request.id.toLocaleString('pt-br', {
+                    minimumIntegerDigits: 5,
+                    useGrouping: false,
+                  })}
+                </span>
+                <StatusTag status={request.status} />
+              </div>
+              <h2 className="font-bold">{request.title}</h2>
             </div>
-            <h2 className="font-bold">{request.title}</h2>
-          </div>
-          <InfoField title="Descrição">
-            <p className="text-sm">{request.description}</p>
-          </InfoField>
-          <InfoField title="Categoria">
-            <p className="text-sm">{request.services[0].service.title}</p>
-          </InfoField>
-          <div className="flex gap-8 sm:justify-between">
-            <InfoField title="Criado em" className="flex-1">
-              <p className="text-xs">
-                {dayjs(request.createdAt).format('DD/MM/YYYY HH:mm')}
-              </p>
+            <InfoField title="Descrição">
+              <p className="text-sm">{request.description}</p>
             </InfoField>
-            <InfoField title="Atualizado em" className="flex-1">
-              <p className="text-xs">
-                {dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm')}
-              </p>
+            <InfoField title="Categoria">
+              <p className="text-sm">{request.services[0].service.title}</p>
             </InfoField>
-          </div>
-          <InfoField title="Cliente" spacing="gap-2">
-            <div className="flex items-center gap-2">
-              <ProfilePicture username={request.client.name} />
-              <span className="text-sm">{request.client.name}</span>
+            <div className="flex gap-8 sm:justify-between">
+              <InfoField title="Criado em" className="flex-1">
+                <p className="text-xs">
+                  {dayjs(request.createdAt).format('DD/MM/YYYY HH:mm')}
+                </p>
+              </InfoField>
+              <InfoField title="Atualizado em" className="flex-1">
+                <p className="text-xs">
+                  {dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm')}
+                </p>
+              </InfoField>
             </div>
-          </InfoField>
+            <InfoField title="Cliente" spacing="gap-2">
+              <div className="flex items-center gap-2">
+                <ProfilePicture username={request.client.name} />
+                <span className="text-sm">{request.client.name}</span>
+              </div>
+            </InfoField>
+          </div>
         </div>
-        <div className="p-5 border border-gray-500 rounded-[0.625rem] grid gap-8 lg:flex-2">
+        <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-8">
           <InfoField title="Técnico Responsável" spacing="gap-2">
             <div className="flex items-center gap-2">
               <ProfilePicture username={request.technician.name} size="md" />
@@ -125,11 +149,14 @@ export function RequestDetails() {
             <InfoField title="Adicionais" spacing="gap-2">
               {request.services
                 .slice(1, request.services.length)
-                .map((service) => (
-                  <div className="flex justify-between text-xs">
-                    <span>{service.service.title}</span>
+                .map(({ service }) => (
+                  <div
+                    className="flex justify-between text-xs"
+                    key={service.id}
+                  >
+                    <span className="line-clamp-1">{service.title}</span>
                     <span>
-                      {service.service.value.toLocaleString('pt-br', {
+                      {service.value.toLocaleString('pt-br', {
                         minimumFractionDigits: 2,
                         style: 'currency',
                         currency: 'BRL',
@@ -142,7 +169,7 @@ export function RequestDetails() {
               <span>Total</span>
               <span>
                 {request.services
-                  .map((service) => service.service.value)
+                  .map(({ service }) => service.value)
                   .reduce(
                     (accumulator, currentValue) => accumulator + currentValue,
                     0
@@ -156,6 +183,50 @@ export function RequestDetails() {
             </div>
           </div>
         </div>
+
+        {userRole === 'technician' && (
+          <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-4">
+            <div className="flex justify-between">
+              <h3>Serviços adicionais</h3>
+              <Button Icon={AddIcon} size="sm" />
+            </div>
+            {request.services.length > 1 ? (
+              request.services
+                .slice(1, request.services.length)
+                .map(({ service }, index) => (
+                  <div className="grid gap-2">
+                    <div className="contents">
+                      <div className="flex items-center gap-6 text-xs">
+                        <span className="flex-1 font-bold line-clamp-1">
+                          {service.title}
+                        </span>
+                        <span>
+                          {service.value.toLocaleString('pt-br', {
+                            minimumFractionDigits: 2,
+                            style: 'currency',
+                            currency: 'BRL',
+                          })}
+                        </span>
+                        <Button
+                          Icon={RemoveIcon}
+                          iconColor="text-feedback-danger"
+                          size="sm"
+                          variant="secondary"
+                        />
+                      </div>
+                      {index < request.services.length - 2 && (
+                        <hr className="border-gray-500" />
+                      )}
+                    </div>
+                  </div>
+                ))
+            ) : (
+              <p className="text-xs">
+                Adicione um serviço adicional ao chamado caso seja necessário
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

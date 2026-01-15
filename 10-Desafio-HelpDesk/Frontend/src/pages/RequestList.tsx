@@ -19,6 +19,8 @@ const userRequests = requests.filter((request) =>
 )
 
 export function RequestList() {
+  if (!user) return
+
   const isMobile = useIsMobile()
 
   return (

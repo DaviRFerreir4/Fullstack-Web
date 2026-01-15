@@ -24,7 +24,7 @@ export const requests: Request[] = [
     status: 'opened',
     services: [
       { createdAt: '2025-04-13T20:56:00.000Z', service: services[0] },
-      { createdAt: '', service: services[3] },
+      { createdAt: '2025-04-13T20:56:00.000Z', service: services[3] },
     ],
     client: users[0],
     technician: users[5],
