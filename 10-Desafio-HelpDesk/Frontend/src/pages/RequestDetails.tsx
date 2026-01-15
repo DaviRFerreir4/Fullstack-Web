@@ -18,6 +18,15 @@ import { useNavigate, useParams } from 'react-router'
 import { requests } from '../data/requests'
 import dayjs from 'dayjs'
 import { users } from '../data/users'
+import { useRef, useState } from 'react'
+import type { Service } from '../data/services'
+import { Dialog } from '../components/Dialog'
+import { Input } from '../components/form/Input'
+
+interface IServiceActions {
+  action: 'edit' | 'remove'
+  title: string
+}
 
 const user = users.find((user) => user.id === localStorage.getItem('userid'))
 const userRole = user?.role
@@ -28,6 +37,23 @@ export function RequestDetails() {
   const navigate = useNavigate()
   const params = useParams()
 
+  const dialogRef = useRef<null | HTMLDialogElement>(null)
+  const [openDialog, setOpenDialog] = useState(false)
+
+  const [service, setService] = useState<
+    Pick<Service, 'id' | 'title'> & { value: string }
+  >({
+    id: '',
+    title: '',
+    value: '',
+  })
+
+  const [currentAction, setCurrentAction] = useState<null | {
+    action: 'edit' | 'remove' | 'success' | 'failure'
+    title: string
+    handleAction: () => void
+  }>(null)
+
   const request = requests.find((request) => request.id === Number(params.id))
 
   if (!request) return
@@ -35,6 +61,53 @@ export function RequestDetails() {
   request.services.sort((a, b) => {
     return dayjs(a.createdAt).diff(dayjs(b.createdAt))
   })
+
+  function addService() {
+    setCurrentAction({
+      action: 'success',
+      title: 'Serviço adicionado com sucesso!',
+      handleAction: handleCloseDialog,
+    })
+    // setCurrentAction({
+    //   action: 'failure',
+    //   title: 'Erro ao adicionar o serviço ao chamado',
+    //   handleAction: handleCloseDialog,
+    // })
+  }
+
+  function removeService() {
+    // setCurrentAction({
+    //   action: 'success',
+    //   title: 'Serviço removido do chamado com sucesso!',
+    //   handleAction: handleCloseDialog,
+    // })
+    setCurrentAction({
+      action: 'failure',
+      title: 'Erro ao remover o serviço do chamado',
+      handleAction: handleCloseDialog,
+    })
+  }
+
+  function serviceOperations(
+    service: Pick<Service, 'id' | 'title'> & { value: string },
+    serviceAction: IServiceActions
+  ) {
+    setCurrentAction({
+      action: serviceAction.action,
+      title: serviceAction.title,
+      handleAction:
+        serviceAction.action === 'edit' ? addService : removeService,
+    })
+    setService({
+      ...service,
+    })
+    setOpenDialog(true)
+  }
+
+  function handleCloseDialog() {
+    dialogRef.current?.close()
+    setOpenDialog(false)
+  }
 
   return (
     <div className="lg:mx-35.5 grid gap-4 lg:gap-6 text-gray-200">
@@ -53,23 +126,26 @@ export function RequestDetails() {
         </div>
         {userRole !== 'client' && (
           <div className="flex gap-2">
-            {userRole === 'admin' && (
+            {userRole === 'admin' &&
+              !['in_progress', 'closed'].includes(request.status) && (
+                <Button
+                  Icon={ClockIcon}
+                  text="Em atendimento"
+                  variant="secondary"
+                  size="custom"
+                  className="w-full lg:w-auto lg:px-4 py-2.5 whitespace-nowrap"
+                />
+              )}
+            {request.status !== 'closed' && (
               <Button
-                Icon={ClockIcon}
-                text="Em atendimento"
+                Icon={DoneIcon}
+                text={userRole === 'admin' ? 'Encerrado' : 'Encerrar'}
                 variant="secondary"
                 size="custom"
-                className="w-full lg:w-auto lg:px-4 py-2.5 whitespace-nowrap"
+                className="w-full lg:w-auto lg:px-4 py-2.5"
               />
             )}
-            <Button
-              Icon={DoneIcon}
-              text={userRole === 'admin' ? 'Encerrado' : 'Encerrar'}
-              variant="secondary"
-              size="custom"
-              className="w-full lg:w-auto lg:px-4 py-2.5"
-            />
-            {userRole === 'technician' && (
+            {userRole === 'technician' && request.status === 'opened' && (
               <Button
                 Icon={ClockIcon}
                 text="Iniciar atendimento"
@@ -184,11 +260,20 @@ export function RequestDetails() {
           </div>
         </div>
 
-        {userRole === 'technician' && (
+        {userRole === 'technician' && request.status !== 'closed' && (
           <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-4">
             <div className="flex justify-between">
               <h3>Serviços adicionais</h3>
-              <Button Icon={AddIcon} size="sm" />
+              <Button
+                Icon={AddIcon}
+                size="sm"
+                onClick={() =>
+                  serviceOperations(service, {
+                    action: 'edit',
+                    title: 'Serviço adicional',
+                  })
+                }
+              />
             </div>
             {request.services.length > 1 ? (
               request.services
@@ -212,6 +297,18 @@ export function RequestDetails() {
                           iconColor="text-feedback-danger"
                           size="sm"
                           variant="secondary"
+                          onClick={() =>
+                            serviceOperations(
+                              {
+                                id: service.id,
+                                title: service.title,
+                                value: service.value.toLocaleString('pt-br', {
+                                  minimumFractionDigits: 2,
+                                }),
+                              },
+                              { action: 'remove', title: 'Remover serviço' }
+                            )
+                          }
                         />
                       </div>
                       {index < request.services.length - 2 && (
@@ -228,6 +325,64 @@ export function RequestDetails() {
           </div>
         )}
       </div>
+      <Dialog
+        title={currentAction?.title}
+        open={openDialog}
+        dialogRef={dialogRef}
+        closeDialog={handleCloseDialog}
+        action={currentAction?.action}
+        handleAction={currentAction ? currentAction.handleAction : () => {}}
+      >
+        {currentAction?.action === 'edit' ? (
+          <div className="grid gap-4">
+            <Input
+              label="Título"
+              id="title"
+              placeholder="Nome do serviço"
+              value={service?.title}
+              onChange={(event) =>
+                setService({
+                  ...service,
+                  title: event.target.value,
+                })
+              }
+            />
+            <Input
+              label="Valor"
+              id="value"
+              currency
+              placeholder="0,00"
+              value={service.value}
+              onChange={(event) => {
+                const value = event.target.value
+                const decimalRegex = /^\d+(\,\d*)?$/
+
+                if (value === '') {
+                  setService({ ...service, value: '' })
+                }
+
+                if (decimalRegex.test(event.target.value)) {
+                  setService({ ...service, value: event.target.value })
+                }
+              }}
+            />
+          </div>
+        ) : currentAction?.action === 'remove' ? (
+          <div className="grid gap-5">
+            <p>
+              Deseja realmente remover o serviço{' '}
+              <strong>{service?.title}</strong> do chamado de nº {request.id}?
+            </p>
+
+            <p>
+              Ao remove-lo, ele deixará de ser considerado no cálculo de valor
+              total do chamado.
+            </p>
+          </div>
+        ) : (
+          ''
+        )}
+      </Dialog>
     </div>
   )
 }
