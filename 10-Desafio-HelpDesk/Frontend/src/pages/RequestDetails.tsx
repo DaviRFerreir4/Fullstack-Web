@@ -189,12 +189,14 @@ export function RequestDetails() {
                 </p>
               </InfoField>
             </div>
-            <InfoField title="Cliente" spacing="gap-2">
-              <div className="flex items-center gap-2">
-                <ProfilePicture username={request.client.name} />
-                <span className="text-sm">{request.client.name}</span>
-              </div>
-            </InfoField>
+            {userRole !== 'client' && (
+              <InfoField title="Cliente" spacing="gap-2">
+                <div className="flex items-center gap-2">
+                  <ProfilePicture username={request.client.name} />
+                  <span className="text-sm">{request.client.name}</span>
+                </div>
+              </InfoField>
+            )}
           </div>
         </div>
         <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-8">

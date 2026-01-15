@@ -34,9 +34,18 @@ export function RequestList() {
             <tr>
               <TableHeader text="Atualizado em" />
               <TableHeader text="Id" desktopOnly />
-              <TableHeader text="Título e Serviço" />
+              {userRole === 'client' ? (
+                <>
+                  <TableHeader text="Título" />
+                  <TableHeader text="Serviço" desktopOnly />
+                </>
+              ) : (
+                <TableHeader text="Título e Serviço" />
+              )}
               <TableHeader text="Valor total" desktopOnly />
-              <TableHeader text="Cliente" desktopOnly />
+              {userRole !== 'client' && (
+                <TableHeader text="Cliente" desktopOnly />
+              )}
               <TableHeader text="Técnico" desktopOnly />
               <TableHeader
                 text="Status"

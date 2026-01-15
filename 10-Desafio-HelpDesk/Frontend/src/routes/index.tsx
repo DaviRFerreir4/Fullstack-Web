@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router'
 import { AuthRoutes } from './AuthRoutes'
 import { AdminRoutes } from './AdminRoutes'
 import { TechnicianRoutes } from './TechnicianRoutes'
+import { ClientRoutes } from './ClientRoutes'
 
 import { users } from '../data/users'
 
@@ -13,7 +14,7 @@ export function Routes() {
   return (
     <BrowserRouter>
       {role === 'client' ? (
-        ''
+        <ClientRoutes />
       ) : role === 'technician' ? (
         <TechnicianRoutes />
       ) : role === 'admin' ? (
