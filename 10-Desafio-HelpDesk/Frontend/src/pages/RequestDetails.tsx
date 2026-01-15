@@ -157,47 +157,45 @@ export function RequestDetails() {
         )}
       </div>
       <div className="contents lg:grid lg:items-start lg:grid-cols-[3fr_2fr] lg:gap-x-6 lg:gap-y-3">
-        <div className="grid gap-3">
-          <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-5">
-            <div>
-              <div className="mb-0.5 flex justify-between items-center">
-                <span className="text-xs font-bold text-gray-300">
-                  {request.id.toLocaleString('pt-br', {
-                    minimumIntegerDigits: 5,
-                    useGrouping: false,
-                  })}
-                </span>
-                <StatusTag status={request.status} />
-              </div>
-              <h2 className="font-bold">{request.title}</h2>
+        <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-5">
+          <div>
+            <div className="mb-0.5 flex justify-between items-center">
+              <span className="text-xs font-bold text-gray-300">
+                {request.id.toLocaleString('pt-br', {
+                  minimumIntegerDigits: 5,
+                  useGrouping: false,
+                })}
+              </span>
+              <StatusTag status={request.status} />
             </div>
-            <InfoField title="Descrição">
-              <p className="text-sm">{request.description}</p>
-            </InfoField>
-            <InfoField title="Categoria">
-              <p className="text-sm">{request.services[0].service.title}</p>
-            </InfoField>
-            <div className="flex gap-8 sm:justify-between">
-              <InfoField title="Criado em" className="flex-1">
-                <p className="text-xs">
-                  {dayjs(request.createdAt).format('DD/MM/YYYY HH:mm')}
-                </p>
-              </InfoField>
-              <InfoField title="Atualizado em" className="flex-1">
-                <p className="text-xs">
-                  {dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm')}
-                </p>
-              </InfoField>
-            </div>
-            {userRole !== 'client' && (
-              <InfoField title="Cliente" spacing="gap-2">
-                <div className="flex items-center gap-2">
-                  <ProfilePicture username={request.client.name} />
-                  <span className="text-sm">{request.client.name}</span>
-                </div>
-              </InfoField>
-            )}
+            <h2 className="font-bold">{request.title}</h2>
           </div>
+          <InfoField title="Descrição">
+            <p className="text-sm">{request.description}</p>
+          </InfoField>
+          <InfoField title="Categoria">
+            <p className="text-sm">{request.services[0].service.title}</p>
+          </InfoField>
+          <div className="flex gap-8 sm:justify-between">
+            <InfoField title="Criado em" className="flex-1">
+              <p className="text-xs">
+                {dayjs(request.createdAt).format('DD/MM/YYYY HH:mm')}
+              </p>
+            </InfoField>
+            <InfoField title="Atualizado em" className="flex-1">
+              <p className="text-xs">
+                {dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm')}
+              </p>
+            </InfoField>
+          </div>
+          {userRole !== 'client' && (
+            <InfoField title="Cliente" spacing="gap-2">
+              <div className="flex items-center gap-2">
+                <ProfilePicture username={request.client.name} />
+                <span className="text-sm">{request.client.name}</span>
+              </div>
+            </InfoField>
+          )}
         </div>
         <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-8">
           <InfoField title="Técnico Responsável" spacing="gap-2">
@@ -281,7 +279,7 @@ export function RequestDetails() {
               request.services
                 .slice(1, request.services.length)
                 .map(({ service }, index) => (
-                  <div className="grid gap-2">
+                  <div className="grid gap-2" key={service.id}>
                     <div className="contents">
                       <div className="flex items-center gap-6 text-xs">
                         <span className="flex-1 font-bold line-clamp-1">

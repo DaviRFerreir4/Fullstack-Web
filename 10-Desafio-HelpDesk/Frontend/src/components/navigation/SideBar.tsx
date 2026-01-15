@@ -205,9 +205,13 @@ export function SideBar() {
           <SubMenu
             Icon={CreateIcon}
             text="Criar chamado"
-            href="/create"
+            href="/requests/create"
             selected={
-              ['/create', '/create/'].includes(location.pathname) ? true : false
+              ['/requests/create', '/requests/create/'].includes(
+                location.pathname
+              )
+                ? true
+                : false
             }
           />
         </div>
@@ -339,7 +343,7 @@ export function SideBar() {
                   </div>
                   <div className="flex flex-wrap gap-1 gap-y-2">
                     {user.openingHours?.map((hour) => (
-                      <TimeTag hour={hour} disabled />
+                      <TimeTag hour={hour} disabled key={hour} />
                     ))}
                   </div>
                 </div>

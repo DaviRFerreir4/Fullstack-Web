@@ -1,5 +1,4 @@
-// @ts-expect-error TS2307
-import AlertIcon from '../../assets/icons/circle-alert.svg?react'
+import { InputWrapper } from './InputWrapper'
 
 type Props = React.ComponentProps<'input'> & {
   label: string
@@ -20,10 +19,13 @@ export function Input({
   ...rest
 }: Props) {
   return (
-    <div className="grid gap-2 text-gray-300 focus-within:text-blue-base">
-      <label htmlFor={id} className="text-xxs uppercase font-bold">
-        {label}
-      </label>
+    <InputWrapper
+      label={label}
+      error={error}
+      info={info}
+      helperText={helperText}
+      id={id}
+    >
       <div className="relative">
         {currency && <span className="absolute font-bold">R$</span>}
         <input
@@ -35,15 +37,6 @@ export function Input({
           {...rest}
         />
       </div>
-      <div
-        className={`items-center gap-1
-          ${info || error ? 'flex' : 'hidden'}
-          ${info ? 'text-gray-400 italic' : 'text-feedback-danger'}
-        `}
-      >
-        <AlertIcon className={`w-4 h-4 ${info && 'hidden'}`} />
-        <span className="text-xs">{helperText}</span>
-      </div>
-    </div>
+    </InputWrapper>
   )
 }
