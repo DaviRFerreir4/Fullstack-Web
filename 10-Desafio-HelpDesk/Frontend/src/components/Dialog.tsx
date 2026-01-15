@@ -1,6 +1,8 @@
 // @ts-expect-error TS2307
 import CloseIcon from '../assets/icons/close.svg?react'
 // @ts-expect-error TS2307
+import BackIcon from '../assets/icons/arrow-left.svg?react'
+// @ts-expect-error TS2307
 import SuccessIcon from '../assets/icons/circle-check-big.svg?react'
 // @ts-expect-error TS2307
 import FailureIcon from '../assets/icons/circle-alert.svg?react'
@@ -17,11 +19,13 @@ type Props = React.ComponentProps<'dialog'> & {
     | 'remove'
     | 'disable'
     | 'enable'
+    | 'changePassword'
     | 'success'
     | 'failure'
   handleAction: () => void
   dialogRef: RefObject<null | HTMLDialogElement>
   closeDialog: () => void
+  backAction?: () => void
   children: React.ReactNode
   useSamePadding?: boolean
 }
@@ -33,13 +37,15 @@ export function Dialog({
   handleAction,
   dialogRef,
   closeDialog,
+  backAction,
   children,
   useSamePadding = true,
   ...rest
 }: Props) {
   let buttonText = ''
 
-  if (action === 'create' || action === 'edit') buttonText = 'Salvar'
+  if (action === 'create' || action === 'edit' || action === 'changePassword')
+    buttonText = 'Salvar'
   else if (action === 'enable') buttonText = 'Sim, reativar'
   else if (action === 'disable') buttonText = 'Sim, desativar'
   else if (action === 'remove') buttonText = 'Sim, excluir'
@@ -60,10 +66,18 @@ export function Dialog({
       className="py-5 rounded-[0.625rem] w-[min(27.5rem,92%)] m-auto backdrop:bg-black/50 backdrop:backdrop-blur-[2px]"
       {...rest}
     >
-      <div className="px-7 pb-5 flex justify-between gap-3">
-        <h1 className="font-bold">{title}</h1>
+      <div className="px-7 pb-5 flex justify-between items-center gap-3">
+        {action === 'changePassword' && (
+          <BackIcon
+            className="w-4.5 h-4.5 text-gray-300 cursor-pointer"
+            onClick={backAction}
+          />
+        )}
+        <h1 className={`font-bold ${action === 'changePassword' && 'flex-1'}`}>
+          {title}
+        </h1>
         <CloseIcon
-          className="text-gray-300 w-6 h-6 cursor-pointer"
+          className="text-gray-300 w-4.5 h-4.5 cursor-pointer"
           onClick={closeDialog}
         />
       </div>

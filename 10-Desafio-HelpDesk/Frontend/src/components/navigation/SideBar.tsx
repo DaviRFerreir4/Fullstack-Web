@@ -36,7 +36,7 @@ import { users } from '../../data/users'
 import { Button } from '../form/Button'
 
 interface IUserActions {
-  action: 'edit'
+  action: 'edit' | 'changePassword'
   title: string
 }
 
@@ -56,7 +56,7 @@ export function SideBar() {
   const [openDialog, setOpenDialog] = useState(false)
 
   const [currentAction, setCurrentAction] = useState<null | {
-    action: 'edit' | 'success' | 'failure'
+    action: 'edit' | 'changePassword' | 'success' | 'failure'
     title: string
     handleAction: () => void
   }>(null)
@@ -69,13 +69,21 @@ export function SideBar() {
     })
   }
 
+  function changePassword() {
+    setCurrentAction({
+      action: 'failure',
+      title: 'Não foi possível alterar a senha',
+      handleAction: handleCloseDialog,
+    })
+  }
+
   function userOperations(serviceAction: IUserActions) {
     setCurrentAction({
       action: serviceAction.action,
       title: serviceAction.title,
-      handleAction: editUser,
+      handleAction: serviceAction.action === 'edit' ? editUser : changePassword,
     })
-    setOpenDialog(true)
+    if (!openDialog) setOpenDialog(true)
   }
 
   function handleCloseDialog() {
@@ -254,6 +262,12 @@ export function SideBar() {
         open={openDialog}
         dialogRef={dialogRef}
         closeDialog={handleCloseDialog}
+        backAction={() =>
+          userOperations({
+            action: 'edit',
+            title: 'Perfil',
+          })
+        }
         action={currentAction?.action}
         handleAction={currentAction ? currentAction.handleAction : () => {}}
         useSamePadding={false}
@@ -302,6 +316,10 @@ export function SideBar() {
                     text="Alterar"
                     onClick={(event) => {
                       event.preventDefault()
+                      userOperations({
+                        action: 'changePassword',
+                        title: 'Alterar Senha',
+                      })
                     }}
                   />
                 </div>
@@ -327,6 +345,21 @@ export function SideBar() {
                 </div>
               </div>
             )}
+          </div>
+        ) : currentAction?.action === 'changePassword' ? (
+          <div className="px-7 grid gap-4">
+            <Input
+              label="Senha Atual"
+              type="password"
+              placeholder="Digite sua senha atual"
+            />
+            <Input
+              label="Nova Senha"
+              type="password"
+              placeholder="Digite sua nova senha"
+              helperText="Mínimo de 6 dígitos"
+              info
+            />
           </div>
         ) : (
           ''
