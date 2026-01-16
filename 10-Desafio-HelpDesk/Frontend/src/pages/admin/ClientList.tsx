@@ -15,7 +15,12 @@ export function ClientList() {
   const dialogRef = useRef<null | HTMLDialogElement>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
-  const [client, setClient] = useState<IClient>({ name: '', email: '' })
+  const [client, setClient] = useState<IClient>({
+    name: '',
+    email: '',
+    id: '',
+    profilePicture: '',
+  })
 
   const [currentAction, setCurrentAction] = useState<null | {
     action: 'edit' | 'remove' | 'success' | 'failure'
@@ -85,8 +90,10 @@ export function ClientList() {
             .map((user) => (
               <Client
                 clientData={{
+                  id: user.id,
                   name: user.name,
                   email: user.email,
+                  profilePicture: user.profilePicture,
                 }}
                 clientOperations={clientOperations}
                 key={user.id}
@@ -104,7 +111,11 @@ export function ClientList() {
       >
         {currentAction?.action === 'edit' ? (
           <div>
-            <ProfilePicture username={client.name} size="xl" />
+            <ProfilePicture
+              username={client.name}
+              size="xl"
+              profilePicture={client.profilePicture}
+            />
             <div className="mt-5 grid gap-4">
               <Input
                 label="Nome"
@@ -114,15 +125,18 @@ export function ClientList() {
                 onChange={(event) =>
                   setClient({ ...client, name: event.target.value })
                 }
+                required
               />
               <Input
                 label="E-mail"
                 id="email"
+                type="email"
                 value={client.email}
                 placeholder="exemplo@mail.com"
                 onChange={(event) =>
                   setClient({ ...client, email: event.target.value })
                 }
+                required
               />
             </div>
           </div>

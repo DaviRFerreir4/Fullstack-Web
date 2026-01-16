@@ -15,7 +15,7 @@ export function RequestForm() {
       <h1 className="text-lg lg:text-xl font-bold text-blue-dark">
         Novo chamado
       </h1>
-      <div className="grid lg:items-start lg:grid-cols-[3fr_2fr] gap-4 lg:gap-6">
+      <form className="grid lg:items-start lg:grid-cols-[3fr_2fr] gap-4 lg:gap-6">
         <div className="p-5 lg:p-8 border border-gray-500 rounded-[0.625rem] grid gap-6">
           <div>
             <h2 className="font-bold ">Informações</h2>
@@ -23,26 +23,32 @@ export function RequestForm() {
               Descreva as informações do seu problema
             </p>
           </div>
-          <form className="grid gap-4">
+          <div className="grid gap-4">
             <Input
               label="Título"
+              id="title"
               placeholder="Digite um título para o chamado"
               onChange={(event) => setTitle(event.target.value)}
+              required
             />
             <Textarea
               label="Descrição"
+              id="description"
               rows={6}
               placeholder="Descreva o que está acontecendo"
+              required
             />
             <Select
               label="Categoria de serviço"
+              id="service"
               options={services.map((service) => {
                 return { text: service.title, value: service.id }
               })}
               placeholder="Selecione a categoria de atendimento"
               saveValue={(text: string) => setServiceId(text)}
+              required
             />
-          </form>
+          </div>
         </div>
         <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-6">
           <div>
@@ -75,7 +81,7 @@ export function RequestForm() {
           </p>
           <Button text="Criar chamado" />
         </div>
-      </div>
+      </form>
     </div>
   )
 }

@@ -15,14 +15,15 @@ export function SignUp() {
           <Input
             label="Nome"
             id="name"
-            type="text"
             placeholder="Digite o nome completo"
+            required
           />
           <Input
             label="E-mail"
             id="email"
             type="email"
             placeholder="exemplo@mail.com"
+            required
           />
           <Input
             label="Senha"
@@ -31,6 +32,7 @@ export function SignUp() {
             placeholder="Digite sua senha"
             info={true}
             helperText="Mínimo de 6 dígitos"
+            required
           />
         </div>
         <Button text="Cadastrar" />

@@ -6,11 +6,10 @@ import BanIcon from '../../assets/icons/ban.svg?react'
 import { StatusTag } from '../StatusTag'
 import { Button } from '../form/Button'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { type Service } from '../../data/services'
 
-export interface IService {
-  title: string
+export type IService = Pick<Service, 'id' | 'title' | 'isActive'> & {
   value: string
-  status: 'active' | 'inactive'
 }
 
 export interface IServiceAction {
@@ -42,7 +41,10 @@ export function Service({ serviceData, serviceOperations }: Props) {
       </td>
       <td className="px-3 border-t border-gray-500 text-xs">
         <div className="w-fit flex mx-auto">
-          <StatusTag status={serviceData.status} includeText={!isMobile} />
+          <StatusTag
+            status={serviceData.isActive ? 'active' : 'inactive'}
+            includeText={!isMobile}
+          />
         </div>
       </td>
       <td className="px-3 border-t border-gray-500 text-xs font-bold">
@@ -50,17 +52,16 @@ export function Service({ serviceData, serviceOperations }: Props) {
           <Button
             Icon={BanIcon}
             {...(!isMobile && {
-              text: serviceData.status === 'active' ? 'Desativar' : 'Reativar',
+              text: serviceData.isActive ? 'Desativar' : 'Reativar',
             })}
             variant="link"
             size="xs"
             onClick={() =>
               serviceOperations(serviceData, {
-                action: serviceData.status === 'active' ? 'disable' : 'enable',
-                title:
-                  serviceData.status === 'active'
-                    ? 'Desativar serviço'
-                    : 'Ativar serviço',
+                action: serviceData.isActive ? 'disable' : 'enable',
+                title: serviceData.isActive
+                  ? 'Desativar serviço'
+                  : 'Ativar serviço',
               })
             }
           />

@@ -229,7 +229,7 @@ export function SideBar() {
           />
           <div className="hidden lg:grid">
             <span className="text-sm text-gray-600">{user.name}</span>
-            <span className="text-xs text-gray-400">{user.name}</span>
+            <span className="text-xs text-gray-400">{user.email}</span>
           </div>
         </button>
         <div
@@ -303,12 +303,19 @@ export function SideBar() {
                 )}
               </div>
             </div>
-            <form className="px-7 grid gap-4">
-              <Input label="Nome" value={user.name} />
-              <Input label="E-mail" value={user.email} />
+            <div className="px-7 grid gap-4">
+              <Input label="Nome" id="name" value={user.name} required />
+              <Input
+                label="E-mail"
+                id="email"
+                type="email"
+                value={user.email}
+                required
+              />
               <div className="relative">
                 <Input
                   label="Senha"
+                  id="password"
                   type="password"
                   value={'password'}
                   disabled
@@ -328,7 +335,7 @@ export function SideBar() {
                   />
                 </div>
               </div>
-            </form>
+            </div>
             {user.role === 'technician' && (
               <div className="mt-8">
                 <hr className="mb-5 border-gray-500" />
@@ -354,15 +361,19 @@ export function SideBar() {
           <div className="px-7 grid gap-4">
             <Input
               label="Senha Atual"
+              id="current-password"
               type="password"
               placeholder="Digite sua senha atual"
+              required
             />
             <Input
               label="Nova Senha"
+              id="new-password"
               type="password"
               placeholder="Digite sua nova senha"
               helperText="Mínimo de 6 dígitos"
               info
+              required
             />
           </div>
         ) : (

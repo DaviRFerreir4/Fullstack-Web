@@ -8,7 +8,7 @@ import SuccessIcon from '../assets/icons/circle-check-big.svg?react'
 import FailureIcon from '../assets/icons/circle-alert.svg?react'
 
 import { Button } from '../components/form/Button'
-import { useEffect, type RefObject } from 'react'
+import { useEffect } from 'react'
 
 type Props = React.ComponentProps<'dialog'> & {
   open?: boolean
@@ -23,7 +23,7 @@ type Props = React.ComponentProps<'dialog'> & {
     | 'success'
     | 'failure'
   handleAction: () => void
-  dialogRef: RefObject<null | HTMLDialogElement>
+  dialogRef: React.RefObject<null | HTMLDialogElement>
   closeDialog: () => void
   backAction?: () => void
   children: React.ReactNode

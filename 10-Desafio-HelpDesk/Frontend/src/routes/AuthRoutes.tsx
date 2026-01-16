@@ -11,6 +11,7 @@ export function AuthRoutes() {
         <Route index element={<Navigate to="/signin" replace />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="*" element={<Navigate to={'/signin'} replace />} />
       </Route>
     </Routes>
   )

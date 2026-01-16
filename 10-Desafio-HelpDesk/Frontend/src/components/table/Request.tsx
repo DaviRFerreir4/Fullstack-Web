@@ -8,24 +8,14 @@ import { Button } from '../form/Button'
 import { StatusTag } from '../StatusTag'
 import { useNavigate } from 'react-router'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { type Request } from '../../data/requests'
 import { users } from '../../data/users'
+import dayjs from 'dayjs'
 
-export interface IRequest {
-  date: string
-  id: number
-  text: {
-    title: string
-    service: string
-  }
-  value: number
-  client: {
-    name: string
-  }
-  technician: {
-    name: string
-  }
-  status: 'opened' | 'in_progress' | 'closed'
-}
+export type IRequest = Pick<
+  Request,
+  'id' | 'title' | 'status' | 'client' | 'technician' | 'services' | 'updatedAt'
+>
 
 type Props = {
   requestData: IRequest
@@ -40,10 +30,14 @@ export function Request({ requestData }: Props) {
   const isMobile = useIsMobile()
   const navigate = useNavigate()
 
+  requestData.services.sort((a, b) => {
+    return dayjs(a.createdAt).diff(dayjs(b.createdAt))
+  })
+
   return (
     <tr className="h-16 text-gray-200">
       <td className="px-3 border-t border-gray-500 text-xs">
-        {requestData.date}
+        {dayjs(requestData.updatedAt).format('DD/MM/YYYY HH:mm')}
       </td>
       <td className="px-3 border-t border-gray-500 text-xs font-bold hidden lg:table-cell">
         {requestData.id.toLocaleString('pt-br', {
@@ -56,17 +50,17 @@ export function Request({ requestData }: Props) {
           <td className="px-3 border-t border-gray-500">
             <h3
               className="text-sm font-bold line-clamp-1"
-              title={requestData.text.title}
+              title={requestData.title}
             >
-              {requestData.text.title}
+              {requestData.title}
             </h3>
           </td>
           <td className="px-3 border-t border-gray-500 hidden lg:table-cell">
             <span
               className="text-sm line-clamp-1"
-              title={requestData.text.service}
+              title={requestData.services[0].service.title}
             >
-              {requestData.text.service}
+              {requestData.services[0].service.title}
             </span>
           </td>
         </>
@@ -75,36 +69,44 @@ export function Request({ requestData }: Props) {
           <div className="grid">
             <h3
               className="text-sm font-bold line-clamp-1"
-              title={requestData.text.title}
+              title={requestData.title}
             >
-              {requestData.text.title}
+              {requestData.title}
             </h3>
             <span
               className="text-xs line-clamp-1"
-              title={requestData.text.service}
+              title={requestData.services[0].service.title}
             >
-              {requestData.text.service}
+              {requestData.services[0].service.title}
             </span>
           </div>
         </td>
       )}
       <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
-        {Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(requestData.value)}
+        {requestData.services
+          .map((service) => service.service.value)
+          .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+          .toLocaleString('pt-br', {
+            minimumFractionDigits: 2,
+          })}
       </td>
       {userRole !== 'client' && (
         <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
           <div className="flex items-center gap-2">
-            <ProfilePicture username={requestData.client.name} />
+            <ProfilePicture
+              username={requestData.client.name}
+              profilePicture={requestData.client.profilePicture}
+            />
             <span className="line-clamp-1">{requestData.client.name}</span>
           </div>
         </td>
       )}
       <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
         <div className="flex items-center gap-2">
-          <ProfilePicture username={requestData.technician.name} />
+          <ProfilePicture
+            username={requestData.technician.name}
+            profilePicture={requestData.technician.profilePicture}
+          />
           <span className="line-clamp-1">{requestData.technician.name}</span>
         </div>
       </td>

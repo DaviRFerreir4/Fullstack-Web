@@ -13,6 +13,7 @@ export function ClientRoutes() {
         <Route path="/requests" element={<RequestList />} />
         <Route path="/requests/:id" element={<RequestDetails />} />
         <Route path="/requests/create" element={<RequestForm />} />
+        <Route path="*" element={<Navigate to={'/requests'} replace />} />
       </Route>
     </Routes>
   )

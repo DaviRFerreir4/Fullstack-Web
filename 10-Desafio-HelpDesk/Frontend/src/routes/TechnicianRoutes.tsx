@@ -11,6 +11,7 @@ export function TechnicianRoutes() {
         <Route index element={<Navigate to={'/requests'} replace />} />
         <Route path="/requests" element={<RequestList />} />
         <Route path="/requests/:id" element={<RequestDetails />} />
+        <Route path="*" element={<Navigate to={'/requests'} replace />} />
       </Route>
     </Routes>
   )

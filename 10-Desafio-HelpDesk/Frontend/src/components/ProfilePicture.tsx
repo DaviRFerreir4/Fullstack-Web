@@ -1,6 +1,6 @@
 type Props = React.ComponentProps<'div'> & {
-  profilePicture?: string
-  username?: string
+  profilePicture: string | undefined
+  username: string
   size?: keyof typeof sizes
 }
 

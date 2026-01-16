@@ -11,12 +11,10 @@ import { Button } from '../form/Button'
 import { useNavigate } from 'react-router'
 import { type User } from '../../data/users'
 
-export interface ITechnician {
-  name: string
-  email: string
-  availability: number[]
-  profilePicture?: string
-}
+export type ITechnician = Pick<
+  User,
+  'id' | 'name' | 'email' | 'profilePicture'
+> & { openingHours: number[] }
 
 export interface ITechnicianAction {
   action: 'remove'
@@ -24,11 +22,9 @@ export interface ITechnicianAction {
 }
 
 type Props = {
-  technicianData: Pick<User, 'id' | 'name' | 'email' | 'profilePicture'> & {
-    availability: NonNullable<User['openingHours']>
-  }
+  technicianData: ITechnician
   technicianOperations: (
-    technician: ITechnician,
+    technician: Pick<ITechnician, 'id' | 'name'>,
     technicianAction: ITechnicianAction
   ) => void
 }
@@ -38,7 +34,7 @@ export function Technician({ technicianData, technicianOperations }: Props) {
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [maxVisible, setMaxVisible] = useState(
-    technicianData.availability.length
+    technicianData.openingHours.length
   )
 
   useEffect(() => {
@@ -69,16 +65,19 @@ export function Technician({ technicianData, technicianOperations }: Props) {
     observer.observe(containerRef.current)
 
     return () => observer.disconnect()
-  }, [technicianData.availability])
+  }, [technicianData.openingHours])
 
-  const visibleHours = technicianData.availability.slice(0, maxVisible)
-  const hiddenHours = technicianData.availability.length - visibleHours.length
+  const visibleHours = technicianData.openingHours.slice(0, maxVisible)
+  const hiddenHours = technicianData.openingHours.length - visibleHours.length
 
   return (
     <tr className="h-16 text-gray-200">
       <td className="px-3 border-t border-gray-500 text-sm font-bold">
         <div className="flex items-center gap-2">
-          <ProfilePicture username={technicianData.name} />
+          <ProfilePicture
+            username={technicianData.name}
+            profilePicture={technicianData.profilePicture}
+          />
           <span className="line-clamp-1">{technicianData.name}</span>
         </div>
       </td>

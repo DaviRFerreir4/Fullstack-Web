@@ -78,7 +78,10 @@ export function RequestCard({ request, className }: Props) {
         <hr className="border-gray-500" />
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1.5">
-            <ProfilePicture username={request.client.name} />
+            <ProfilePicture
+              username={request.client.name}
+              profilePicture={request.client.profilePicture}
+            />
             <span>{request.client.name}</span>
           </div>
           <StatusTag status={request.status} includeText={false} />

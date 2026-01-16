@@ -19,7 +19,7 @@ import { requests } from '../data/requests'
 import dayjs from 'dayjs'
 import { users } from '../data/users'
 import { useRef, useState } from 'react'
-import type { Service } from '../data/services'
+import { type Service } from '../data/services'
 import { Dialog } from '../components/Dialog'
 import { Input } from '../components/form/Input'
 
@@ -191,7 +191,10 @@ export function RequestDetails() {
           {userRole !== 'client' && (
             <InfoField title="Cliente" spacing="gap-2">
               <div className="flex items-center gap-2">
-                <ProfilePicture username={request.client.name} />
+                <ProfilePicture
+                  username={request.client.name}
+                  profilePicture={request.client.profilePicture}
+                />
                 <span className="text-sm">{request.client.name}</span>
               </div>
             </InfoField>
@@ -200,7 +203,11 @@ export function RequestDetails() {
         <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-8">
           <InfoField title="Técnico Responsável" spacing="gap-2">
             <div className="flex items-center gap-2">
-              <ProfilePicture username={request.technician.name} size="md" />
+              <ProfilePicture
+                username={request.technician.name}
+                profilePicture={request.technician.profilePicture}
+                size="md"
+              />
               <div className="grid">
                 <span className="text-sm">{request.technician.name}</span>
                 <span className="text-xs text-gray-300">
@@ -346,6 +353,7 @@ export function RequestDetails() {
                   title: event.target.value,
                 })
               }
+              required
             />
             <Input
               label="Valor"
@@ -365,6 +373,7 @@ export function RequestDetails() {
                   setService({ ...service, value: event.target.value })
                 }
               }}
+              required
             />
           </div>
         ) : currentAction?.action === 'remove' ? (

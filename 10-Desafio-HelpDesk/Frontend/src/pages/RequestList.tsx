@@ -3,7 +3,6 @@ import { Request } from '../components/table/Request'
 import { StatusTag } from '../components/StatusTag'
 import { RequestCard } from '../components/RequestCard'
 
-import dayjs from 'dayjs'
 import { requests } from '../data/requests'
 import { useIsMobile } from '../hooks/useIsMobile'
 import { users } from '../data/users'
@@ -60,25 +59,12 @@ export function RequestList() {
               <Request
                 requestData={{
                   id: request.id,
-                  text: {
-                    title: request.title,
-                    service: request.services.sort((a, b) => {
-                      return dayjs(a.createdAt).diff(dayjs(b.createdAt))
-                    })[0].service.title,
-                  },
+                  title: request.title,
+                  services: request.services,
                   status: request.status,
-                  value: Number(
-                    request.services
-                      .map((service) => service.service.value)
-                      .reduce(
-                        (accumulator, currentValue) =>
-                          accumulator + currentValue,
-                        0
-                      )
-                  ),
-                  client: { name: request.client.name },
-                  technician: { name: request.technician.name },
-                  date: dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm'),
+                  client: request.client,
+                  technician: request.technician,
+                  updatedAt: request.updatedAt,
                 }}
                 key={request.id}
               />

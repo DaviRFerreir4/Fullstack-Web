@@ -22,10 +22,11 @@ export function TechnicianList() {
   const dialogRef = useRef<null | HTMLDialogElement>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
-  const [technician, setTechnician] = useState<ITechnician>({
+  const [technician, setTechnician] = useState<
+    Pick<ITechnician, 'id' | 'name'>
+  >({
+    id: '',
     name: '',
-    email: '',
-    availability: [],
   })
 
   const [currentAction, setCurrentAction] = useState<null | {
@@ -48,7 +49,7 @@ export function TechnicianList() {
   }
 
   function technicianOperations(
-    technician: ITechnician,
+    technician: Pick<ITechnician, 'id' | 'name'>,
     technicianAction: ITechnicianAction
   ) {
     setCurrentAction({
@@ -99,7 +100,8 @@ export function TechnicianList() {
                   id: user.id,
                   name: user.name,
                   email: user.email,
-                  availability: user.openingHours ? user.openingHours : [],
+                  profilePicture: user.profilePicture,
+                  openingHours: user.openingHours ? user.openingHours : [],
                 }}
                 technicianOperations={technicianOperations}
                 key={user.id}

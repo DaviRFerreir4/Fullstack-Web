@@ -3,16 +3,14 @@ import ArrowIcon from '../../assets/icons/chevron-down.svg?react'
 
 import { InputWrapper } from './InputWrapper'
 import { useState } from 'react'
+import { type IInputProps } from './InputWrapper'
 
-type Props = React.ComponentProps<'select'> & {
-  label: string
-  info?: boolean
-  error?: boolean
-  helperText?: string
-  options: { text: string; value: string }[]
-  placeholder: string
-  saveValue: (value: string) => void
-}
+type Props = React.ComponentProps<'select'> &
+  IInputProps & {
+    options: { text: string; value: string }[]
+    placeholder: string
+    saveValue: (value: string) => void
+  }
 
 export function Select({
   label,

@@ -1,8 +1,8 @@
-import { Outlet } from 'react-router'
-
 // @ts-expect-error TS2307
 import Logo from '../../assets/logo-light.svg?react'
 import bgImage from '../../assets/login-background.png'
+
+import { Outlet } from 'react-router'
 
 export function AuthLayout() {
   return (

@@ -17,6 +17,7 @@ export function SignIn() {
             id="email"
             type="email"
             placeholder="exemplo@mail.com"
+            required
           />
           <Input
             label="Senha"
@@ -25,6 +26,7 @@ export function SignIn() {
             placeholder="Digite sua senha"
             error={true}
             helperText="Senha não informada"
+            required
           />
         </div>
         <Button text="Entrar" />

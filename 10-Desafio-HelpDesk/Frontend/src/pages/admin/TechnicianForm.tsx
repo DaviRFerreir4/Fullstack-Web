@@ -6,8 +6,9 @@ import { ProfilePicture } from '../../components/ProfilePicture'
 import { Input } from '../../components/form/Input'
 import { TimeTag } from '../../components/TimeTag'
 import { useNavigate, useParams } from 'react-router'
-import { users, type User } from '../../data/users'
-import { useEffect, useState } from 'react'
+import { users } from '../../data/users'
+import { useState } from 'react'
+import { type ITechnician } from '../../components/table/Technician'
 
 export function TechnicianForm() {
   const navigate = useNavigate()
@@ -15,18 +16,18 @@ export function TechnicianForm() {
 
   const editionAvailable = !!params.id
 
-  const [technicianData, setTechnicianData] = useState<Partial<User>>(
-    users.find((user) => user.id === params.id) ?? {
-      name: '',
-      email: '',
-      password: '',
-      openingHours: [],
-    }
-  )
+  const user = users.find((user) => user.id === params.id)
 
-  useEffect(() => {
-    console.log(technicianData)
-  }, [technicianData])
+  const [technicianData, setTechnicianData] = useState<
+    ITechnician & { password: string }
+  >({
+    id: user?.id ?? '',
+    name: user?.name ?? '',
+    email: user?.email ?? '',
+    password: '',
+    openingHours: user?.openingHours ?? [],
+    profilePicture: user?.profilePicture,
+  })
 
   const periods = [
     { name: 'Manhã', availableHours: [7, 8, 9, 10, 11, 12] },
@@ -35,7 +36,7 @@ export function TechnicianForm() {
   ]
 
   return (
-    <div className="lg:mx-35.5 grid gap-4 lg:gap-6 text-gray-200">
+    <form className="lg:mx-35.5 grid gap-4 lg:gap-6 text-gray-200">
       <div className="grid lg:flex lg:justify-between lg:items-end gap-3">
         <div className="grid gap-1">
           <div
@@ -68,7 +69,11 @@ export function TechnicianForm() {
           </div>
           {editionAvailable && (
             <div>
-              <ProfilePicture username={technicianData.name} size="xl" />
+              <ProfilePicture
+                username={technicianData.name}
+                profilePicture={technicianData.profilePicture}
+                size="xl"
+              />
             </div>
           )}
           <div className="grid gap-4">
@@ -84,6 +89,7 @@ export function TechnicianForm() {
                   name: event.target.value,
                 })
               }
+              required
             />
             <Input
               label="E-mail"
@@ -97,6 +103,7 @@ export function TechnicianForm() {
                   email: event.target.value,
                 })
               }
+              required
             />
             {!editionAvailable && (
               <Input
@@ -112,6 +119,7 @@ export function TechnicianForm() {
                     password: event.target.value,
                   })
                 }
+                required
               />
             )}
           </div>
@@ -158,6 +166,6 @@ export function TechnicianForm() {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }

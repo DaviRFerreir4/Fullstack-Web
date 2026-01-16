@@ -1,11 +1,8 @@
 import { InputWrapper } from './InputWrapper'
 
-type Props = React.ComponentProps<'textarea'> & {
-  label: string
-  info?: boolean
-  error?: boolean
-  helperText?: string
-}
+import { type IInputProps } from './InputWrapper'
+
+type Props = React.ComponentProps<'textarea'> & IInputProps
 
 export function Textarea({
   label,

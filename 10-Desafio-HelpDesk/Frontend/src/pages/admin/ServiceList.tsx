@@ -22,9 +22,10 @@ export function ServiceList() {
   const [openDialog, setOpenDialog] = useState(false)
 
   const [service, setService] = useState<IService>({
+    id: '',
     title: '',
     value: '',
-    status: 'active',
+    isActive: true,
   })
 
   const [currentAction, setCurrentAction] = useState<null | {
@@ -128,7 +129,7 @@ export function ServiceList() {
           className="px-4 py-2.5 h-10"
           onClick={() =>
             serviceOperations(
-              { title: '', value: '', status: 'active' },
+              { id: '', title: '', value: '', isActive: true },
               {
                 action: 'create',
                 title: 'Cadastro de serviço',
@@ -150,9 +151,10 @@ export function ServiceList() {
           {services.map((service) => (
             <Service
               serviceData={{
+                id: service.id,
                 title: service.title,
                 value: service.value.toString(),
-                status: service.isActive ? 'active' : 'inactive',
+                isActive: service.isActive,
               }}
               serviceOperations={serviceOperations}
               key={service.id}
@@ -182,6 +184,7 @@ export function ServiceList() {
                   title: event.target.value,
                 })
               }
+              required
             />
             <Input
               label="Valor"
@@ -201,6 +204,7 @@ export function ServiceList() {
                   setService({ ...service, value: event.target.value })
                 }
               }}
+              required
             />
           </div>
         ) : currentAction?.action === 'disable' ? (

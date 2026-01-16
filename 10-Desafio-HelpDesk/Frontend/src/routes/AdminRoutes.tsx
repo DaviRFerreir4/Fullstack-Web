@@ -20,6 +20,7 @@ export function AdminRoutes() {
         <Route path="/technicians/:id" element={<TechnicianForm />} />
         <Route path="/clients" element={<ClientList />} />
         <Route path="/services" element={<ServiceList />} />
+        <Route path="*" element={<Navigate to={'/requests'} replace />} />
       </Route>
     </Routes>
   )

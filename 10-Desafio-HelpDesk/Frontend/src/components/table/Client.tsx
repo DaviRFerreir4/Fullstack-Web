@@ -5,12 +5,9 @@ import TrashIcon from '../../assets/icons/trash.svg?react'
 
 import { ProfilePicture } from '../ProfilePicture'
 import { Button } from '../form/Button'
+import { type User } from '../../data/users.ts'
 
-export interface IClient {
-  name: string
-  email: string
-  profilePicture?: string
-}
+export type IClient = Pick<User, 'id' | 'name' | 'email' | 'profilePicture'>
 
 export interface IClientAction {
   action: 'edit' | 'remove'
@@ -27,7 +24,10 @@ export function Client({ clientData, clientOperations }: Props) {
     <tr className="h-16 text-gray-200">
       <td className="px-3 border-t border-gray-500 text-sm font-bold">
         <div className="flex items-center gap-2">
-          <ProfilePicture username={clientData.name} />
+          <ProfilePicture
+            username={clientData.name}
+            profilePicture={clientData.profilePicture}
+          />
           <span className="line-clamp-1">{clientData.name}</span>
         </div>
       </td>
@@ -46,6 +46,8 @@ export function Client({ clientData, clientOperations }: Props) {
                 {
                   name: clientData.name,
                   email: clientData.email,
+                  id: clientData.id,
+                  profilePicture: clientData.profilePicture,
                 },
                 { action: 'remove', title: 'Excluir cliente' }
               )
@@ -60,6 +62,8 @@ export function Client({ clientData, clientOperations }: Props) {
                 {
                   name: clientData.name,
                   email: clientData.email,
+                  id: clientData.id,
+                  profilePicture: clientData.profilePicture,
                 },
                 { action: 'edit', title: 'Cliente' }
               )

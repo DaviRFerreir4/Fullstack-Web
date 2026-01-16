@@ -1,12 +1,10 @@
 import { InputWrapper } from './InputWrapper'
+import { type IInputProps } from './InputWrapper'
 
-type Props = React.ComponentProps<'input'> & {
-  label: string
-  info?: boolean
-  error?: boolean
-  helperText?: string
-  currency?: boolean
-}
+type Props = React.ComponentProps<'input'> &
+  IInputProps & {
+    currency?: boolean
+  }
 
 export function Input({
   label,
