@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: ./Frontend/
+      target: development
+    ports:
+      - '5173:5173'
+    depends_on:
+      - api
+    develop:
+      watch:
+        - path: ./Frontend/package.json
+          action: rebuild
+        - path: ./Frontend/package-lock.json
+          action: rebuild
+        - path: ./Frontend/
+          action: sync
+          target: /usr/src/app
+          ignore:
+            - node_modules
+
+  api:
+    build:
+      context: ./Backend/
+      target: development
+    ports:
+      - '3333:3333'
+    environment:
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/api?schema=public'
+    depends_on:
+      - postgres
+    develop:
+      watch:
+        - path: ./Backend/package.json
+          action: rebuild
+        - path: ./Backend/package.lock.json
+          action: rebuild
+        - path: ./Backend/
+          action: sync
+          target: /usr/src/app
+          ignore:
+            - node_modules
+
+  postgres:
+    image: 'bitnami/postgresql:latest'
+    container_name: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: api
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
