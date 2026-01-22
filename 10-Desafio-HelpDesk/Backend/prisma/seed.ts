@@ -55,23 +55,23 @@ async function seed() {
   await prisma.service.createMany({
     data: [
       {
-        type: 'Instalação e atualização de software',
+        title: 'Instalação e atualização de software',
         value: 56.49,
       },
       {
-        type: 'Instalação e atualização de hardware',
+        title: 'Instalação e atualização de hardware',
         value: 109.59,
       },
       {
-        type: 'Diagnóstico e remoção de vírus',
+        title: 'Diagnóstico e remoção de vírus',
         value: 178.99,
       },
       {
-        type: 'Suporte a impressora e periféricos',
+        title: 'Suporte a impressora e periféricos',
         value: 75.99,
       },
       {
-        type: 'Configuração de VPN e acesso remoto',
+        title: 'Configuração de VPN e acesso remoto',
         value: 84.39,
       },
     ],

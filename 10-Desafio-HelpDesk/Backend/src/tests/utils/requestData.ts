@@ -6,6 +6,12 @@ export const userData = {
 }
 
 export const serviceData = {
-  type: 'Test Service',
+  title: 'Test Service',
   value: 123.21,
+}
+
+export const requestData = {
+  title: 'Test Request',
+  description:
+    'This is a test request made with supertest to be used in jest tests',
 }

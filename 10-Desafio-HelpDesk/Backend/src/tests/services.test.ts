@@ -49,7 +49,7 @@ describe('ServicesController', () => {
 
     expect(serviceResponse.statusCode).toBe(201)
     expect(serviceResponse.body).toHaveProperty('id')
-    expect(serviceResponse.body.type).toBe(serviceData.type)
+    expect(serviceResponse.body.title).toBe(serviceData.title)
 
     servicesId.push(serviceResponse.body.id)
   })
@@ -65,7 +65,7 @@ describe('ServicesController', () => {
     expect(serviceResponse.body.services).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: serviceData.type,
+          title: serviceData.title,
           value: serviceData.value,
         }),
       ])
@@ -88,12 +88,12 @@ describe('ServicesController', () => {
   it('should update informations about the service', async () => {
     const serviceResponse = await request(app)
       .put(`/services/${servicesId[0]}`)
-      .send({ type: 'Test Service 2', value: 12.1 })
+      .send({ title: 'Test Service 2', value: 12.1 })
       .auth(adminToken, { type: 'bearer' })
 
     expect(serviceResponse.statusCode).toBe(200)
     expect(serviceResponse.body).toHaveProperty('id')
-    expect(serviceResponse.body.type).toBe('Test Service 2')
+    expect(serviceResponse.body.title).toBe('Test Service 2')
   })
 
   it('should change the status of a service to inactive', async () => {
@@ -145,7 +145,7 @@ describe('ServicesController', () => {
   it('should throw a validation error when sending wrong data in the request body', async () => {
     const serviceResponse = await request(app)
       .post('/services')
-      .send({ type: 45, value: 'Test' })
+      .send({ title: 45, value: 'Test' })
       .auth(adminToken, { type: 'bearer' })
 
     expect(serviceResponse.statusCode).toBe(400)
@@ -154,7 +154,7 @@ describe('ServicesController', () => {
     expect(serviceResponse.body).toHaveProperty('issues')
     expect(serviceResponse.body.issues).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ path: ['type'] }),
+        expect.objectContaining({ path: ['title'] }),
         expect.objectContaining({ path: ['value'] }),
       ])
     )

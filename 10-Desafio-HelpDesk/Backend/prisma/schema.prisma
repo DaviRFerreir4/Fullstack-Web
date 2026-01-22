@@ -57,12 +57,13 @@ model OpeningHour {
 
 model Service {
   id String @id @default(uuid())
-  type String
+  title String
   value Float
 
   requests RequestService[]
 
   isActive Boolean @default(true) @map("is_active")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
@@ -71,6 +72,9 @@ model Service {
 
 model Request {
   id Int @id @default(autoincrement())
+
+  title String
+  description String
 
   status Status @default(opened)
 

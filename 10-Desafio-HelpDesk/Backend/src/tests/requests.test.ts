@@ -3,7 +3,7 @@ import request from 'supertest'
 import { app } from '../app'
 import { prisma } from '../database/prisma'
 import { User } from '@prisma/client'
-import { serviceData, userData } from './utils/requestData'
+import { requestData, serviceData, userData } from './utils/requestData'
 
 describe('RequestsController', () => {
   let adminToken: string
@@ -52,7 +52,7 @@ describe('RequestsController', () => {
         ...serviceData,
       },
       {
-        type: 'Test Service 2',
+        title: 'Test Service 2',
         value: 12.1,
       },
     ]
@@ -91,7 +91,11 @@ describe('RequestsController', () => {
   it('should create a new request', async () => {
     const requestResponse = await request(app)
       .post('/requests')
-      .send({ serviceId: servicesId[0], assignedTo: usersId[1] })
+      .send({
+        ...requestData,
+        serviceId: servicesId[0],
+        assignedTo: usersId[1],
+      })
       .auth(usersToken[0], { type: 'bearer' })
 
     expect(requestResponse.statusCode).toBe(201)
@@ -100,6 +104,10 @@ describe('RequestsController', () => {
     requestsId.push(requestResponse.body.id)
 
     expect(requestResponse.body).toHaveProperty('requestedBy')
+    expect(requestResponse.body).toHaveProperty('title')
+    expect(requestResponse.body.title).toBe(requestData.title)
+    expect(requestResponse.body).toHaveProperty('description')
+    expect(requestResponse.body.description).toBe(requestData.description)
     expect(requestResponse.body).toHaveProperty('assignedTo')
     expect(requestResponse.body.assignedTo).toHaveProperty('id')
     expect(requestResponse.body.assignedTo.id).toBe(usersId[1])
@@ -269,7 +277,11 @@ describe('RequestsController', () => {
 
     const requestResponse = await request(app)
       .post('/requests')
-      .send({ assignedTo: usersId[1], serviceId: servicesId[0] })
+      .send({
+        ...requestData,
+        assignedTo: usersId[1],
+        serviceId: servicesId[0],
+      })
       .auth(usersToken[0], { type: 'bearer' })
 
     expect(requestResponse.statusCode).toBe(400)

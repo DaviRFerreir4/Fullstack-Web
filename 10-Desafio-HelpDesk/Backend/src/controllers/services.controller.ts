@@ -7,7 +7,7 @@ import { AppError } from '../utils/app-error'
 export class ServicesController {
   async index(request: Request, response: Response) {
     const querySchema = z.object({
-      type: z.string().optional(),
+      title: z.string().optional(),
       isActive: z.coerce.boolean().optional(),
       gt: z.coerce.number().optional(),
       lt: z.coerce.number().optional(),
@@ -15,7 +15,7 @@ export class ServicesController {
       perPage: z.coerce.number().default(10),
     })
 
-    const { type, isActive, gt, lt, page, perPage } = querySchema.parse(
+    const { title, isActive, gt, lt, page, perPage } = querySchema.parse(
       request.query
     )
 
@@ -24,7 +24,7 @@ export class ServicesController {
     const services = await prisma.service.findMany({
       skip,
       where: {
-        type: { contains: type, mode: 'insensitive' },
+        title: { contains: title, mode: 'insensitive' },
         isActive: { equals: isActive },
         value: { gt, lt },
       },
@@ -32,7 +32,7 @@ export class ServicesController {
 
     const totalRecords = await prisma.service.count({
       where: {
-        type: { contains: type, mode: 'insensitive' },
+        title: { contains: title, mode: 'insensitive' },
         isActive: { equals: isActive },
         value: { gt, lt },
       },
@@ -53,16 +53,16 @@ export class ServicesController {
 
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
-      type: z.string({ error: 'Informe o tipo do serviço' }),
+      title: z.string({ error: 'Informe o tipo do serviço' }),
       value: z
         .number({ error: 'Informe o valor do serviço' })
         .min(1, { error: 'O valor do serviço deve ser maior que 0' }),
     })
 
-    const { type, value } = bodySchema.parse(request.body)
+    const { title, value } = bodySchema.parse(request.body)
 
     const service = await prisma.service.create({
-      data: { type, value: Number(value.toFixed(2)) },
+      data: { title, value: Number(value.toFixed(2)) },
     })
 
     return response.status(201).json(service)
@@ -82,7 +82,7 @@ export class ServicesController {
     }
 
     const bodySchema = z.object({
-      type: z
+      title: z
         .string({ error: 'O tipo de serviço deve ser um texto' })
         .optional(),
       value: z
@@ -91,9 +91,9 @@ export class ServicesController {
         .optional(),
     })
 
-    const { type, value } = bodySchema.parse(request.body)
+    const { title, value } = bodySchema.parse(request.body)
 
-    if (!type && !value) {
+    if (!title && !value) {
       throw new AppError(
         `Informe algum dado a ser atualizado (${Object.values(
           bodySchema.keyof().enum
@@ -103,7 +103,7 @@ export class ServicesController {
 
     const serviceUpdated = await prisma.service.update({
       where: { id },
-      data: { type, value: value && Number(value.toFixed(2)) },
+      data: { title, value: value && Number(value.toFixed(2)) },
     })
 
     return response.json({ ...serviceUpdated })

@@ -21,7 +21,7 @@ export class RequestsController {
             service: {
               select: {
                 id: true,
-                type: true,
+                title: true,
                 value: true,
                 isActive: true,
               },
@@ -51,6 +51,27 @@ export class RequestsController {
 
     const { id } = paramsSchema.parse(request.params)
 
+    const isUserAuthorizedRequest = await prisma.request.findUnique({
+      where: { id },
+      select: { requestedBy: true, assignedTo: true },
+    })
+
+    if (!isUserAuthorizedRequest) {
+      throw new AppError('Chamado não encontrado')
+    }
+
+    if (
+      !request.user ||
+      (request.user.role !== 'admin' &&
+        isUserAuthorizedRequest.assignedTo !== request.user.id &&
+        isUserAuthorizedRequest.requestedBy !== request.user.id)
+    ) {
+      throw new AppError(
+        'Você não tem permissão para visualizar esse chamado',
+        401
+      )
+    }
+
     const userRequest = await prisma.request.findUnique({
       where: { id },
       omit: { requestedBy: true, assignedTo: true },
@@ -61,7 +82,7 @@ export class RequestsController {
             service: {
               select: {
                 id: true,
-                type: true,
+                title: true,
                 value: true,
                 isActive: true,
               },
@@ -83,25 +104,8 @@ export class RequestsController {
       },
     })
 
-    const isUserAuthorized = await prisma.request.findUnique({
-      where: { id },
-      select: { requestedBy: true, assignedTo: true },
-    })
-
-    if (!userRequest || !isUserAuthorized) {
+    if (!userRequest) {
       throw new AppError('Chamado não encontrado')
-    }
-
-    if (
-      !request.user ||
-      (request.user.role !== 'admin' &&
-        isUserAuthorized.assignedTo !== request.user.id &&
-        isUserAuthorized.requestedBy !== request.user.id)
-    ) {
-      throw new AppError(
-        'Você não tem permissão para visualizar esse chamado',
-        401
-      )
     }
 
     return response.json({ ...userRequest })
@@ -113,11 +117,15 @@ export class RequestsController {
     }
 
     const bodySchema = z.object({
+      title: z.string({ error: 'Informe o título' }),
+      description: z.string({ error: 'Informe a descrição' }),
       serviceId: z.uuid({ error: 'Informe um serviço válido' }),
       assignedTo: z.uuid({ error: 'Informe um técnico válido' }),
     })
 
-    const { serviceId, assignedTo } = bodySchema.parse(request.body)
+    const { title, description, serviceId, assignedTo } = bodySchema.parse(
+      request.body
+    )
 
     const technician = await prisma.user.findUnique({
       where: { id: assignedTo, role: 'technician' },
@@ -141,7 +149,7 @@ export class RequestsController {
     }
 
     const userRequest = await prisma.request.create({
-      data: { requestedBy: request.user.id, assignedTo },
+      data: { title, description, requestedBy: request.user.id, assignedTo },
     })
 
     await prisma.requestService.create({
@@ -222,20 +230,20 @@ export class RequestsController {
             service: {
               select: {
                 id: true,
-                type: true,
+                title: true,
                 value: true,
                 isActive: true,
               },
             },
           },
         },
-        client: request.user?.role !== 'client' && {
+        client: {
           select: {
             id: true,
             name: true,
           },
         },
-        technician: request.user?.role !== 'technician' && {
+        technician: {
           select: {
             id: true,
             name: true,
