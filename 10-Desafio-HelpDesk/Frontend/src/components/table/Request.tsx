@@ -9,8 +9,8 @@ import { StatusTag } from '../StatusTag'
 import { useNavigate } from 'react-router'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { type Request } from '../../data/requests'
-import { users } from '../../data/users'
 import dayjs from 'dayjs'
+import { useAuth } from '../../hooks/useAuth'
 
 export type IRequest = Pick<
   Request,
@@ -21,11 +21,10 @@ type Props = {
   requestData: IRequest
 }
 
-const user = users.find((user) => user.id === localStorage.getItem('userid'))
-const userRole = user?.role
-
 export function Request({ requestData }: Props) {
-  if (!user) return
+  const { session } = useAuth()
+
+  if (!session) return
 
   const isMobile = useIsMobile()
   const navigate = useNavigate()
@@ -45,7 +44,7 @@ export function Request({ requestData }: Props) {
           useGrouping: false,
         })}
       </td>
-      {userRole === 'client' ? (
+      {session.user.role === 'client' ? (
         <>
           <td className="px-3 border-t border-gray-500">
             <h3
@@ -90,7 +89,7 @@ export function Request({ requestData }: Props) {
             minimumFractionDigits: 2,
           })}
       </td>
-      {userRole !== 'client' && (
+      {session.user.role !== 'client' && (
         <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
           <div className="flex items-center gap-2">
             <ProfilePicture
@@ -120,7 +119,7 @@ export function Request({ requestData }: Props) {
       <td className="px-3 border-t border-gray-500">
         <div className="flex justify-end">
           <Button
-            Icon={userRole === 'client' ? ShowIcon : EditIcon}
+            Icon={session.user.role === 'client' ? ShowIcon : EditIcon}
             variant="secondary"
             size="sm"
             onClick={() => navigate(`/requests/${requestData.id}`)}

@@ -41,9 +41,9 @@ interface IUserActions {
 }
 
 export function SideBar() {
-  const { session } = useAuth()
+  const { session, remove } = useAuth()
 
-  if (session) return
+  if (!session) return
 
   const location = useLocation()
   const isMobile = useIsMobile()
@@ -122,7 +122,7 @@ export function SideBar() {
           <div className="grid">
             <h2 className="text-lg font-bold text-gray-600">HelpDesk</h2>
             <span className="text-xxs uppercase text-blue-light">
-              {userRole}
+              {session.user.role}
             </span>
           </div>
         </div>
@@ -136,7 +136,7 @@ export function SideBar() {
         <h3 className="mb-4 text-xxs font-bold text-gray-400 uppercase lg:hidden">
           Menu
         </h3>
-        <div className={`${userRole !== 'admin' && 'hidden'}`}>
+        <div className={`${session.user.role !== 'admin' && 'hidden'}`}>
           <SubMenu
             Icon={RequestIcon}
             text="Chamados"
@@ -178,7 +178,7 @@ export function SideBar() {
             }
           />
         </div>
-        <div className={`${userRole !== 'technician' && 'hidden'}`}>
+        <div className={`${session.user.role !== 'technician' && 'hidden'}`}>
           <SubMenu
             Icon={RequestIcon}
             text="Meus chamados"
@@ -190,7 +190,7 @@ export function SideBar() {
             }
           />
         </div>
-        <div className={`${userRole !== 'client' && 'hidden'}`}>
+        <div className={`${session.user.role !== 'client' && 'hidden'}`}>
           <SubMenu
             Icon={RequestIcon}
             text="Meus chamados"
@@ -222,13 +222,13 @@ export function SideBar() {
           style={{ anchorName: '--user-menu' }}
         >
           <ProfilePicture
-            username={user.name}
-            profilePicture={user.profilePicture}
+            username={session.user.name}
+            profilePicture={session.user.profilePicture}
             size="lg"
           />
           <div className="hidden lg:grid">
-            <span className="text-sm text-gray-600">{user.name}</span>
-            <span className="text-xs text-gray-400">{user.email}</span>
+            <span className="text-sm text-gray-600">{session.user.name}</span>
+            <span className="text-xs text-gray-400">{session.user.email}</span>
           </div>
         </button>
         <div
@@ -256,6 +256,7 @@ export function SideBar() {
             colorClasses="text-feedback-danger"
             onClick={(event) => {
               event.preventDefault()
+              remove()
             }}
           />
         </div>
@@ -281,8 +282,8 @@ export function SideBar() {
           <div>
             <div className="mb-5 px-7 flex items-center gap-3">
               <ProfilePicture
-                username={user.name}
-                profilePicture={user.profilePicture}
+                username={session.user.name}
+                profilePicture={session.user.profilePicture}
                 size="xl"
               />
               <div className="h-8 flex items-center gap-1">
@@ -293,7 +294,7 @@ export function SideBar() {
                   size="custom"
                   className="h-full px-2"
                 />
-                {user.profilePicture && (
+                {session.user.profilePicture && (
                   <Button
                     variant="secondary"
                     Icon={TrashIcon}
@@ -305,12 +306,17 @@ export function SideBar() {
               </div>
             </div>
             <div className="px-7 grid gap-4">
-              <Input label="Nome" id="name" value={user.name} required />
+              <Input
+                label="Nome"
+                id="name"
+                value={session.user.name}
+                required
+              />
               <Input
                 label="E-mail"
                 id="email"
                 type="email"
-                value={user.email}
+                value={session.user.email}
                 required
               />
               <div className="relative">
@@ -337,7 +343,7 @@ export function SideBar() {
                 </div>
               </div>
             </div>
-            {user.role === 'technician' && (
+            {session.user.role === 'technician' && (
               <div className="mt-8">
                 <hr className="mb-5 border-gray-500" />
                 <div className="px-7 grid gap-3">
@@ -350,9 +356,9 @@ export function SideBar() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-1 gap-y-2">
-                    {user.openingHours?.map((hour) => (
+                    {/* {user.openingHours?.map((hour) => (
                       <TimeTag hour={hour} disabled key={hour} />
-                    ))}
+                    ))} */}
                   </div>
                 </div>
               </div>

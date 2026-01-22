@@ -12,7 +12,6 @@ import { Dialog } from '../../components/Dialog'
 import { useState, useRef } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
-import { users } from '../../data/users'
 import { useNavigate } from 'react-router'
 
 export function TechnicianList() {
@@ -90,7 +89,7 @@ export function TechnicianList() {
           </tr>
         </thead>
         <tbody>
-          {users
+          {/* {users
             .filter((user) => {
               return user.role === 'technician'
             })
@@ -106,7 +105,7 @@ export function TechnicianList() {
                 technicianOperations={technicianOperations}
                 key={user.id}
               />
-            ))}
+            ))} */}
         </tbody>
       </table>
       <Dialog

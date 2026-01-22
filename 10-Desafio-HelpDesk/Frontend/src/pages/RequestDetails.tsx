@@ -17,22 +17,21 @@ import { ProfilePicture } from '../components/ProfilePicture'
 import { useNavigate, useParams } from 'react-router'
 import { requests } from '../data/requests'
 import dayjs from 'dayjs'
-import { users } from '../data/users'
 import { useRef, useState } from 'react'
 import { type Service } from '../data/services'
 import { Dialog } from '../components/Dialog'
 import { Input } from '../components/form/Input'
+import { useAuth } from '../hooks/useAuth'
 
 interface IServiceActions {
   action: 'edit' | 'remove'
   title: string
 }
 
-const user = users.find((user) => user.id === localStorage.getItem('userid'))
-const userRole = user?.role
-
 export function RequestDetails() {
-  if (!user) return
+  const { session } = useAuth()
+
+  if (!session) return
 
   const navigate = useNavigate()
   const params = useParams()
@@ -124,9 +123,9 @@ export function RequestDetails() {
             Chamado detalhado
           </h1>
         </div>
-        {userRole !== 'client' && (
+        {session.user.role !== 'client' && (
           <div className="flex gap-2">
-            {userRole === 'admin' &&
+            {session.user.role === 'admin' &&
               !['in_progress', 'closed'].includes(request.status) && (
                 <Button
                   Icon={ClockIcon}
@@ -139,20 +138,21 @@ export function RequestDetails() {
             {request.status !== 'closed' && (
               <Button
                 Icon={DoneIcon}
-                text={userRole === 'admin' ? 'Encerrado' : 'Encerrar'}
+                text={session.user.role === 'admin' ? 'Encerrado' : 'Encerrar'}
                 variant="secondary"
                 size="custom"
                 className="w-full lg:w-auto lg:px-4 py-2.5"
               />
             )}
-            {userRole === 'technician' && request.status === 'opened' && (
-              <Button
-                Icon={ClockIcon}
-                text="Iniciar atendimento"
-                size="custom"
-                className="w-full lg:w-auto lg:px-4 py-2.5"
-              />
-            )}
+            {session.user.role === 'technician' &&
+              request.status === 'opened' && (
+                <Button
+                  Icon={ClockIcon}
+                  text="Iniciar atendimento"
+                  size="custom"
+                  className="w-full lg:w-auto lg:px-4 py-2.5"
+                />
+              )}
           </div>
         )}
       </div>
@@ -188,7 +188,7 @@ export function RequestDetails() {
               </p>
             </InfoField>
           </div>
-          {userRole !== 'client' && (
+          {session.user.role !== 'client' && (
             <InfoField title="Cliente" spacing="gap-2">
               <div className="flex items-center gap-2">
                 <ProfilePicture
@@ -267,7 +267,7 @@ export function RequestDetails() {
           </div>
         </div>
 
-        {userRole === 'technician' && request.status !== 'closed' && (
+        {session.user.role === 'technician' && request.status !== 'closed' && (
           <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-4">
             <div className="flex justify-between">
               <h3>Serviços adicionais</h3>

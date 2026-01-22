@@ -9,8 +9,6 @@ import { ProfilePicture } from '../../components/ProfilePicture'
 import { Input } from '../../components/form/Input'
 import { useState, useRef } from 'react'
 
-import { users } from '../../data/users'
-
 export function ClientList() {
   const dialogRef = useRef<null | HTMLDialogElement>(null)
   const [openDialog, setOpenDialog] = useState(false)
@@ -83,7 +81,7 @@ export function ClientList() {
           </tr>
         </thead>
         <tbody>
-          {users
+          {/* {users
             .filter((user) => {
               return user.role === 'client'
             })
@@ -98,7 +96,7 @@ export function ClientList() {
                 clientOperations={clientOperations}
                 key={user.id}
               />
-            ))}
+            ))} */}
         </tbody>
       </table>
       <Dialog
