@@ -8,7 +8,7 @@ import { ClientRoutes } from './ClientRoutes'
 import { useAuth } from '../hooks/useAuth'
 
 export function Routes() {
-  const { session } = useAuth()
+  const { session, isLoading } = useAuth()
 
   function Route() {
     switch (session?.user.role) {
@@ -21,6 +21,10 @@ export function Routes() {
       default:
         return <AuthRoutes />
     }
+  }
+
+  if (isLoading) {
+    return
   }
 
   return (
