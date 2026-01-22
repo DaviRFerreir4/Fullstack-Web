@@ -31,7 +31,7 @@ export function Button({
 }: Props) {
   return (
     <button
-      className={`rounded-md flex justify-center items-center gap-2 text-sm font-bold transition
+      className={`rounded-md flex justify-center items-center gap-2 text-sm font-bold transition disabled:opacity-75 disabled:cursor-progress
         ${variants[variant]}
         ${size === 'custom' ? className : sizes[size]}
         ${!Icon && 'w-full'}

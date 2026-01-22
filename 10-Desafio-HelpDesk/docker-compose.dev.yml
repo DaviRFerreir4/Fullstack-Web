@@ -5,6 +5,8 @@ services:
       target: development
     ports:
       - '5173:5173'
+    environment:
+      VITE_API_URL: 'http://localhost:3333'
     depends_on:
       - api
     develop:
@@ -55,3 +57,4 @@ services:
 
 volumes:
   database:
+# Para que o "watch" funcione, é preciso rodar "docker-compose -f docker-compose.dev.yml up --watch"

@@ -26,7 +26,7 @@ type Props = React.ComponentProps<'dialog'> & {
   dialogRef: React.RefObject<null | HTMLDialogElement>
   closeDialog: () => void
   backAction?: () => void
-  children: React.ReactNode
+  children?: React.ReactNode
   useSamePadding?: boolean
 }
 
@@ -102,7 +102,9 @@ export function Dialog({
               <FailureIcon className="w-12 h-12 text-feedback-danger/70" />
               <div>
                 <p className="mb-1">Erro ao realizar a ação requisitada.</p>
-                <p>Por favor, tente novamente mais tarde.</p>
+                <p>
+                  Por favor, corrija sua ação ou tente novamente mais tarde.
+                </p>
               </div>
             </div>
           ) : (

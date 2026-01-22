@@ -33,7 +33,9 @@ export function InputWrapper({
           ${info ? 'text-gray-400 italic' : 'text-feedback-danger'}
         `}
       >
-        <AlertIcon className={`w-4 h-4 ${info && 'hidden'}`} />
+        <AlertIcon
+          className={`w-4 h-4 flex-[0_0_auto] self-baseline ${info && 'hidden'}`}
+        />
         <span className="text-xs">{helperText}</span>
       </div>
     </div>
