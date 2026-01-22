@@ -7,7 +7,17 @@ import { Status } from '@prisma/client'
 
 export class RequestsController {
   async index(request: Request, response: Response) {
+    const querySchema = z.object({
+      page: z.coerce.number().default(1),
+      perPage: z.coerce.number().default(10),
+    })
+
+    const { page, perPage } = querySchema.parse(request.query)
+
+    const skip = (page - 1) * perPage
+
     const requests = await prisma.request.findMany({
+      skip,
       include: {
         client: {
           select: {
@@ -41,7 +51,19 @@ export class RequestsController {
       },
     })
 
-    return response.json(requests)
+    const totalRecords = await prisma.request.count()
+
+    const totalPages = Math.ceil(totalRecords / perPage)
+
+    return response.json({
+      requests,
+      pagination: {
+        page,
+        perPage,
+        totalRecords,
+        totalPages: totalPages > 0 ? totalPages : 1,
+      },
+    })
   }
 
   async show(request: Request, response: Response) {

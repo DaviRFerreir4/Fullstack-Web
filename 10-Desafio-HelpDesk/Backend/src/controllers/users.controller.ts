@@ -104,7 +104,17 @@ export class UsersController {
       throw new AppError('Usuário não encontrado')
     }
 
+    const querySchema = z.object({
+      page: z.coerce.number().default(1),
+      perPage: z.coerce.number().default(10),
+    })
+
+    const { page, perPage } = querySchema.parse(request.query)
+
+    const skip = (page - 1) * perPage
+
     const requests = await prisma.request.findMany({
+      skip,
       where: {
         requestedBy: user.role === 'client' ? id : undefined,
         assignedTo: user.role === 'technician' ? id : undefined,
@@ -119,7 +129,24 @@ export class UsersController {
       },
     })
 
-    return response.json(requests)
+    const totalRecords = await prisma.request.count({
+      where: {
+        requestedBy: user.role === 'client' ? id : undefined,
+        assignedTo: user.role === 'technician' ? id : undefined,
+      },
+    })
+
+    const totalPages = Math.ceil(totalRecords / perPage)
+
+    return response.json({
+      requests,
+      pagination: {
+        page,
+        perPage,
+        totalRecords,
+        totalPages: totalPages > 0 ? totalPages : 1,
+      },
+    })
   }
 
   async create(request: Request, response: Response) {
