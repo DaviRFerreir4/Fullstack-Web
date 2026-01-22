@@ -94,10 +94,10 @@ export function ServiceList() {
         serviceAction.action === 'create'
           ? createService
           : serviceAction.action === 'edit'
-          ? editService
-          : serviceAction.action === 'disable'
-          ? disableService
-          : enableService,
+            ? editService
+            : serviceAction.action === 'disable'
+              ? disableService
+              : enableService,
     })
     setService({
       ...service,
@@ -168,7 +168,9 @@ export function ServiceList() {
         dialogRef={dialogRef}
         closeDialog={handleCloseDialog}
         action={currentAction?.action}
-        handleAction={currentAction ? currentAction.handleAction : () => {}}
+        handleAction={
+          currentAction ? currentAction.handleAction : handleCloseDialog
+        }
       >
         {currentAction?.action === 'create' ||
         currentAction?.action === 'edit' ? (

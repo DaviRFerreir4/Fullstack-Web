@@ -75,7 +75,7 @@ export function SignUp() {
       }
     } catch (error: any) {
       if (error instanceof ZodError) {
-        const fieldErrors: LoginFormErrors = z.flattenError(error).fieldErrors
+        const fieldErrors: SignUpFormErrors = z.flattenError(error).fieldErrors
         const formErrors: string[] = z.flattenError(error).formErrors
 
         return { data, fieldErrors, formErrors }
@@ -201,7 +201,9 @@ export function SignUp() {
         dialogRef={dialogRef}
         closeDialog={handleCloseDialog}
         action={currentAction?.action}
-        handleAction={currentAction ? currentAction.handleAction : () => {}}
+        handleAction={
+          currentAction ? currentAction.handleAction : handleCloseDialog
+        }
       />
     </div>
   )

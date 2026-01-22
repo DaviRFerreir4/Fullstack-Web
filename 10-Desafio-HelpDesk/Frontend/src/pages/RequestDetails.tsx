@@ -338,7 +338,9 @@ export function RequestDetails() {
         dialogRef={dialogRef}
         closeDialog={handleCloseDialog}
         action={currentAction?.action}
-        handleAction={currentAction ? currentAction.handleAction : () => {}}
+        handleAction={
+          currentAction ? currentAction.handleAction : handleCloseDialog
+        }
       >
         {currentAction?.action === 'edit' ? (
           <div className="grid gap-4">

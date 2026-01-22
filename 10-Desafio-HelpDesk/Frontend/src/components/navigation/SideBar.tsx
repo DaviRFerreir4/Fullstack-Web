@@ -273,7 +273,9 @@ export function SideBar() {
           })
         }
         action={currentAction?.action}
-        handleAction={currentAction ? currentAction.handleAction : () => {}}
+        handleAction={
+          currentAction ? currentAction.handleAction : handleCloseDialog
+        }
         useSamePadding={false}
       >
         {currentAction?.action === 'edit' ? (

@@ -115,7 +115,9 @@ export function TechnicianList() {
         dialogRef={dialogRef}
         closeDialog={handleCloseDialog}
         action={currentAction?.action}
-        handleAction={currentAction ? currentAction.handleAction : () => {}}
+        handleAction={
+          currentAction ? currentAction.handleAction : handleCloseDialog
+        }
       >
         <div className="grid gap-5">
           <p>
