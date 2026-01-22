@@ -32,7 +32,7 @@ import { TimeTag } from '../TimeTag'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { users } from '../../data/users'
+import { useAuth } from '../../hooks/useAuth'
 import { Button } from '../form/Button'
 
 interface IUserActions {
@@ -40,11 +40,10 @@ interface IUserActions {
   title: string
 }
 
-const user = users.find((user) => user.id === localStorage.getItem('userid'))
-const userRole = user?.role
-
 export function SideBar() {
-  if (!user) return
+  const { session } = useAuth()
+
+  if (session) return
 
   const location = useLocation()
   const isMobile = useIsMobile()

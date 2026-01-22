@@ -5,6 +5,7 @@ import z, { ZodError } from 'zod'
 import { api } from '../../services/api'
 import { useResultDialog } from '../../hooks/useResultDialog'
 import { Dialog } from '../../components/Dialog'
+import { useAuth } from '../../hooks/useAuth'
 
 const signInSchema = z.object({
   email: z.email({ error: 'Informe um e-mail válido' }).trim(),
@@ -25,6 +26,8 @@ export function SignIn() {
     handleCloseDialog,
   } = useResultDialog()
 
+  const auth = useAuth()
+
   async function signIn(_: any, formData: FormData) {
     const data = {
       email: formData.get('email'),
@@ -39,7 +42,7 @@ export function SignIn() {
         password,
       })
 
-      console.log(response.data)
+      auth.save(response.data)
     } catch (error: any) {
       if (error instanceof ZodError) {
         const fieldErrors: SignInFormErrors = z.flattenError(error).fieldErrors

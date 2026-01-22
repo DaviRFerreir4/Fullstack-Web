@@ -5,28 +5,27 @@ import { AdminRoutes } from './AdminRoutes'
 import { TechnicianRoutes } from './TechnicianRoutes'
 import { ClientRoutes } from './ClientRoutes'
 
-import { users } from '../data/users'
 import { useAuth } from '../hooks/useAuth'
 
-const user = users.find((user) => user.id === localStorage.getItem('userid'))
-const role = user?.role
-
 export function Routes() {
-  const authContext = useAuth()
+  const { session } = useAuth()
 
-  console.log(authContext)
+  function Route() {
+    switch (session?.user.role) {
+      case 'client':
+        return <ClientRoutes />
+      case 'technician':
+        return <TechnicianRoutes />
+      case 'admin':
+        return <AdminRoutes />
+      default:
+        return <AuthRoutes />
+    }
+  }
 
   return (
     <BrowserRouter>
-      {role === 'client' ? (
-        <ClientRoutes />
-      ) : role === 'technician' ? (
-        <TechnicianRoutes />
-      ) : role === 'admin' ? (
-        <AdminRoutes />
-      ) : (
-        <AuthRoutes />
-      )}
+      <Route />
     </BrowserRouter>
   )
 }
