@@ -18,7 +18,7 @@ const signUpSchema = z
       .trim()
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, {
         error:
-          'Senha inválida.\nUma senha deve conter 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
+          'Senha inválida.\nUma senha deve conter no mínimo 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
       }),
     confirmPassword: z.string({ error: 'Informe a confirmação da senha' }),
   })
@@ -141,12 +141,11 @@ export function SignUp() {
             id="password"
             type="password"
             placeholder="Digite sua senha"
-            info={!state?.fieldErrors?.password}
             error={!!state?.fieldErrors?.password}
             helperText={
               state?.fieldErrors?.password
                 ? state.fieldErrors.password[0]
-                : 'Mínimo de 6 dígitos'
+                : 'Mínimo de 8 dígitos'
             }
             defaultValue={
               state?.data.password

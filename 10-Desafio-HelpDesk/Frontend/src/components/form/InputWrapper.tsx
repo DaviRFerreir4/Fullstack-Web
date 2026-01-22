@@ -3,7 +3,6 @@ import AlertIcon from '../../assets/icons/circle-alert.svg?react'
 
 export interface IInputProps {
   label: string
-  info?: boolean
   error?: boolean
   helperText?: string
 }
@@ -15,7 +14,6 @@ type Props = IInputProps & {
 
 export function InputWrapper({
   label,
-  info = false,
   error = false,
   helperText = '',
   id,
@@ -30,11 +28,11 @@ export function InputWrapper({
       <div
         className={`items-center gap-1
           ${helperText ? 'flex' : 'hidden'}
-          ${info ? 'text-gray-400 italic' : 'text-feedback-danger'}
+          ${error ? 'text-feedback-danger' : 'text-gray-400 italic'}
         `}
       >
         <AlertIcon
-          className={`w-4 h-4 flex-[0_0_auto] self-baseline ${info && 'hidden'}`}
+          className={`w-4 h-4 flex-[0_0_auto] self-baseline ${!error && 'hidden'}`}
         />
         <span className="text-xs">{helperText}</span>
       </div>

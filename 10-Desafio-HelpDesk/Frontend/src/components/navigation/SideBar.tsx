@@ -371,8 +371,7 @@ export function SideBar() {
               id="new-password"
               type="password"
               placeholder="Digite sua nova senha"
-              helperText="Mínimo de 6 dígitos"
-              info
+              helperText="Mínimo de 8 dígitos"
               required
             />
           </div>

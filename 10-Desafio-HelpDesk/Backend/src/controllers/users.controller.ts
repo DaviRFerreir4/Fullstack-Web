@@ -135,7 +135,7 @@ export class UsersController {
           .trim()
           .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, {
             error:
-              'Senha inválida.\nUma senha deve conter 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
+              'Senha inválida.\nUma senha deve conter no mínimo 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
           }),
         confirmPassword: z.string({ error: 'Informe a confirmação da senha' }),
         role: z
@@ -242,7 +242,7 @@ export class UsersController {
           .trim()
           .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, {
             error:
-              'Senha inválida.\nUma senha deve conter 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
+              'Senha inválida.\nUma senha deve conter no mínimo 8 digitos e incluir uma letra maíuscula e minúscula, um número e um caractere especial',
           })
           .optional(),
         confirmPassword: z

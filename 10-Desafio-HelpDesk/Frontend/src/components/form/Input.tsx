@@ -14,7 +14,6 @@ type Props = React.ComponentProps<'input'> &
 
 export function Input({
   label,
-  info = false,
   error = false,
   helperText = '',
   currency,
@@ -25,13 +24,7 @@ export function Input({
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <InputWrapper
-      label={label}
-      error={error}
-      info={info}
-      helperText={helperText}
-      id={id}
-    >
+    <InputWrapper label={label} error={error} helperText={helperText} id={id}>
       <div className="relative">
         {currency && <span className="absolute font-bold">R$</span>}
         <input

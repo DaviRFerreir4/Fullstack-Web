@@ -111,8 +111,7 @@ export function TechnicianForm() {
                 id="password"
                 type="password"
                 placeholder="Defina a senha de acesso"
-                info={true}
-                helperText="Mínimo de 6 dígitos"
+                helperText="Mínimo de 8 dígitos"
                 onChange={(event) =>
                   setTechnicianData({
                     ...technicianData,
@@ -154,8 +153,8 @@ export function TechnicianForm() {
                                 (hour) => hour !== Number(event.target.value)
                               )
                             : technicianData.openingHours
-                            ? [...technicianData.openingHours, hour]
-                            : [hour],
+                              ? [...technicianData.openingHours, hour]
+                              : [hour],
                         })
                       }
                     />

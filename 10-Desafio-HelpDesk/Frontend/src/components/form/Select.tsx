@@ -14,7 +14,6 @@ type Props = React.ComponentProps<'select'> &
 
 export function Select({
   label,
-  info = false,
   error = false,
   helperText = '',
   placeholder,
@@ -26,13 +25,7 @@ export function Select({
   const [selectColor, setSelectColor] = useState('text-gray-400')
 
   return (
-    <InputWrapper
-      label={label}
-      error={error}
-      info={info}
-      helperText={helperText}
-      id={id}
-    >
+    <InputWrapper label={label} error={error} helperText={helperText} id={id}>
       <div className="relative group">
         <ArrowIcon className="w-4 h-4 absolute top-1/6 right-2 translate-x-1/2 group-has-open:rotate-180 transition-transform" />
         <select
