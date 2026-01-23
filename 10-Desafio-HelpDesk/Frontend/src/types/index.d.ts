@@ -9,3 +9,9 @@ interface SignInFormErrors {
   email?: string[]
   password?: string[]
 }
+
+interface createRequestFormErrors {
+  title?: string[]
+  description?: string[]
+  serviceId?: string[]
+}

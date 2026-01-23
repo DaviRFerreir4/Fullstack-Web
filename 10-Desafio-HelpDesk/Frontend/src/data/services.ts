@@ -1,12 +1,3 @@
-export type Service = {
-  id: string
-  title: string
-  value: number
-  isActive: boolean
-  createdAt: string
-  updatedAt: string
-}
-
 export const services: Service[] = [
   {
     id: 'b445b89f-e9ef-442f-8b72-e173cbc06c3b',

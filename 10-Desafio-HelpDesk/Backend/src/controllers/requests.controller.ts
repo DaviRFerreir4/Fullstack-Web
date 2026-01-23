@@ -3,7 +3,7 @@ import z from 'zod'
 
 import { prisma } from '../database/prisma'
 import { AppError } from '../utils/app-error'
-import { Status } from '@prisma/client'
+import { Status, User } from '@prisma/client'
 
 export class RequestsController {
   async index(request: Request, response: Response) {
@@ -142,17 +142,42 @@ export class RequestsController {
       title: z.string({ error: 'Informe o título' }),
       description: z.string({ error: 'Informe a descrição' }),
       serviceId: z.uuid({ error: 'Informe um serviço válido' }),
-      assignedTo: z.uuid({ error: 'Informe um técnico válido' }),
+      assignedTo: z.uuid({ error: 'Informe um técnico válido' }).optional(),
     })
 
     const { title, description, serviceId, assignedTo } = bodySchema.parse(
       request.body
     )
 
-    const technician = await prisma.user.findUnique({
-      where: { id: assignedTo, role: 'technician' },
-      omit: { password: true, profilePicture: true },
-    })
+    let technician: Pick<
+      User,
+      'id' | 'email' | 'name' | 'role' | 'createdAt' | 'updatedAt'
+    > | null
+
+    if (assignedTo) {
+      technician = await prisma.user.findUnique({
+        where: { id: assignedTo, role: 'technician' },
+        omit: { password: true, profilePicture: true },
+      })
+    } else {
+      const techniciansOrderedByRequests = await prisma.user.findMany({
+        where: {
+          role: 'technician',
+        },
+        omit: { password: true, profilePicture: true },
+        orderBy: {
+          technicianRequest: { _count: 'asc' },
+        },
+      })
+
+      if (techniciansOrderedByRequests.length === 0) {
+        throw new AppError(
+          'Não há nenhum técnico cadastrado para atender o chamado'
+        )
+      }
+
+      technician = techniciansOrderedByRequests[0]
+    }
 
     if (!technician) {
       throw new AppError('Técnico não encontrado')
@@ -171,7 +196,12 @@ export class RequestsController {
     }
 
     const userRequest = await prisma.request.create({
-      data: { title, description, requestedBy: request.user.id, assignedTo },
+      data: {
+        title,
+        description,
+        requestedBy: request.user.id,
+        assignedTo: assignedTo ?? technician.id,
+      },
     })
 
     await prisma.requestService.create({
