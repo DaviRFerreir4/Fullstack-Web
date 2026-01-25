@@ -1,3 +1,13 @@
+type DialogActions =
+  | 'create'
+  | 'edit'
+  | 'remove'
+  | 'disable'
+  | 'enable'
+  | 'changePassword'
+  | 'success'
+  | 'failure'
+
 interface SignUpFormErrors {
   name?: string[]
   email?: string[]

@@ -13,15 +13,7 @@ import { useEffect } from 'react'
 type Props = React.ComponentProps<'dialog'> & {
   open?: boolean
   title?: string
-  action?:
-    | 'create'
-    | 'edit'
-    | 'remove'
-    | 'disable'
-    | 'enable'
-    | 'changePassword'
-    | 'success'
-    | 'failure'
+  action?: DialogActions
   handleAction: () => void
   dialogRef: React.RefObject<null | HTMLDialogElement>
   closeDialog: () => void

@@ -17,11 +17,12 @@ import { ProfilePicture } from '../components/ProfilePicture'
 import { useNavigate, useParams } from 'react-router'
 import { requests } from '../data/requests'
 import dayjs from 'dayjs'
-import { useRef, useState } from 'react'
-import { type Service } from '../data/services'
+import { useEffect, useRef, useState } from 'react'
 import { Dialog } from '../components/Dialog'
 import { Input } from '../components/form/Input'
 import { useAuth } from '../hooks/useAuth'
+import { useResultDialog } from '../hooks/useResultDialog'
+import { api } from '../services/api'
 
 interface IServiceActions {
   action: 'edit' | 'remove'
@@ -33,33 +34,48 @@ export function RequestDetails() {
 
   if (!session) return
 
+  const [request, setRequest] = useState<null | Omit<
+    UserRequest,
+    'assignedTo' | 'requestedBy'
+  >>(null)
+
   const navigate = useNavigate()
   const params = useParams()
 
-  const dialogRef = useRef<null | HTMLDialogElement>(null)
-  const [openDialog, setOpenDialog] = useState(false)
+  const {
+    dialogRef,
+    openDialog,
+    setOpenDialog,
+    currentAction,
+    setCurrentAction,
+    handleCloseDialog,
+  } = useResultDialog()
 
-  const [service, setService] = useState<
-    Pick<Service, 'id' | 'title'> & { value: string }
-  >({
-    id: '',
-    title: '',
-    value: '',
-  })
+  const id = params.id
 
-  const [currentAction, setCurrentAction] = useState<null | {
-    action: 'edit' | 'remove' | 'success' | 'failure'
-    title: string
-    handleAction: () => void
-  }>(null)
+  if (!id) return navigate('/requests')
 
-  const request = requests.find((request) => request.id === Number(params.id))
+  // request.services.sort((a, b) => {
+  //   return dayjs(a.createdAt).diff(dayjs(b.createdAt))
+  // })
 
-  if (!request) return
+  async function fetchRequest() {
+    try {
+      const response = await api.get<
+        Omit<UserRequest, 'assignedTo' | 'requestedBy'>
+      >(`/requests/${id}`)
 
-  request.services.sort((a, b) => {
-    return dayjs(a.createdAt).diff(dayjs(b.createdAt))
-  })
+      setRequest(response.data)
+    } catch (error: any) {
+      setCurrentAction({
+        action: 'failure',
+        title: error.response?.data?.message ?? error.message,
+        handleAction: handleCloseDialog,
+      })
+
+      setOpenDialog(true)
+    }
+  }
 
   function addService() {
     setCurrentAction({
@@ -97,16 +113,13 @@ export function RequestDetails() {
       handleAction:
         serviceAction.action === 'edit' ? addService : removeService,
     })
-    setService({
-      ...service,
-    })
+
     setOpenDialog(true)
   }
 
-  function handleCloseDialog() {
-    dialogRef.current?.close()
-    setOpenDialog(false)
-  }
+  useEffect(() => {
+    fetchRequest()
+  }, [])
 
   return (
     <div className="lg:mx-35.5 grid gap-4 lg:gap-6 text-gray-200">
@@ -126,7 +139,7 @@ export function RequestDetails() {
         {session.user.role !== 'client' && (
           <div className="flex gap-2">
             {session.user.role === 'admin' &&
-              !['in_progress', 'closed'].includes(request.status) && (
+              !['in_progress', 'closed'].includes(request?.status ?? '') && (
                 <Button
                   Icon={ClockIcon}
                   text="Em atendimento"
@@ -135,7 +148,7 @@ export function RequestDetails() {
                   className="w-full lg:w-auto lg:px-4 py-2.5 whitespace-nowrap"
                 />
               )}
-            {request.status !== 'closed' && (
+            {request?.status !== 'closed' && (
               <Button
                 Icon={DoneIcon}
                 text={session.user.role === 'admin' ? 'Encerrado' : 'Encerrar'}
@@ -145,7 +158,7 @@ export function RequestDetails() {
               />
             )}
             {session.user.role === 'technician' &&
-              request.status === 'opened' && (
+              request?.status === 'opened' && (
                 <Button
                   Icon={ClockIcon}
                   text="Iniciar atendimento"
@@ -161,30 +174,30 @@ export function RequestDetails() {
           <div>
             <div className="mb-0.5 flex justify-between items-center">
               <span className="text-xs font-bold text-gray-300">
-                {request.id.toLocaleString('pt-br', {
+                {request?.id.toLocaleString('pt-br', {
                   minimumIntegerDigits: 5,
                   useGrouping: false,
                 })}
               </span>
-              <StatusTag status={request.status} />
+              {request && <StatusTag status={request.status} />}
             </div>
-            <h2 className="font-bold">{request.title}</h2>
+            <h2 className="font-bold">{request?.title}</h2>
           </div>
           <InfoField title="Descrição">
-            <p className="text-sm">{request.description}</p>
+            <p className="text-sm">{request?.description}</p>
           </InfoField>
           <InfoField title="Categoria">
-            <p className="text-sm">{request.services[0].service.title}</p>
+            <p className="text-sm">{request?.services[0].service.title}</p>
           </InfoField>
           <div className="flex gap-8 sm:justify-between">
             <InfoField title="Criado em" className="flex-1">
               <p className="text-xs">
-                {dayjs(request.createdAt).format('DD/MM/YYYY HH:mm')}
+                {dayjs(request?.createdAt).format('DD/MM/YYYY HH:mm')}
               </p>
             </InfoField>
             <InfoField title="Atualizado em" className="flex-1">
               <p className="text-xs">
-                {dayjs(request.updatedAt).format('DD/MM/YYYY HH:mm')}
+                {dayjs(request?.updatedAt).format('DD/MM/YYYY HH:mm')}
               </p>
             </InfoField>
           </div>
@@ -192,10 +205,10 @@ export function RequestDetails() {
             <InfoField title="Cliente" spacing="gap-2">
               <div className="flex items-center gap-2">
                 <ProfilePicture
-                  username={request.client.name}
-                  profilePicture={request.client.profilePicture}
+                  username={request?.client?.name ?? ''}
+                  profilePicture={request?.client?.profilePicture}
                 />
-                <span className="text-sm">{request.client.name}</span>
+                <span className="text-sm">{request?.client?.name}</span>
               </div>
             </InfoField>
           )}
@@ -204,14 +217,14 @@ export function RequestDetails() {
           <InfoField title="Técnico Responsável" spacing="gap-2">
             <div className="flex items-center gap-2">
               <ProfilePicture
-                username={request.technician.name}
-                profilePicture={request.technician.profilePicture}
+                username={request?.technician?.name ?? ''}
+                profilePicture={request?.technician?.profilePicture}
                 size="md"
               />
               <div className="grid">
-                <span className="text-sm">{request.technician.name}</span>
+                <span className="text-sm">{request?.technician?.name}</span>
                 <span className="text-xs text-gray-300">
-                  {request.technician.email}
+                  {request?.technician?.email}
                 </span>
               </div>
             </div>
@@ -221,7 +234,7 @@ export function RequestDetails() {
               <div className="flex justify-between text-xs">
                 <span>Preço base</span>
                 <span>
-                  {request.services[0].service.value.toLocaleString('pt-br', {
+                  {request?.services[0].service.value.toLocaleString('pt-br', {
                     minimumFractionDigits: 2,
                     style: 'currency',
                     currency: 'BRL',
@@ -230,8 +243,8 @@ export function RequestDetails() {
               </div>
             </InfoField>
             <InfoField title="Adicionais" spacing="gap-2">
-              {request.services
-                .slice(1, request.services.length)
+              {request?.services
+                .slice(1, request?.services.length)
                 .map(({ service }) => (
                   <div
                     className="flex justify-between text-xs"
@@ -251,7 +264,7 @@ export function RequestDetails() {
             <div className="pt-3 border-t border-gray-500 flex justify-between text-sm font-bold">
               <span>Total</span>
               <span>
-                {request.services
+                {request?.services
                   .map(({ service }) => service.value)
                   .reduce(
                     (accumulator, currentValue) => accumulator + currentValue,
@@ -267,7 +280,7 @@ export function RequestDetails() {
           </div>
         </div>
 
-        {session.user.role === 'technician' && request.status !== 'closed' && (
+        {/* {session.user.role === 'technician' && request?.status !== 'closed' && (
           <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-4">
             <div className="flex justify-between">
               <h3>Serviços adicionais</h3>
@@ -330,7 +343,7 @@ export function RequestDetails() {
               </p>
             )}
           </div>
-        )}
+        )} */}
       </div>
       <Dialog
         title={currentAction?.title}
@@ -342,7 +355,7 @@ export function RequestDetails() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
       >
-        {currentAction?.action === 'edit' ? (
+        {/* {currentAction?.action === 'edit' ? (
           <div className="grid gap-4">
             <Input
               label="Título"
@@ -392,7 +405,7 @@ export function RequestDetails() {
           </div>
         ) : (
           ''
-        )}
+        )} */}
       </Dialog>
     </div>
   )

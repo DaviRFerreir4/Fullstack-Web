@@ -5,7 +5,7 @@ export function useResultDialog() {
   const [openDialog, setOpenDialog] = useState(false)
 
   const [currentAction, setCurrentAction] = useState<null | {
-    action: 'success' | 'failure'
+    action: DialogActions
     title: string
     handleAction: () => void
   }>(null)
