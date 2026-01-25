@@ -5,6 +5,7 @@ import z, { ZodError } from 'zod'
 import { api } from '../../services/api'
 import { Dialog } from '../../components/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
+import { useNavigate } from 'react-router'
 
 const signUpSchema = z
   .object({
@@ -41,6 +42,8 @@ export function SignUp() {
     handleCloseDialog,
   } = useResultDialog()
 
+  const navigate = useNavigate()
+
   async function signUp(_: any, formData: FormData) {
     const data = {
       name: formData.get('name'),
@@ -64,7 +67,7 @@ export function SignUp() {
         setCurrentAction({
           action: 'success',
           title: 'Usuário cadastrado com sucesso!',
-          handleAction: handleCloseDialog,
+          handleAction: () => navigate('/signin'),
         })
       } else {
         setCurrentAction({

@@ -5,13 +5,49 @@ import { RequestCard } from '../components/RequestCard'
 
 import { useIsMobile } from '../hooks/useIsMobile'
 import { useAuth } from '../hooks/useAuth'
+import { useEffect, useState } from 'react'
+import { api } from '../services/api'
+import { Dialog } from '../components/Dialog'
+import { useResultDialog } from '../hooks/useResultDialog'
 
 export function RequestList() {
+  const [requests, setRequests] = useState<null | UserRequest[]>(null)
   const { session } = useAuth()
 
   if (!session) return
 
   const isMobile = useIsMobile()
+  const {
+    dialogRef,
+    openDialog,
+    setOpenDialog,
+    currentAction,
+    setCurrentAction,
+    handleCloseDialog,
+  } = useResultDialog()
+
+  async function fetchRequests() {
+    try {
+      const response = await api.get<IndexRequestByUserAPIResponse>(
+        `/users/${session?.user.id}/requests`
+      )
+
+      setRequests(response.data.requests)
+    } catch (error: any) {
+      setCurrentAction({
+        action: 'failure',
+        title: error.response?.data?.message ?? error.message,
+        handleAction: handleCloseDialog,
+      })
+
+      setOpenDialog(true)
+    }
+  }
+
+  useEffect(() => {
+    fetchRequests()
+    console.log(requests)
+  }, [])
 
   return (
     <div>
@@ -46,20 +82,28 @@ export function RequestList() {
             </tr>
           </thead>
           <tbody>
-            {/* {userRequests.map((request) => (
-              <Request
-                requestData={{
-                  id: request.id,
-                  title: request.title,
-                  services: request.services,
-                  status: request.status,
-                  client: request.client,
-                  technician: request.technician,
-                  updatedAt: request.updatedAt,
-                }}
-                key={request.id}
-              />
+            {/* {requests?.map((request) => (
+              <tr>
+                <td>{request.title}</td>
+                <td>{request.id}</td>
+                <td>{request.id}</td>
+              </tr>
             ))} */}
+            {requests &&
+              requests.map((request) => (
+                <Request
+                  requestData={{
+                    id: request.id,
+                    title: request.title,
+                    updatedAt: request.updatedAt,
+                    services: request.services,
+                    status: request.status,
+                    client: request.client,
+                    technician: request.technician,
+                  }}
+                  key={request.id}
+                />
+              ))}
           </tbody>
         </table>
       ) : (
@@ -111,6 +155,16 @@ export function RequestList() {
           </div>
         </div>
       )}
+      <Dialog
+        title={currentAction?.title}
+        open={openDialog}
+        dialogRef={dialogRef}
+        closeDialog={handleCloseDialog}
+        action={currentAction?.action}
+        handleAction={
+          currentAction ? currentAction.handleAction : handleCloseDialog
+        }
+      />
     </div>
   )
 }

@@ -53,7 +53,7 @@ export function SignIn() {
 
       setCurrentAction({
         action: 'failure',
-        title: error.response.data.message ?? error.message,
+        title: error.response?.data?.message ?? error.message,
         handleAction: handleCloseDialog,
       })
 

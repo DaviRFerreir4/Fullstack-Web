@@ -75,7 +75,7 @@ export function RequestForm() {
       }
     } catch (error: any) {
       if (error instanceof ZodError) {
-        const fieldErrors: createRequestFormErrors =
+        const fieldErrors: CreateRequestFormErrors =
           z.flattenError(error).fieldErrors
         const formErrors: string[] = z.flattenError(error).formErrors
 

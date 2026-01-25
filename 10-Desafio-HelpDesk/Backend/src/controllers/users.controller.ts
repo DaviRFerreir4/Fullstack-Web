@@ -126,6 +126,12 @@ export class UsersController {
         client: user.role === 'technician' && {
           omit: { password: true },
         },
+        services: {
+          select: {
+            createdAt: true,
+            service: true,
+          },
+        },
       },
     })
 

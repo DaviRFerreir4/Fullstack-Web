@@ -8,17 +8,14 @@ import { Button } from '../form/Button'
 import { StatusTag } from '../StatusTag'
 import { useNavigate } from 'react-router'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { type Request } from '../../data/requests'
 import dayjs from 'dayjs'
 import { useAuth } from '../../hooks/useAuth'
 
-export type IRequest = Pick<
-  Request,
-  'id' | 'title' | 'status' | 'client' | 'technician' | 'services' | 'updatedAt'
->
-
 type Props = {
-  requestData: IRequest
+  requestData: Omit<
+    UserRequest,
+    'description' | 'requestedBy' | 'assignedTo' | 'createdAt'
+  >
 }
 
 export function Request({ requestData }: Props) {
@@ -87,26 +84,28 @@ export function Request({ requestData }: Props) {
           .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
           .toLocaleString('pt-br', {
             minimumFractionDigits: 2,
+            style: 'currency',
+            currency: 'BRL',
           })}
       </td>
       {session.user.role !== 'client' && (
         <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
           <div className="flex items-center gap-2">
             <ProfilePicture
-              username={requestData.client.name}
-              profilePicture={requestData.client.profilePicture}
+              username={requestData.client?.name ?? ''}
+              profilePicture={requestData.client?.profilePicture}
             />
-            <span className="line-clamp-1">{requestData.client.name}</span>
+            <span className="line-clamp-1">{requestData.client?.name}</span>
           </div>
         </td>
       )}
       <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
         <div className="flex items-center gap-2">
           <ProfilePicture
-            username={requestData.technician.name}
-            profilePicture={requestData.technician.profilePicture}
+            username={requestData.technician?.name ?? ''}
+            profilePicture={requestData.technician?.profilePicture}
           />
-          <span className="line-clamp-1">{requestData.technician.name}</span>
+          <span className="line-clamp-1">{requestData.technician?.name}</span>
         </div>
       </td>
       <td className="px-3 border-t border-gray-500 text-xs font-bold">

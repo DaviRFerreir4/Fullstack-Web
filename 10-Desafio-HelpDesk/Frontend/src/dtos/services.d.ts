@@ -9,10 +9,5 @@ interface Service {
 
 interface IndexServiceAPIResponse {
   services: Service[]
-  pagination: {
-    page: number
-    perPage: number
-    totalPages: number
-    totalRecords: number
-  }
+  pagination: Pagination
 }

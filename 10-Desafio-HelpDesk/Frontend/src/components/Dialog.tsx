@@ -52,7 +52,7 @@ export function Dialog({
   else if (action === 'enable') buttonText = 'Sim, reativar'
   else if (action === 'disable') buttonText = 'Sim, desativar'
   else if (action === 'remove') buttonText = 'Sim, excluir'
-  else if (action === 'failure' || action === 'success') buttonText = 'Fechar'
+  else if (action === 'failure' || action === 'success') buttonText = 'Ok'
 
   const cancelAction =
     action === 'remove' || action === 'enable' || action === 'disable'

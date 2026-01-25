@@ -1,10 +1,5 @@
 type UserAPIRole = 'client' | 'technician' | 'admin'
 
-interface SessionAPIResponse {
-  token: string
-  user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'profilePicture'>
-}
-
 interface User {
   id: string
   name: string
@@ -14,4 +9,9 @@ interface User {
   role: UserAPIRole
   createdAt: string
   updatedAt: string
+}
+
+interface SessionAPIResponse {
+  token: string
+  user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'profilePicture'>
 }

@@ -10,8 +10,15 @@ interface SignInFormErrors {
   password?: string[]
 }
 
-interface createRequestFormErrors {
+interface CreateRequestFormErrors {
   title?: string[]
   description?: string[]
   serviceId?: string[]
+}
+
+interface Pagination {
+  page: number
+  perPage: number
+  totalPages: number
+  totalRecords: number
 }
