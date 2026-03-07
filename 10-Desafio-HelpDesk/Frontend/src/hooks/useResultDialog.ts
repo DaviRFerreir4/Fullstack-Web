@@ -7,7 +7,7 @@ export function useResultDialog() {
   const [currentAction, setCurrentAction] = useState<null | {
     action: DialogActions
     title: string
-    handleAction: () => void
+    handleAction: (() => void) | ((payload: FormData) => void)
   }>(null)
 
   function handleCloseDialog() {

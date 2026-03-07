@@ -15,24 +15,36 @@ import { InfoField } from '../components/InfoField'
 import { ProfilePicture } from '../components/ProfilePicture'
 
 import { useNavigate, useParams } from 'react-router'
-import { requests } from '../data/requests'
 import dayjs from 'dayjs'
-import { useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import { Dialog } from '../components/Dialog'
 import { Input } from '../components/form/Input'
 import { useAuth } from '../hooks/useAuth'
 import { useResultDialog } from '../hooks/useResultDialog'
 import { api } from '../services/api'
+import { CheckboxSlider } from '../components/form/CheckboxSlider'
+import { Select } from '../components/form/Select'
+import { Autocomplete } from '../components/form/Autocomplete'
 
 interface IServiceActions {
   action: 'edit' | 'remove'
   title: string
 }
 
+const useSelect = false
+
 export function RequestDetails() {
   const { session } = useAuth()
 
   if (!session) return
+
+  const [newService, setNewService] = useState(false)
+
+  const [serviceName, setServiceName] = useState('')
+
+  const [services, setServices] = useState<null | Service[]>(null)
+
+  const [serviceId, setServiceId] = useState('')
 
   const [request, setRequest] = useState<null | Omit<
     UserRequest,
@@ -52,6 +64,11 @@ export function RequestDetails() {
   } = useResultDialog()
 
   const id = params.id
+
+  const [formAddState, formAddAction, formAddIsLoading] = useActionState(
+    addService,
+    null
+  )
 
   if (!id) return navigate('/requests')
 
@@ -77,7 +94,11 @@ export function RequestDetails() {
     }
   }
 
-  function addService() {
+  function addService(_: any, formData: FormData) {
+    console.log(formData.get('title'))
+    console.log(formData.get('value'))
+    console.log(formData.get('service'))
+
     setCurrentAction({
       action: 'success',
       title: 'Serviço adicionado com sucesso!',
@@ -103,16 +124,26 @@ export function RequestDetails() {
     })
   }
 
-  function serviceOperations(
-    service: Pick<Service, 'id' | 'title'> & { value: string },
+  async function serviceOperations(
+    service: string | null,
     serviceAction: IServiceActions
   ) {
     setCurrentAction({
       action: serviceAction.action,
       title: serviceAction.title,
       handleAction:
-        serviceAction.action === 'edit' ? addService : removeService,
+        serviceAction.action === 'edit' ? formAddAction : removeService,
     })
+
+    if (serviceAction.action === 'remove') {
+      setServiceName(service ?? '')
+    }
+
+    if (serviceAction.action === 'edit') {
+      const response = await api.get<{ services: Service[] }>('/services')
+
+      setServices(response.data.services)
+    }
 
     setOpenDialog(true)
   }
@@ -280,22 +311,22 @@ export function RequestDetails() {
           </div>
         </div>
 
-        {/* {session.user.role === 'technician' && request?.status !== 'closed' && (
+        {session.user.role === 'technician' && request?.status !== 'closed' && (
           <div className="p-5 lg:p-6 border border-gray-500 rounded-[0.625rem] grid gap-4">
-            <div className="flex justify-between">
-              <h3>Serviços adicionais</h3>
+            <div className="flex gap-4">
+              <h3 className="flex-1">Serviços adicionais</h3>
               <Button
                 Icon={AddIcon}
                 size="sm"
                 onClick={() =>
-                  serviceOperations(service, {
+                  serviceOperations(null, {
                     action: 'edit',
                     title: 'Serviço adicional',
                   })
                 }
               />
             </div>
-            {request.services.length > 1 ? (
+            {request && request.services.length > 1 ? (
               request.services
                 .slice(1, request.services.length)
                 .map(({ service }, index) => (
@@ -319,13 +350,8 @@ export function RequestDetails() {
                           variant="secondary"
                           onClick={() =>
                             serviceOperations(
-                              {
-                                id: service.id,
-                                title: service.title,
-                                value: service.value.toLocaleString('pt-br', {
-                                  minimumFractionDigits: 2,
-                                }),
-                              },
+                              service.title,
+
                               { action: 'remove', title: 'Remover serviço' }
                             )
                           }
@@ -343,7 +369,7 @@ export function RequestDetails() {
               </p>
             )}
           </div>
-        )} */}
+        )}
       </div>
       <Dialog
         title={currentAction?.title}
@@ -355,47 +381,75 @@ export function RequestDetails() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
       >
-        {/* {currentAction?.action === 'edit' ? (
+        {currentAction?.action === 'edit' ? (
           <div className="grid gap-4">
-            <Input
-              label="Título"
-              id="title"
-              placeholder="Nome do serviço"
-              value={service?.title}
-              onChange={(event) =>
-                setService({
-                  ...service,
-                  title: event.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              label="Valor"
-              id="value"
-              currency
-              placeholder="0,00"
-              value={service.value}
+            <CheckboxSlider
+              text="Serviço novo"
+              checked={newService}
               onChange={(event) => {
-                const value = event.target.value
-                const decimalRegex = /^\d+(\,\d*)?$/
+                setNewService(event.target.checked)
 
-                if (value === '') {
-                  setService({ ...service, value: '' })
+                const select = document.querySelector('select')
+                if (select) {
+                  select.value = ''
                 }
-
-                if (decimalRegex.test(event.target.value)) {
-                  setService({ ...service, value: event.target.value })
+                if (!event.target.checked) {
+                  setServiceId('')
                 }
               }}
-              required
             />
+            {newService ? (
+              <div className="grid gap-4">
+                <Input
+                  label="Título"
+                  name="title"
+                  id="title"
+                  placeholder="Nome do serviço"
+                  required
+                />
+                <Input
+                  label="Valor"
+                  name="value"
+                  id="value"
+                  type="number"
+                  currency
+                  placeholder="0,00"
+                  required
+                />
+              </div>
+            ) : useSelect ? (
+              <div className="grid gap-4">
+                <Select
+                  label="Serviço"
+                  name="service"
+                  placeholder="Indique o serviço a ser adicionado"
+                  options={
+                    services
+                      ?.filter((service) => service.isActive)
+                      .map((service) => {
+                        return { text: service.title, value: service.id }
+                      }) ?? []
+                  }
+                  defaultValue={serviceId}
+                  selectValue={serviceId}
+                  onChange={(event) => setServiceId(event.target.value)}
+                  required
+                />
+              </div>
+            ) : (
+              <>
+                <Autocomplete
+                  items={services?.map((service) => service.title) ?? []}
+                  name="service"
+                />
+              </>
+            )}
           </div>
         ) : currentAction?.action === 'remove' ? (
           <div className="grid gap-5">
             <p>
-              Deseja realmente remover o serviço{' '}
-              <strong>{service?.title}</strong> do chamado de nº {request.id}?
+              Deseja realmente remover o serviço <strong>{serviceName}</strong>{' '}
+              do chamado de nº {request?.id}?
             </p>
 
             <p>
@@ -405,7 +459,7 @@ export function RequestDetails() {
           </div>
         ) : (
           ''
-        )} */}
+        )}
       </Dialog>
     </div>
   )

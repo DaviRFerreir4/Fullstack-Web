@@ -29,7 +29,9 @@ export function RequestList() {
   async function fetchRequests() {
     try {
       const response = await api.get<IndexRequestByUserAPIResponse>(
-        `/users/${session?.user.id}/requests`
+        session?.user.role === 'admin'
+          ? '/requests'
+          : `/users/${session?.user.id}/requests`
       )
 
       setRequests(response.data.requests)
@@ -46,7 +48,6 @@ export function RequestList() {
 
   useEffect(() => {
     fetchRequests()
-    console.log(requests)
   }, [])
 
   return (
@@ -82,13 +83,6 @@ export function RequestList() {
             </tr>
           </thead>
           <tbody>
-            {/* {requests?.map((request) => (
-              <tr>
-                <td>{request.title}</td>
-                <td>{request.id}</td>
-                <td>{request.id}</td>
-              </tr>
-            ))} */}
             {requests &&
               requests.map((request) => (
                 <Request
@@ -112,45 +106,45 @@ export function RequestList() {
             <StatusTag status="opened" />
             {/* <div className="flex gap-4 overflow-auto snap-x snap-mandatory lg:snap-none"> */}
             <div className="flex gap-4 flex-wrap">
-              {/* {userRequests
-                .filter((request) => request.status === 'opened')
+              {requests
+                ?.filter((request) => request.status === 'opened')
                 .map((request) => (
                   <RequestCard
                     request={request}
                     key={request.id}
                     // className="snap-center lg:snap-align-none"
                   />
-                ))} */}
+                ))}
             </div>
           </div>
           <div className="grid gap-4">
             <StatusTag status="in_progress" />
             {/* <div className="flex gap-4 overflow-auto snap-x lg:snap-none"> */}
             <div className="flex gap-4 flex-wrap">
-              {/* {userRequests
-                .filter((request) => request.status === 'in_progress')
+              {requests
+                ?.filter((request) => request.status === 'in_progress')
                 .map((request) => (
                   <RequestCard
                     request={request}
                     key={request.id}
                     // className="snap-center lg:snap-align-none"
                   />
-                ))} */}
+                ))}
             </div>
           </div>
           <div className="grid gap-4">
             <StatusTag status="closed" />
             {/* <div className="flex gap-4 overflow-auto snap-x lg:snap-none"> */}
             <div className="flex gap-4 flex-wrap">
-              {/* {userRequests
-                .filter((request) => request.status === 'closed')
+              {requests
+                ?.filter((request) => request.status === 'closed')
                 .map((request) => (
                   <RequestCard
                     request={request}
                     key={request.id}
                     // className="snap-center lg:snap-align-none"
                   />
-                ))} */}
+                ))}
             </div>
           </div>
         </div>

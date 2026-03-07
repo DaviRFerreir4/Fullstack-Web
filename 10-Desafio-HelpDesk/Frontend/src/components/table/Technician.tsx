@@ -38,6 +38,7 @@ export function Technician({ technicianData, technicianOperations }: Props) {
   )
 
   useEffect(() => {
+    // bom revisar
     if (!containerRef.current) return
 
     const observer = new ResizeObserver(() => {

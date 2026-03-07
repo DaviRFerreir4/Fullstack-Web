@@ -1,3 +1,4 @@
+// bom revisar
 import { useEffect, useState } from 'react'
 
 const mediaQuery = '(width < 1024px)'

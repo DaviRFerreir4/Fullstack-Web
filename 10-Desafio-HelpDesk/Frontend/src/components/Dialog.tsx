@@ -14,12 +14,27 @@ type Props = React.ComponentProps<'dialog'> & {
   open?: boolean
   title?: string
   action?: DialogActions
-  handleAction: () => void
+  handleAction: (() => void) | ((payload: FormData) => void)
   dialogRef: React.RefObject<null | HTMLDialogElement>
   closeDialog: () => void
   backAction?: () => void
   children?: React.ReactNode
   useSamePadding?: boolean
+}
+
+function Wrapper({
+  wrapperType,
+  handleSubmit,
+  children,
+}: {
+  children: React.ReactNode
+  handleSubmit?: (() => void) | ((payload: FormData) => void)
+  wrapperType: 'div' | 'form'
+}) {
+  if (wrapperType === 'form')
+    return <form action={handleSubmit}>{children}</form>
+
+  return <div>{children}</div>
 }
 
 export function Dialog({
@@ -35,7 +50,7 @@ export function Dialog({
   ...rest
 }: Props) {
   let buttonText = ''
-  const Wrapper = ['create', 'edit', 'changePassword'].includes(action)
+  const wrapperType = ['create', 'edit', 'changePassword'].includes(action)
     ? 'form'
     : 'div'
 
@@ -61,7 +76,7 @@ export function Dialog({
       className="py-5 rounded-[0.625rem] w-[min(27.5rem,92%)] m-auto backdrop:bg-black/50 backdrop:backdrop-blur-[2px]"
       {...rest}
     >
-      <Wrapper onSubmit={Wrapper === 'form' ? handleAction : undefined}>
+      <Wrapper wrapperType={wrapperType} handleSubmit={handleAction}>
         <div className="px-7 pb-5 flex justify-between items-center gap-3">
           {action === 'changePassword' && (
             <BackIcon
@@ -115,8 +130,12 @@ export function Dialog({
             )}
             <Button
               text={buttonText}
-              type={Wrapper === 'div' ? 'button' : 'submit'}
-              onClick={Wrapper === 'div' ? handleAction : undefined}
+              type={wrapperType === 'div' ? 'button' : 'submit'}
+              onClick={
+                handleAction.length > 0
+                  ? () => undefined
+                  : (handleAction as () => void)
+              }
             />
           </div>
         </div>

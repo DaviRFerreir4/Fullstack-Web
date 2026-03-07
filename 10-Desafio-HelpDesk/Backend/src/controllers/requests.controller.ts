@@ -23,6 +23,7 @@ export class RequestsController {
           select: {
             id: true,
             name: true,
+            profilePicture: true,
           },
         },
         services: {
@@ -42,6 +43,7 @@ export class RequestsController {
           select: {
             id: true,
             name: true,
+            profilePicture: true,
           },
         },
       },
@@ -111,16 +113,18 @@ export class RequestsController {
             },
           },
         },
+        technician: {
+          select: {
+            id: true,
+            name: true,
+            profilePicture: true,
+          },
+        },
         client: request.user?.role !== 'client' && {
           select: {
             id: true,
             name: true,
-          },
-        },
-        technician: request.user?.role !== 'technician' && {
-          select: {
-            id: true,
-            name: true,
+            profilePicture: true,
           },
         },
       },

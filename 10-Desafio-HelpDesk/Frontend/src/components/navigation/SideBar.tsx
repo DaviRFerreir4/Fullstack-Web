@@ -91,6 +91,7 @@ export function SideBar() {
   }
 
   useEffect(() => {
+    // bom revisar
     const popover = popoverRef.current
     if (!popover) return
 

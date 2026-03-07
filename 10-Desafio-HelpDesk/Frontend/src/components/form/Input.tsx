@@ -31,8 +31,28 @@ export function Input({
           id={id}
           className={`w-full pb-2 border-b border-gray-500 text-gray-200 placeholder:text-gray-400 focus-within:outline-0 focus:border-blue-base hover:border-blue-base disabled:hover:border-gray-500
             ${currency && 'pl-6'}
+            ${type === 'number' && '[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'}
           `}
           type={type === 'password' && showPassword ? 'text' : type}
+          step={type === 'number' ? '.01' : undefined}
+          onChange={
+            type === 'number'
+              ? (event) => {
+                  let value = event.target.value
+
+                  const parts = value.split('.')
+
+                  if (parts[1] && parts[1].length > 2) {
+                    parts[1] = parts[1].slice(0, 2)
+                    value = parts.join('.')
+
+                    console.log(value)
+
+                    event.target.value = value
+                  }
+                }
+              : undefined
+          }
           {...rest}
         />
         {type === 'password' && (

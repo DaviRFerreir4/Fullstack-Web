@@ -21,10 +21,10 @@ const createRequestSchema = z.object({
 })
 
 export function RequestForm() {
+  const [state, formAction, isLoading] = useActionState(createRequest, null)
+
   const [services, setServices] = useState<null | Service[]>(null)
   const [serviceId, setServiceId] = useState('')
-
-  const [state, formAction, isLoading] = useActionState(createRequest, null)
 
   const navigate = useNavigate()
 
@@ -58,6 +58,8 @@ export function RequestForm() {
 
       await api.post('/requests', parsedData)
 
+      setServiceId('')
+
       setCurrentAction({
         action: 'success',
         title: 'Chamado criado com sucesso',
@@ -65,24 +67,16 @@ export function RequestForm() {
       })
 
       setOpenDialog(true)
-
-      setServiceId('')
-
-      const select = document.querySelector('select')
-
-      if (select) {
-        select.value = ''
-      }
     } catch (error: any) {
       if (error instanceof ZodError) {
         const fieldErrors: CreateRequestFormErrors =
           z.flattenError(error).fieldErrors
         const formErrors: string[] = z.flattenError(error).formErrors
 
-        setServiceId(data.serviceId?.toString() ?? '')
-
         return { data, fieldErrors, formErrors }
       }
+
+      setServiceId('')
 
       setCurrentAction({
         action: 'failure',
@@ -105,7 +99,7 @@ export function RequestForm() {
     if (select) {
       select.value = state?.data.serviceId?.toString() ?? ''
     }
-  }, [state?.data.serviceId])
+  }, [state])
 
   return (
     <div className="lg:mx-35.5 grid gap-4 lg:gap-6 text-gray-200">
@@ -173,6 +167,8 @@ export function RequestForm() {
                   : []
               }
               placeholder="Selecione a categoria de atendimento"
+              defaultValue={serviceId}
+              selectValue={serviceId}
               onChange={(event) => setServiceId(event.target.value)}
               error={!!state?.fieldErrors?.serviceId}
               helperText={
@@ -180,7 +176,6 @@ export function RequestForm() {
                   ? state.fieldErrors.serviceId[0]
                   : undefined
               }
-              defaultValue={serviceId}
               required
             />
           </div>

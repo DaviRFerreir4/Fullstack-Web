@@ -12,7 +12,7 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
 
 type Props = {
-  request: Request
+  request: UserRequest
   className?: string
 }
 
@@ -79,10 +79,10 @@ export function RequestCard({ request, className }: Props) {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1.5">
             <ProfilePicture
-              username={request.client.name}
-              profilePicture={request.client.profilePicture}
+              username={request.client?.name ?? ''}
+              profilePicture={request.client?.profilePicture}
             />
-            <span>{request.client.name}</span>
+            <span>{request.client?.name}</span>
           </div>
           <StatusTag status={request.status} includeText={false} />
         </div>
