@@ -2,28 +2,23 @@ import { useEffect, useState } from 'react'
 import { Input } from './Input'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
-type Props = {
+type Props = React.ComponentProps<'input'> & {
+  label: string
   items: string[]
-  name?: string
   selectedItem?: string
   setSelectedItem?: (value: string) => void
 }
 
 export function Autocomplete({
+  label,
   items,
-  name,
   selectedItem,
   setSelectedItem,
+  onChange,
+  ...rest
 }: Props) {
   // bom revisar
   const [internalSelectedItem, setInternalSelectedItem] = useState('')
-
-  const ref = useClickOutside(() => {
-    setOpenAutocomplete(false)
-    if (!items.includes(selectedItem ?? internalSelectedItem)) {
-      setError('Esse item não é uma opção')
-    }
-  })
 
   const [itemsShown, setItemsShown] = useState<string[]>()
 
@@ -31,20 +26,33 @@ export function Autocomplete({
 
   const [error, setError] = useState('')
 
+  const ref = useClickOutside(() => {
+    setOpenAutocomplete(false)
+    if (
+      selectedItem !== '' &&
+      !items.includes(selectedItem ?? internalSelectedItem)
+    ) {
+      setError('Esse item não é uma opção')
+    }
+  }, openAutocomplete) as React.RefObject<HTMLInputElement>
+
   useEffect(() => {
     const search = setTimeout(() => {
-      setItemsShown(
-        items
-          .filter((item) =>
-            item
-              .toLowerCase()
-              .includes(
-                selectedItem?.toLowerCase() ??
-                  internalSelectedItem.toLowerCase()
-              )
-          )
-          .slice(0, 5)
-      )
+      const itemsToShow = items
+        .filter((item) =>
+          item
+            .toLowerCase()
+            .includes(
+              selectedItem?.toLowerCase() ?? internalSelectedItem.toLowerCase()
+            )
+        )
+        .slice(0, 5)
+
+      if (itemsToShow.length === 0) {
+        itemsToShow.push('Nenhum item encontrado')
+      }
+
+      setItemsShown(itemsToShow)
     }, 400)
 
     return () => clearTimeout(search)
@@ -53,7 +61,7 @@ export function Autocomplete({
   return (
     <div ref={ref as React.Ref<HTMLDivElement>}>
       <Input
-        label="Serviço"
+        label={label}
         value={selectedItem ?? internalSelectedItem}
         onChange={(event) => {
           if (setSelectedItem) {
@@ -61,26 +69,31 @@ export function Autocomplete({
           } else {
             setInternalSelectedItem(event.target.value)
           }
+          if (onChange) {
+            onChange(event)
+          }
         }}
         onFocus={() => {
           setOpenAutocomplete(true)
           setError('')
         }}
-        error={error !== ''}
+        error={error !== '' && selectedItem !== ''}
         helperText={error}
-        name={name}
-        id={name}
+        {...rest}
       />
       <ul
-        className={`bg-gray-500 border border-gray-400 rounded-b-sm absolute max-h-24 w-[calc(100%-56px)] overflow-auto
+        className={`bg-gray-500 border border-gray-400 rounded-b-sm absolute z-10 max-h-24 w-[calc(100%-56px)] overflow-auto
         ${openAutocomplete ? 'block' : 'hidden'}`}
       >
         {itemsShown &&
           itemsShown.map((item, index) => (
             <li
               key={index}
-              className="border-x-4 border-y-2 border-transparent hover:bg-gray-400 transition-colors"
+              className={`border-x-4 border-y-2 border-transparent
+                ${item === 'Nenhum item encontrado' ? 'opacity-50 cursor-default' : 'hover:bg-gray-400 transition-colors'}`}
               onClick={() => {
+                if (item === 'Nenhum item encontrado') return
+
                 if (setSelectedItem) {
                   setSelectedItem(item)
                 } else {

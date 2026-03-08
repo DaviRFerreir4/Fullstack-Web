@@ -18,8 +18,9 @@ type Props = React.ComponentProps<'dialog'> & {
   dialogRef: React.RefObject<null | HTMLDialogElement>
   closeDialog: () => void
   backAction?: () => void
-  children?: React.ReactNode
   useSamePadding?: boolean
+  isFormLoading?: boolean
+  children?: React.ReactNode
 }
 
 function Wrapper({
@@ -45,6 +46,7 @@ export function Dialog({
   dialogRef,
   closeDialog,
   backAction,
+  isFormLoading,
   children,
   useSamePadding = true,
   ...rest
@@ -131,6 +133,7 @@ export function Dialog({
             <Button
               text={buttonText}
               type={wrapperType === 'div' ? 'button' : 'submit'}
+              disabled={isFormLoading}
               onClick={
                 handleAction.length > 0
                   ? () => undefined

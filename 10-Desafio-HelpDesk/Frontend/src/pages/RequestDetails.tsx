@@ -25,6 +25,7 @@ import { api } from '../services/api'
 import { CheckboxSlider } from '../components/form/CheckboxSlider'
 import { Select } from '../components/form/Select'
 import { Autocomplete } from '../components/form/Autocomplete'
+import z, { ZodError } from 'zod'
 
 interface IServiceActions {
   action: 'edit' | 'remove'
@@ -33,14 +34,34 @@ interface IServiceActions {
 
 const useSelect = false
 
+const addServiceSchema = z.object({
+  title: z
+    .string({ error: 'Informe o título' })
+    .min(8, { error: 'O título deve conter ao menos 8 digitos' })
+    .nullable(),
+  value: z.coerce
+    .number({ error: 'Valor inválido' })
+    .gt(0, { error: 'O valor deve ser maior que 0' })
+    .nullable(),
+  service: z.uuid({ error: 'Informe um serviço válido' }).nullable(),
+  serviceName: z.string({ error: 'Informe o serviço' }).nullable(),
+})
+
 export function RequestDetails() {
   const { session } = useAuth()
 
   if (!session) return
 
-  const [newService, setNewService] = useState(false)
+  const [formAddState, formAddAction, formAddIsLoading] = useActionState(
+    addService,
+    null
+  )
+
+  const [isNewService, setIsNewService] = useState(false)
 
   const [serviceName, setServiceName] = useState('')
+
+  const [serviceValue, setServiceValue] = useState('')
 
   const [services, setServices] = useState<null | Service[]>(null)
 
@@ -65,16 +86,23 @@ export function RequestDetails() {
 
   const id = params.id
 
-  const [formAddState, formAddAction, formAddIsLoading] = useActionState(
-    addService,
-    null
-  )
-
   if (!id) return navigate('/requests')
 
   // request.services.sort((a, b) => {
   //   return dayjs(a.createdAt).diff(dayjs(b.createdAt))
   // })
+
+  function clearFields() {
+    if (!isNewService) {
+      setServiceId('')
+    }
+    if (serviceName !== '') {
+      setServiceName('')
+    }
+    if (serviceValue !== '') {
+      setServiceValue('')
+    }
+  }
 
   async function fetchRequest() {
     try {
@@ -94,21 +122,61 @@ export function RequestDetails() {
     }
   }
 
-  function addService(_: any, formData: FormData) {
-    console.log(formData.get('title'))
-    console.log(formData.get('value'))
-    console.log(formData.get('service'))
+  async function addService(_: any, formData: FormData) {
+    const data = {
+      title: formData.get('title'),
+      value: formData.get('value'),
+      service: formData.get('service'),
+      serviceName: formData.get('serviceName'),
+    }
 
-    setCurrentAction({
-      action: 'success',
-      title: 'Serviço adicionado com sucesso!',
-      handleAction: handleCloseDialog,
-    })
-    // setCurrentAction({
-    //   action: 'failure',
-    //   title: 'Erro ao adicionar o serviço ao chamado',
-    //   handleAction: handleCloseDialog,
-    // })
+    try {
+      const { title, value, service, serviceName } =
+        addServiceSchema.parse(data)
+
+      if (title && value) {
+        console.log(title, value)
+      } else if (service) {
+        console.log(service)
+      } else if (serviceName) {
+        console.log(serviceName)
+        if (!services?.map((service) => service.title).includes(serviceName)) {
+          return { data }
+        }
+      } else {
+        throw new Error('Nenhum campo informado')
+      }
+
+      setCurrentAction({
+        action: 'success',
+        title: 'Serviço adicionado com sucesso!',
+        handleAction: handleCloseDialog,
+      })
+
+      clearFields()
+    } catch (error: any) {
+      if (error instanceof ZodError) {
+        const fieldErrors: AddServiceFormErrors =
+          z.flattenError(error).fieldErrors
+        const formErrors: string[] = z.flattenError(error).formErrors
+
+        console.log({ data, fieldErrors, formErrors })
+
+        return { data, fieldErrors, formErrors }
+      }
+
+      clearFields()
+
+      setCurrentAction({
+        action: 'failure',
+        title: 'Erro ao adicionar o serviço ao chamado',
+        handleAction: handleCloseDialog,
+      })
+
+      return { data }
+    }
+
+    return {}
   }
 
   function removeService() {
@@ -122,6 +190,8 @@ export function RequestDetails() {
       title: 'Erro ao remover o serviço do chamado',
       handleAction: handleCloseDialog,
     })
+
+    clearFields()
   }
 
   async function serviceOperations(
@@ -151,6 +221,29 @@ export function RequestDetails() {
   useEffect(() => {
     fetchRequest()
   }, [])
+
+  useEffect(() => {
+    const matchedService = services?.find(
+      (service) => service.title === serviceName
+    )
+
+    if (matchedService) {
+      setServiceValue(matchedService.value.toString())
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setServiceValue('')
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [serviceName])
+
+  useEffect(() => {
+    if (!openDialog) {
+      clearFields()
+    }
+  }, [openDialog])
 
   return (
     <div className="lg:mx-35.5 grid gap-4 lg:gap-6 text-gray-200">
@@ -380,40 +473,60 @@ export function RequestDetails() {
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
+        isFormLoading={formAddIsLoading}
       >
         {currentAction?.action === 'edit' ? (
           <div className="grid gap-4">
             <CheckboxSlider
               text="Serviço novo"
-              checked={newService}
+              defaultChecked={isNewService}
               onChange={(event) => {
-                setNewService(event.target.checked)
-
-                const select = document.querySelector('select')
-                if (select) {
-                  select.value = ''
-                }
-                if (!event.target.checked) {
-                  setServiceId('')
-                }
+                setIsNewService(event.target.checked)
+                delete formAddState?.data
+                delete formAddState?.fieldErrors
+                delete formAddState?.formErrors
+                clearFields()
               }}
             />
-            {newService ? (
+            {isNewService ? (
               <div className="grid gap-4">
                 <Input
                   label="Título"
                   name="title"
                   id="title"
                   placeholder="Nome do serviço"
+                  error={!!formAddState?.fieldErrors?.title}
+                  helperText={
+                    formAddState?.fieldErrors?.title
+                      ? formAddState?.fieldErrors?.title[0]
+                      : undefined
+                  }
+                  defaultValue={
+                    formAddState?.data?.title
+                      ? formAddState?.data.title?.toString()
+                      : ''
+                  }
                   required
                 />
                 <Input
+                  key="key-new"
                   label="Valor"
                   name="value"
                   id="value"
                   type="number"
                   currency
                   placeholder="0,00"
+                  error={!!formAddState?.fieldErrors?.value}
+                  helperText={
+                    formAddState?.fieldErrors?.value
+                      ? formAddState?.fieldErrors?.value[0]
+                      : undefined
+                  }
+                  defaultValue={
+                    formAddState?.data?.value
+                      ? formAddState?.data.value?.toString()
+                      : ''
+                  }
                   required
                 />
               </div>
@@ -437,12 +550,29 @@ export function RequestDetails() {
                 />
               </div>
             ) : (
-              <>
+              <div className="grid gap-4">
                 <Autocomplete
+                  label="Serviços"
+                  placeholder="Pesquise o serviço"
                   items={services?.map((service) => service.title) ?? []}
-                  name="service"
+                  selectedItem={serviceName}
+                  setSelectedItem={setServiceName}
+                  name="serviceName"
+                  id="serviceName"
+                  autoComplete="off"
+                  required
                 />
-              </>
+                <Input
+                  key="key-existing"
+                  label="Valor"
+                  type="number"
+                  currency
+                  placeholder="0,00"
+                  required
+                  disabled
+                  value={serviceValue}
+                />
+              </div>
             )}
           </div>
         ) : currentAction?.action === 'remove' ? (
