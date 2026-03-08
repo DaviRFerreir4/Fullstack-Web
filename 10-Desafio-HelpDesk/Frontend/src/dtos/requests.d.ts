@@ -11,7 +11,7 @@ interface UserRequest {
   client?: Omit<User, 'password'>
   services: {
     createdAt: string
-    service: Service
+    service: Omit<Service, 'createdAt' | 'updatedAt'>
   }[]
 }
 

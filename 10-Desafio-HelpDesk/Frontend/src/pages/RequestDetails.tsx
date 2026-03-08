@@ -26,6 +26,7 @@ import { CheckboxSlider } from '../components/form/CheckboxSlider'
 import { Select } from '../components/form/Select'
 import { Autocomplete } from '../components/form/Autocomplete'
 import z, { ZodError } from 'zod'
+import { AxiosError } from 'axios'
 
 interface IServiceActions {
   action: 'edit' | 'remove'
@@ -88,10 +89,6 @@ export function RequestDetails() {
 
   if (!id) return navigate('/requests')
 
-  // request.services.sort((a, b) => {
-  //   return dayjs(a.createdAt).diff(dayjs(b.createdAt))
-  // })
-
   function clearFields() {
     if (!isNewService) {
       setServiceId('')
@@ -139,9 +136,30 @@ export function RequestDetails() {
       } else if (service) {
         console.log(service)
       } else if (serviceName) {
-        console.log(serviceName)
-        if (!services?.map((service) => service.title).includes(serviceName)) {
+        const serviceData = services?.filter(
+          (service) => service.title === serviceName
+        )[0]
+
+        if (!serviceData) {
           return { data }
+        }
+
+        const newServiceData = {
+          createdAt: serviceData.createdAt,
+          service: {
+            id: serviceData.id,
+            isActive: serviceData.isActive,
+            title: serviceData.title,
+            value: serviceData.value,
+          },
+        }
+
+        const response = await api.post(`/requests/${request?.id}`, {
+          serviceId: serviceData.id,
+        })
+
+        if (response.status === 201) {
+          request?.services.push(newServiceData)
         }
       } else {
         throw new Error('Nenhum campo informado')
@@ -160,16 +178,20 @@ export function RequestDetails() {
           z.flattenError(error).fieldErrors
         const formErrors: string[] = z.flattenError(error).formErrors
 
-        console.log({ data, fieldErrors, formErrors })
-
         return { data, fieldErrors, formErrors }
+      }
+
+      let message = 'Erro ao adicionar o serviço ao chamado'
+
+      if (error instanceof AxiosError) {
+        message = error.response?.data.message
       }
 
       clearFields()
 
       setCurrentAction({
         action: 'failure',
-        title: 'Erro ao adicionar o serviço ao chamado',
+        title: message,
         handleAction: handleCloseDialog,
       })
 
