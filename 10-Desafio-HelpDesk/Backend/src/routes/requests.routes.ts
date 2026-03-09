@@ -18,6 +18,16 @@ requestsRoutes.post(
   requestsController.create
 )
 requestsRoutes.post(
+  '/:id/service',
+  verifyUserAuthorization(['technician']),
+  requestsController.createRequestService
+)
+requestsRoutes.patch(
+  '/:id/service',
+  verifyUserAuthorization(['technician']),
+  requestsController.removeRequestService
+)
+requestsRoutes.post(
   '/:id',
   verifyUserAuthorization(['technician']),
   requestsController.createRequestService
@@ -25,7 +35,7 @@ requestsRoutes.post(
 requestsRoutes.patch(
   '/:id/status',
   verifyUserAuthorization(['technician']),
-  requestsController.patch
+  requestsController.patchStatus
 )
 
 export { requestsRoutes }

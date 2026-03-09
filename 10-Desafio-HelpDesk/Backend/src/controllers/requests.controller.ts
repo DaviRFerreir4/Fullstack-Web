@@ -311,7 +311,89 @@ export class RequestsController {
     return response.status(201).json({ ...userRequest })
   }
 
-  async patch(request: Request, response: Response) {
+  async removeRequestService(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.coerce.number({ error: 'Informe um chamado existente' }).min(1),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const clientRequest = await prisma.request.findUnique({ where: { id } })
+
+    if (!clientRequest) {
+      throw new AppError('Chamado não encontrado')
+    }
+
+    if (!request.user || clientRequest.assignedTo !== request.user.id) {
+      throw new AppError(
+        'Você não é o técnico responsável por esse chamado',
+        401
+      )
+    }
+
+    const bodySchema = z.object({
+      serviceId: z.uuid({ error: 'Informe um serviço válido' }),
+    })
+
+    const { serviceId } = bodySchema.parse(request.body)
+
+    const service = await prisma.service.findUnique({
+      where: { id: serviceId },
+    })
+
+    if (!service) {
+      throw new AppError('O serviço informado não existe')
+    }
+
+    const requestServiceDoesntExists = await prisma.requestService.findFirst({
+      where: { requestId: id, serviceId },
+    })
+
+    if (!requestServiceDoesntExists) {
+      throw new AppError(
+        'Esse serviço não pode ser removido porque ele não faz parte do chamado'
+      )
+    }
+
+    await prisma.requestService.delete({
+      where: { id: requestServiceDoesntExists.id },
+    })
+
+    const userRequest = await prisma.request.findUnique({
+      where: { id },
+      omit: { requestedBy: true, assignedTo: true },
+      include: {
+        services: {
+          select: {
+            service: {
+              select: {
+                id: true,
+                title: true,
+                value: true,
+                isActive: true,
+              },
+            },
+          },
+        },
+        client: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        technician: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    })
+
+    return response.status(200).json({ ...userRequest })
+  }
+
+  async patchStatus(request: Request, response: Response) {
     const paramsSchema = z.object({
       id: z.coerce.number({ error: 'Informe um chamado existente' }).min(1),
     })

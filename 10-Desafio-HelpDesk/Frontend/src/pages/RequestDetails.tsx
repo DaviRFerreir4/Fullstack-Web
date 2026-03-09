@@ -58,6 +58,8 @@ export function RequestDetails() {
     null
   )
 
+  const [isRmvServiceLoading, setIsRmvServiceLoading] = useState(false)
+
   const [isNewService, setIsNewService] = useState(false)
 
   const [serviceName, setServiceName] = useState('')
@@ -154,7 +156,7 @@ export function RequestDetails() {
           },
         }
 
-        const response = await api.post(`/requests/${request?.id}`, {
+        const response = await api.post(`/requests/${request?.id}/service`, {
           serviceId: serviceData.id,
         })
 
@@ -201,41 +203,80 @@ export function RequestDetails() {
     return {}
   }
 
-  function removeService() {
-    // setCurrentAction({
-    //   action: 'success',
-    //   title: 'Serviço removido do chamado com sucesso!',
-    //   handleAction: handleCloseDialog,
-    // })
-    setCurrentAction({
-      action: 'failure',
-      title: 'Erro ao remover o serviço do chamado',
-      handleAction: handleCloseDialog,
-    })
+  async function removeService(
+    service: Omit<Service, 'createdAt' | 'updatedAt'>
+  ) {
+    setIsRmvServiceLoading(true)
+    try {
+      const response = await api.patch(`/requests/${request?.id}/service`, {
+        serviceId: service.id,
+      })
 
-    clearFields()
+      if (response.status === 200 && request) {
+        const updatedServices = [...request.services]
+
+        updatedServices.splice(
+          updatedServices.findIndex(
+            (serviceInfo) => serviceInfo.service.title === service?.title
+          ),
+          1
+        )
+
+        setRequest({
+          ...request,
+          services: updatedServices,
+        })
+      }
+
+      setCurrentAction({
+        action: 'success',
+        title: 'Serviço removido do chamado com sucesso!',
+        handleAction: handleCloseDialog,
+      })
+    } catch (error: any) {
+      console.log(error)
+
+      let message = 'Erro ao remover o serviço do chamado'
+
+      if (error instanceof AxiosError) {
+        message = error.response?.data.message
+      }
+
+      setCurrentAction({
+        action: 'failure',
+        title: message,
+        handleAction: handleCloseDialog,
+      })
+    } finally {
+      clearFields()
+      setIsRmvServiceLoading(false)
+    }
   }
 
   async function serviceOperations(
-    service: string | null,
+    service: Omit<Service, 'createdAt' | 'updatedAt'> | null,
     serviceAction: IServiceActions
   ) {
-    setCurrentAction({
-      action: serviceAction.action,
-      title: serviceAction.title,
-      handleAction:
-        serviceAction.action === 'edit' ? formAddAction : removeService,
-    })
-
-    if (serviceAction.action === 'remove') {
-      setServiceName(service ?? '')
-    }
-
     if (serviceAction.action === 'edit') {
       const response = await api.get<{ services: Service[] }>('/services')
 
       setServices(response.data.services)
     }
+
+    if (serviceAction.action === 'remove') {
+      setServiceName(service?.title ?? '')
+    }
+
+    setCurrentAction({
+      action: serviceAction.action,
+      title: serviceAction.title,
+      handleAction:
+        serviceAction.action === 'edit'
+          ? formAddAction
+          : service
+            ? () => removeService(service)
+            : () => {},
+    })
 
     setOpenDialog(true)
   }
@@ -464,11 +505,10 @@ export function RequestDetails() {
                           size="sm"
                           variant="secondary"
                           onClick={() =>
-                            serviceOperations(
-                              service.title,
-
-                              { action: 'remove', title: 'Remover serviço' }
-                            )
+                            serviceOperations(service, {
+                              action: 'remove',
+                              title: 'Remover serviço',
+                            })
                           }
                         />
                       </div>
@@ -495,7 +535,11 @@ export function RequestDetails() {
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
-        isFormLoading={formAddIsLoading}
+        isFormLoading={
+          currentAction?.action === 'edit'
+            ? formAddIsLoading
+            : isRmvServiceLoading
+        }
       >
         {currentAction?.action === 'edit' ? (
           <div className="grid gap-4">
