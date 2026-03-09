@@ -406,7 +406,11 @@ export class RequestsController {
       throw new AppError('Chamado não encontrado')
     }
 
-    if (!request.user || clientRequest.assignedTo !== request.user.id) {
+    if (
+      !request.user ||
+      (clientRequest.assignedTo !== request.user.id &&
+        request.user.role !== 'admin')
+    ) {
       throw new AppError(
         'Você não é o técnico responsável por esse chamado',
         401

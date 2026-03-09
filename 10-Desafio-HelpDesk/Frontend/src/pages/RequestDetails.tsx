@@ -5,6 +5,8 @@ import ClockIcon from '../assets/icons/clock.svg?react'
 // @ts-expect-error TS2307
 import DoneIcon from '../assets/icons/circle-check-big.svg?react'
 // @ts-expect-error TS2307
+import EditIcon from '../assets/icons/pen-line.svg?react'
+// @ts-expect-error TS2307
 import AddIcon from '../assets/icons/plus.svg?react'
 // @ts-expect-error TS2307
 import RemoveIcon from '../assets/icons/trash.svg?react'
@@ -141,6 +143,43 @@ export function RequestDetails() {
       setServices(servicesFound.length > 0 ? servicesFound : null)
     } catch (error: any) {
       console.log(error)
+    }
+  }
+
+  async function changeRequestStatus(data: Pick<UserRequest, 'status'>) {
+    try {
+      const response = await api.patch(`/requests/${request?.id}/status`, data)
+
+      console.log(response)
+
+      if (response.status === 200) {
+        setRequest((prev) => ({
+          ...(prev as Omit<UserRequest, 'requestedBy' | 'assignedTo'>),
+          status: data.status,
+        }))
+
+        setCurrentAction({
+          action: 'success',
+          title: 'Status do chamado alterado com sucesso!',
+          handleAction: handleCloseDialog,
+        })
+
+        setOpenDialog(true)
+      }
+    } catch (error: any) {
+      let message = 'Não foi possível alterar o status do chamado'
+
+      if (error instanceof AxiosError) {
+        message = error.response?.data.message
+      }
+
+      setCurrentAction({
+        action: 'failure',
+        title: message,
+        handleAction: handleCloseDialog,
+      })
+
+      setOpenDialog(true)
     }
   }
 
@@ -345,35 +384,49 @@ export function RequestDetails() {
           </h1>
         </div>
         {session.user.role !== 'client' && (
-          <div className="flex gap-2">
-            {session.user.role === 'admin' &&
-              !['in_progress', 'closed'].includes(request?.status ?? '') && (
-                <Button
-                  Icon={ClockIcon}
-                  text="Em atendimento"
-                  variant="secondary"
-                  size="custom"
-                  className="w-full lg:w-auto lg:px-4 py-2.5 whitespace-nowrap"
-                />
-              )}
-            {request?.status !== 'closed' && (
+          <div className={`flex flex-col lg:flex-row gap-2`}>
+            <div
+              className={`flex gap-2 ${session.user.role === 'admin' ? 'flex-row' : 'flex-row-reverse'} lg:contents`}
+            >
+              <Button
+                Icon={ClockIcon}
+                text={
+                  session.user.role === 'admin'
+                    ? 'Em atendimento'
+                    : 'Iniciar atendimento'
+                }
+                variant={
+                  session.user.role === 'admin' ? 'secondary' : 'primary'
+                }
+                size="custom"
+                className={
+                  session.user.role === 'admin'
+                    ? 'w-full lg:w-auto lg:px-4 py-2.5 whitespace-nowrap'
+                    : 'w-full lg:w-auto lg:px-4 py-2.5'
+                }
+                onClick={() => changeRequestStatus({ status: 'in_progress' })}
+                disabled={request?.status === 'in_progress'}
+              />
+
               <Button
                 Icon={DoneIcon}
                 text={session.user.role === 'admin' ? 'Encerrado' : 'Encerrar'}
                 variant="secondary"
                 size="custom"
                 className="w-full lg:w-auto lg:px-4 py-2.5"
+                onClick={() => changeRequestStatus({ status: 'closed' })}
+                disabled={request?.status === 'closed'}
+              />
+            </div>
+            {session.user.role === 'admin' && request?.status === 'closed' && (
+              <Button
+                Icon={EditIcon}
+                text="Reabrir o chamado"
+                size="custom"
+                onClick={() => changeRequestStatus({ status: 'opened' })}
+                className="w-full lg:w-auto lg:px-4 py-2.5"
               />
             )}
-            {session.user.role === 'technician' &&
-              request?.status === 'opened' && (
-                <Button
-                  Icon={ClockIcon}
-                  text="Iniciar atendimento"
-                  size="custom"
-                  className="w-full lg:w-auto lg:px-4 py-2.5"
-                />
-              )}
           </div>
         )}
       </div>

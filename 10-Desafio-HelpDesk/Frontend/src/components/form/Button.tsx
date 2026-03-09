@@ -6,12 +6,15 @@ type Props = React.ComponentProps<'button'> & {
   size?: keyof typeof sizes | 'custom'
   Icon?: ComponentType<{ className?: string }>
   iconColor?: string
+  isLoading?: boolean
 }
 
 const variants = {
-  primary: 'bg-gray-200 text-gray-600 hover:bg-gray-100',
-  secondary: 'bg-gray-500 text-gray-200 hover:bg-gray-400 hover:text-gray-100',
-  link: 'bg-transparent text-gray-100 hover:bg-gray-500',
+  primary:
+    'bg-gray-200 disabled:hover:bg-gray-200 text-gray-600 hover:bg-gray-100',
+  secondary:
+    'bg-gray-500 disabled:hover:bg-gray-500 text-gray-200 disabled:hover:text-gray-200 hover:bg-gray-400 hover:text-gray-100',
+  link: 'bg-transparent disabled:hover:bg-transparent text-gray-100 hover:bg-gray-500',
 }
 
 const sizes = {
@@ -27,14 +30,16 @@ export function Button({
   Icon,
   iconColor,
   className,
+  isLoading,
   ...rest
 }: Props) {
   return (
     <button
-      className={`rounded-md flex justify-center items-center gap-2 text-sm font-bold transition disabled:opacity-75 disabled:cursor-progress
+      className={`rounded-md flex justify-center items-center gap-2 text-sm font-bold transition disabled:opacity-75
         ${variants[variant]}
         ${size === 'custom' ? className : sizes[size]}
         ${!Icon && 'w-full'}
+        ${isLoading && 'disabled:cursor-progress'}
       `}
       {...rest}
     >

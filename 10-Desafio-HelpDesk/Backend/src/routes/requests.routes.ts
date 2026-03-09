@@ -34,7 +34,7 @@ requestsRoutes.post(
 )
 requestsRoutes.patch(
   '/:id/status',
-  verifyUserAuthorization(['technician']),
+  verifyUserAuthorization(['technician', 'admin']),
   requestsController.patchStatus
 )
 
