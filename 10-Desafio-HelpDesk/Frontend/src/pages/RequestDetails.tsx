@@ -121,6 +121,23 @@ export function RequestDetails() {
     }
   }
 
+  async function fetchServices(query?: string) {
+    try {
+      const response = await api.get<{ services: Service[] }>('/services', {
+        params: {
+          title: query,
+          perPage: 5,
+        },
+      })
+
+      const servicesFound = response.data.services
+
+      setServices(servicesFound.length > 0 ? servicesFound : null)
+    } catch (error: any) {
+      console.log(error)
+    }
+  }
+
   async function addService(_: any, formData: FormData) {
     const data = {
       title: formData.get('title'),
@@ -258,9 +275,7 @@ export function RequestDetails() {
     serviceAction: IServiceActions
   ) {
     if (serviceAction.action === 'edit') {
-      const response = await api.get<{ services: Service[] }>('/services')
-
-      setServices(response.data.services)
+      await fetchServices()
     }
 
     if (serviceAction.action === 'remove') {
@@ -620,13 +635,19 @@ export function RequestDetails() {
                 <Autocomplete
                   label="Serviços"
                   placeholder="Pesquise o serviço"
-                  items={services?.map((service) => service.title) ?? []}
+                  items={
+                    services?.map((service) => ({
+                      title: service.title,
+                      value: service.id,
+                    })) ?? [{ title: 'Nenhum item encontrado', value: '' }]
+                  }
                   selectedItem={serviceName}
                   setSelectedItem={setServiceName}
                   name="serviceName"
                   id="serviceName"
                   autoComplete="off"
                   required
+                  updateItems={fetchServices}
                 />
                 <Input
                   key="key-existing"

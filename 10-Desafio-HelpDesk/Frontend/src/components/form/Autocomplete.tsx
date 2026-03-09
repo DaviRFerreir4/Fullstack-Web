@@ -4,9 +4,10 @@ import { useClickOutside } from '../../hooks/useClickOutside'
 
 type Props = React.ComponentProps<'input'> & {
   label: string
-  items: string[]
+  items: { title: string; value: string }[]
   selectedItem?: string
   setSelectedItem?: (value: string) => void
+  updateItems: (value?: string) => Promise<void>
 }
 
 export function Autocomplete({
@@ -14,13 +15,12 @@ export function Autocomplete({
   items,
   selectedItem,
   setSelectedItem,
+  updateItems,
   onChange,
   ...rest
 }: Props) {
   // bom revisar
   const [internalSelectedItem, setInternalSelectedItem] = useState('')
-
-  const [itemsShown, setItemsShown] = useState<string[]>()
 
   const [openAutocomplete, setOpenAutocomplete] = useState(false)
 
@@ -28,35 +28,21 @@ export function Autocomplete({
 
   const ref = useClickOutside(() => {
     setOpenAutocomplete(false)
-    if (
-      selectedItem !== '' &&
-      !items.includes(selectedItem ?? internalSelectedItem)
-    ) {
+    const value = selectedItem ?? internalSelectedItem
+    if (value !== '' && !items.map((item) => item.title).includes(value)) {
       setError('Esse item não é uma opção')
     }
   }, openAutocomplete) as React.RefObject<HTMLInputElement>
 
   useEffect(() => {
     const search = setTimeout(() => {
-      const itemsToShow = items
-        .filter((item) =>
-          item
-            .toLowerCase()
-            .includes(
-              selectedItem?.toLowerCase() ?? internalSelectedItem.toLowerCase()
-            )
-        )
-        .slice(0, 5)
+      const value = selectedItem ?? internalSelectedItem
 
-      if (itemsToShow.length === 0) {
-        itemsToShow.push('Nenhum item encontrado')
-      }
-
-      setItemsShown(itemsToShow)
+      updateItems(value)
     }, 400)
 
     return () => clearTimeout(search)
-  }, [selectedItem, internalSelectedItem, items])
+  }, [selectedItem, internalSelectedItem])
 
   return (
     <div ref={ref as React.Ref<HTMLDivElement>}>
@@ -78,33 +64,32 @@ export function Autocomplete({
           setError('')
         }}
         error={error !== '' && selectedItem !== ''}
-        helperText={error}
+        helperText={selectedItem !== '' ? error : undefined}
         {...rest}
       />
       <ul
         className={`bg-gray-500 border border-gray-400 rounded-b-sm absolute z-10 max-h-24 w-[calc(100%-56px)] overflow-auto
         ${openAutocomplete ? 'block' : 'hidden'}`}
       >
-        {itemsShown &&
-          itemsShown.map((item, index) => (
-            <li
-              key={index}
-              className={`border-x-4 border-y-2 border-transparent
-                ${item === 'Nenhum item encontrado' ? 'opacity-50 cursor-default' : 'hover:bg-gray-400 transition-colors'}`}
-              onClick={() => {
-                if (item === 'Nenhum item encontrado') return
+        {items.map((item, index) => (
+          <li
+            key={index}
+            className={`border-x-4 border-y-2 border-transparent
+                ${item.title === 'Nenhum item encontrado' ? 'opacity-50 cursor-default' : 'hover:bg-gray-400 transition-colors'}`}
+            onClick={() => {
+              if (item.title === 'Nenhum item encontrado') return
 
-                if (setSelectedItem) {
-                  setSelectedItem(item)
-                } else {
-                  setInternalSelectedItem(item)
-                }
-                setOpenAutocomplete(false)
-              }}
-            >
-              {item}
-            </li>
-          ))}
+              if (setSelectedItem) {
+                setSelectedItem(item.title)
+              } else {
+                setInternalSelectedItem(item.title)
+              }
+              setOpenAutocomplete(false)
+            }}
+          >
+            {item.title}
+          </li>
+        ))}
       </ul>
     </div>
   )
