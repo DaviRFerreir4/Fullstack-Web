@@ -11,13 +11,13 @@ export class ServicesController {
       isActive: z.coerce.boolean().optional(),
       gt: z.coerce.number().optional(),
       lt: z.coerce.number().optional(),
+      idsToIgnore: z.array(z.uuid()).optional(),
       page: z.coerce.number().default(1),
       perPage: z.coerce.number().default(10),
     })
 
-    const { title, isActive, gt, lt, page, perPage } = querySchema.parse(
-      request.query
-    )
+    const { title, isActive, gt, lt, idsToIgnore, page, perPage } =
+      querySchema.parse(request.query)
 
     const skip = (page - 1) * perPage
 
@@ -27,6 +27,7 @@ export class ServicesController {
         title: { contains: title, mode: 'insensitive' },
         isActive: { equals: isActive },
         value: { gt, lt },
+        id: { notIn: idsToIgnore },
       },
     })
 

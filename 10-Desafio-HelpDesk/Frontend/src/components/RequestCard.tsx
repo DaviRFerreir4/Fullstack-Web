@@ -7,7 +7,6 @@ import { Button } from './form/Button'
 import { ProfilePicture } from './ProfilePicture'
 import { StatusTag } from './StatusTag'
 
-import { type Request } from '../data/requests'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
 

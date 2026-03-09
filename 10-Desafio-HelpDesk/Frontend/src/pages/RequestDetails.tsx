@@ -123,10 +123,16 @@ export function RequestDetails() {
 
   async function fetchServices(query?: string) {
     try {
+      const idsToIgnore = request?.services.map(
+        (serviceInfo) => serviceInfo.service.id
+      )
+
       const response = await api.get<{ services: Service[] }>('/services', {
         params: {
           title: query,
           perPage: 5,
+          idsToIgnore,
+          isActive: true,
         },
       })
 

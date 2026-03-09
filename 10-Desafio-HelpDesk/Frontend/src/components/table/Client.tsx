@@ -5,7 +5,6 @@ import TrashIcon from '../../assets/icons/trash.svg?react'
 
 import { ProfilePicture } from '../ProfilePicture'
 import { Button } from '../form/Button'
-import { type User } from '../../data/users.ts'
 
 export type IClient = Pick<User, 'id' | 'name' | 'email' | 'profilePicture'>
 
