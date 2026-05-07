@@ -29,6 +29,9 @@ import { Select } from '../components/form/Select'
 import { Autocomplete } from '../components/form/Autocomplete'
 import z, { ZodError } from 'zod'
 import { AxiosError } from 'axios'
+import type { Service } from '../dtos/services'
+import type { UserRequest } from '../dtos/requests'
+import type { AddServiceFormErrors } from '../types/forms'
 
 interface IServiceActions {
   action: 'edit' | 'remove'
@@ -79,6 +82,7 @@ export function RequestDetails() {
 
   const navigate = useNavigate()
   const params = useParams()
+  const id = params.id
 
   const {
     dialogRef,
@@ -88,10 +92,6 @@ export function RequestDetails() {
     setCurrentAction,
     handleCloseDialog,
   } = useResultDialog()
-
-  const id = params.id
-
-  if (!id) return navigate('/requests')
 
   function clearFields() {
     if (!isNewService) {

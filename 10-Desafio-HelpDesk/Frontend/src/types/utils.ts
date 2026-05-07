@@ -1,4 +1,4 @@
-type DialogActions =
+export type DialogActions =
   | 'create'
   | 'edit'
   | 'remove'
@@ -8,7 +8,7 @@ type DialogActions =
   | 'success'
   | 'failure'
 
-interface Pagination {
+export interface TPagination {
   page: number
   perPage: number
   totalPages: number

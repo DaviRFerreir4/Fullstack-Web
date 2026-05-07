@@ -9,6 +9,7 @@ import { StatusTag } from './StatusTag'
 
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
+import type { UserRequest } from '../dtos/requests'
 
 type Props = {
   request: UserRequest

@@ -9,6 +9,7 @@ import FailureIcon from '../assets/icons/circle-alert.svg?react'
 
 import { Button } from '../components/form/Button'
 import { useEffect } from 'react'
+import type { DialogActions } from '../types/utils'
 
 type Props = React.ComponentProps<'dialog'> & {
   open?: boolean

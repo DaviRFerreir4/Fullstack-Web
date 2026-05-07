@@ -6,6 +6,7 @@ import { api } from '../../services/api'
 import { useResultDialog } from '../../hooks/useResultDialog'
 import { Dialog } from '../../components/Dialog'
 import { useAuth } from '../../hooks/useAuth'
+import type { SignInFormErrors } from '../../types/forms'
 
 const signInSchema = z.object({
   email: z.email({ error: 'Informe um e-mail válido' }).trim(),

@@ -1,8 +1,14 @@
-interface UserRequest {
+import type { TPagination } from '../types/utils'
+import type { Service } from './services'
+import type { User } from './user'
+
+export type Status = 'opened' | 'in_progress' | 'closed'
+
+export interface UserRequest {
   id: number
   title: string
   description: string
-  status: 'opened' | 'in_progress' | 'closed'
+  status: Status
   requestedBy: string
   assignedTo: string
   createdAt: string
@@ -15,12 +21,13 @@ interface UserRequest {
   }[]
 }
 
-interface IndexRequestsQuery {
+export interface IndexRequestsQuery {
+  status?: Status
   perPage?: number
   page?: number
 }
 
-interface IndexRequestByUserAPIResponse {
+export interface IndexRequestByUserAPIResponse {
   requests: UserRequest[]
-  pagination: Pagination
+  pagination: TPagination
 }

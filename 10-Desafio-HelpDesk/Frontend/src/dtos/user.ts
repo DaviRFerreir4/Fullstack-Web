@@ -1,6 +1,6 @@
-type UserAPIRole = 'client' | 'technician' | 'admin'
+export type UserAPIRole = 'client' | 'technician' | 'admin'
 
-interface User {
+export interface User {
   id: string
   name: string
   email: string
@@ -11,7 +11,7 @@ interface User {
   updatedAt: string
 }
 
-interface SessionAPIResponse {
+export interface SessionAPIResponse {
   token: string
   user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'profilePicture'>
 }

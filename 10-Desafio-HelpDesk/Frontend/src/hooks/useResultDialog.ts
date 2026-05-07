@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import type { DialogActions } from '../types/utils'
 
 export function useResultDialog() {
   const dialogRef = useRef<null | HTMLDialogElement>(null)

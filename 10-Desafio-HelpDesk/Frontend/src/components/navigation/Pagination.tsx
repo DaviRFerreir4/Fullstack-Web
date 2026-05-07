@@ -8,11 +8,11 @@ import RightIcon from '../../assets/icons/right.svg?react'
 import RightDoubleIcon from '../../assets/icons/chevrons-right.svg?react'
 
 import { Button } from '../form/Button'
-import { useMemo } from 'react'
+import { useMemo, Fragment } from 'react'
 
 type Props = {
-  current: number
-  total: number
+  current?: number
+  total?: number
   onNext: () => void
   onPrevious: () => void
   setPage: (page: number) => void
@@ -25,6 +25,8 @@ export function Pagination({
   onPrevious,
   setPage,
 }: Props) {
+  if (!current || !total) return
+
   const { pages, maxVisible } = useMemo(() => {
     const maxVisible = 5
     let start = Math.max(1, current - Math.floor(maxVisible / 2))
@@ -48,7 +50,7 @@ export function Pagination({
   return (
     <div className="flex flex-1 justify-center items-center gap-2.5">
       {pages.map((page, i) => (
-        <>
+        <Fragment key={page}>
           {i === 0 && (
             <>
               {pages.length < total && (
@@ -120,7 +122,7 @@ export function Pagination({
               )}
             </>
           )}
-        </>
+        </Fragment>
       ))}
     </div>
   )

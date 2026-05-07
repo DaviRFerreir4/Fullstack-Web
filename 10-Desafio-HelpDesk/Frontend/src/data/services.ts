@@ -1,3 +1,5 @@
+import type { Service } from '../dtos/services'
+
 export const services: Service[] = [
   {
     id: 'b445b89f-e9ef-442f-8b72-e173cbc06c3b',

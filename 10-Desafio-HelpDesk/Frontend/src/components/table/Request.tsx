@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import dayjs from 'dayjs'
 import { useAuth } from '../../hooks/useAuth'
+import type { UserRequest } from '../../dtos/requests'
 
 type Props = {
   requestData: Omit<

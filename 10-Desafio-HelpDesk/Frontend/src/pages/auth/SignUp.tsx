@@ -6,6 +6,7 @@ import { api } from '../../services/api'
 import { Dialog } from '../../components/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
 import { useNavigate } from 'react-router'
+import type { SignUpFormErrors } from '../../types/forms'
 
 const signUpSchema = z
   .object({

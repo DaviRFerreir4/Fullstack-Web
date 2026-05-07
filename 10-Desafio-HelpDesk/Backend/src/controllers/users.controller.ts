@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import z from 'zod'
 import { hash } from 'bcrypt'
 
-import { Role } from '@prisma/client'
+import { Role, Status } from '@prisma/client'
 import { AppError } from '../utils/app-error'
 import { prisma } from '../database/prisma'
 import { DiskStorage } from '../providers/disk-storage'
@@ -106,11 +106,18 @@ export class UsersController {
     }
 
     const querySchema = z.object({
+      status: z
+        .enum(Object.values(Status), {
+          error: `O status do chamado deve ser um dos seguintes: ${Object.keys(
+            Status
+          ).join(', ')}`,
+        })
+        .optional(),
       page: z.coerce.number().default(1),
       perPage: z.coerce.number().default(10),
     })
 
-    const { page, perPage } = querySchema.parse(request.query)
+    const { page, perPage, status } = querySchema.parse(request.query)
 
     const skip = (page - 1) * perPage
 
@@ -120,6 +127,7 @@ export class UsersController {
       where: {
         requestedBy: user.role === 'client' ? id : undefined,
         assignedTo: user.role === 'technician' ? id : undefined,
+        status,
       },
       include: {
         technician: user.role === 'client' && {
@@ -141,6 +149,7 @@ export class UsersController {
       where: {
         requestedBy: user.role === 'client' ? id : undefined,
         assignedTo: user.role === 'technician' ? id : undefined,
+        status,
       },
     })
 

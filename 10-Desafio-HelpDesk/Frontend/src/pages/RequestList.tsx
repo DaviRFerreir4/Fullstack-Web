@@ -10,6 +10,13 @@ import { api } from '../services/api'
 import { Dialog } from '../components/Dialog'
 import { useResultDialog } from '../hooks/useResultDialog'
 import { Pagination } from '../components/navigation/Pagination'
+import type {
+  IndexRequestByUserAPIResponse,
+  IndexRequestsQuery,
+  Status,
+  UserRequest,
+} from '../dtos/requests'
+import type { TPagination } from '../types/utils'
 
 export function RequestList() {
   const { session } = useAuth()
@@ -17,7 +24,17 @@ export function RequestList() {
   if (!session) return
 
   const [requests, setRequests] = useState<UserRequest[] | null>(null)
-  const [pagination, setPagination] = useState<Pagination | null>(null)
+  const [pagination, setPagination] = useState<TPagination | null>(null)
+  const [technicianRequests, setTechnicianRequests] = useState<{
+    opened?: UserRequest[]
+    in_progress?: UserRequest[]
+    closed?: UserRequest[]
+  } | null>(null)
+  const [technicianPagination, setTechnicianPagination] = useState<{
+    opened?: TPagination
+    in_progress?: TPagination
+    closed?: TPagination
+  } | null>(null)
 
   const isMobile = useIsMobile()
 
@@ -31,10 +48,11 @@ export function RequestList() {
   } = useResultDialog()
 
   const adminAndClientPerPage = 7
-  const technicianPerPage = 3
+  const technicianPerPage = isMobile ? 1 : 3
 
   async function fetchRequests(query?: IndexRequestsQuery) {
     const isAdminUser = session?.user.role === 'admin'
+    const isTechnicianUser = session?.user.role === 'technician'
 
     try {
       const response = await api.get<IndexRequestByUserAPIResponse>(
@@ -42,9 +60,21 @@ export function RequestList() {
         { params: query }
       )
 
-      setPagination(response.data.pagination)
+      if (isTechnicianUser && query?.status) {
+        setTechnicianRequests((prev) => ({
+          ...prev,
+          [query.status as string]: response.data.requests,
+        }))
 
-      setRequests(response.data.requests)
+        setTechnicianPagination((prev) => ({
+          ...prev,
+          [query.status as string]: response.data.pagination,
+        }))
+      } else {
+        setPagination(response.data.pagination)
+
+        setRequests(response.data.requests)
+      }
     } catch (error: any) {
       setCurrentAction({
         action: 'failure',
@@ -57,13 +87,21 @@ export function RequestList() {
   }
 
   useEffect(() => {
-    fetchRequests({
-      perPage:
-        session.user.role === 'technician'
-          ? technicianPerPage
-          : adminAndClientPerPage,
-    })
-  }, [])
+    if (session.user.role === 'technician') {
+      const technicianStatus: Status[] = ['opened', 'in_progress', 'closed']
+
+      for (const status of technicianStatus) {
+        fetchRequests({
+          perPage: technicianPerPage,
+          status,
+        })
+      }
+    } else {
+      fetchRequests({
+        perPage: adminAndClientPerPage,
+      })
+    }
+  }, [isMobile])
 
   return (
     <div>
@@ -145,9 +183,8 @@ export function RequestList() {
             <StatusTag status="opened" />
             {/* <div className="flex gap-4 overflow-auto snap-x snap-mandatory lg:snap-none"> */}
             <div className="flex gap-4 flex-wrap">
-              {requests
-                ?.filter((request) => request.status === 'opened')
-                .map((request) => (
+              {technicianRequests?.opened &&
+                technicianRequests.opened.map((request) => (
                   <RequestCard
                     request={request}
                     key={request.id}
@@ -155,14 +192,38 @@ export function RequestList() {
                   />
                 ))}
             </div>
+            <Pagination
+              onNext={() => {
+                fetchRequests({
+                  status: 'opened',
+                  perPage: technicianPerPage,
+                  page: (technicianPagination?.opened?.page ?? 0) + 1,
+                })
+              }}
+              onPrevious={() => {
+                fetchRequests({
+                  status: 'opened',
+                  perPage: technicianPerPage,
+                  page: (technicianPagination?.opened?.page ?? 1) - 1,
+                })
+              }}
+              setPage={(page) => {
+                fetchRequests({
+                  status: 'opened',
+                  perPage: technicianPerPage,
+                  page,
+                })
+              }}
+              current={technicianPagination?.opened?.page}
+              total={technicianPagination?.opened?.totalPages}
+            />
           </div>
           <div className="grid gap-4">
             <StatusTag status="in_progress" />
             {/* <div className="flex gap-4 overflow-auto snap-x lg:snap-none"> */}
             <div className="flex gap-4 flex-wrap">
-              {requests
-                ?.filter((request) => request.status === 'in_progress')
-                .map((request) => (
+              {technicianRequests?.in_progress &&
+                technicianRequests.in_progress.map((request) => (
                   <RequestCard
                     request={request}
                     key={request.id}
@@ -170,14 +231,38 @@ export function RequestList() {
                   />
                 ))}
             </div>
+            <Pagination
+              onNext={() => {
+                fetchRequests({
+                  status: 'in_progress',
+                  perPage: technicianPerPage,
+                  page: (technicianPagination?.in_progress?.page ?? 0) + 1,
+                })
+              }}
+              onPrevious={() => {
+                fetchRequests({
+                  status: 'in_progress',
+                  perPage: technicianPerPage,
+                  page: (technicianPagination?.in_progress?.page ?? 1) - 1,
+                })
+              }}
+              setPage={(page) => {
+                fetchRequests({
+                  status: 'in_progress',
+                  perPage: technicianPerPage,
+                  page,
+                })
+              }}
+              current={technicianPagination?.in_progress?.page}
+              total={technicianPagination?.in_progress?.totalPages}
+            />
           </div>
           <div className="grid gap-4">
             <StatusTag status="closed" />
             {/* <div className="flex gap-4 overflow-auto snap-x lg:snap-none"> */}
             <div className="flex gap-4 flex-wrap">
-              {requests
-                ?.filter((request) => request.status === 'closed')
-                .map((request) => (
+              {technicianRequests?.closed &&
+                technicianRequests.closed.map((request) => (
                   <RequestCard
                     request={request}
                     key={request.id}
@@ -185,6 +270,31 @@ export function RequestList() {
                   />
                 ))}
             </div>
+            <Pagination
+              onNext={() => {
+                fetchRequests({
+                  status: 'closed',
+                  perPage: technicianPerPage,
+                  page: (technicianPagination?.closed?.page ?? 0) + 1,
+                })
+              }}
+              onPrevious={() => {
+                fetchRequests({
+                  status: 'closed',
+                  perPage: technicianPerPage,
+                  page: (technicianPagination?.closed?.page ?? 1) - 1,
+                })
+              }}
+              setPage={(page) => {
+                fetchRequests({
+                  status: 'closed',
+                  perPage: technicianPerPage,
+                  page,
+                })
+              }}
+              current={technicianPagination?.closed?.page}
+              total={technicianPagination?.closed?.totalPages}
+            />
           </div>
         </div>
       )}

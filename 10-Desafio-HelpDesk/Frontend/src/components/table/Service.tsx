@@ -6,6 +6,7 @@ import BanIcon from '../../assets/icons/ban.svg?react'
 import { StatusTag } from '../StatusTag'
 import { Button } from '../form/Button'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import type { Service } from '../../dtos/services'
 
 export type IService = Pick<Service, 'id' | 'title' | 'isActive'> & {
   value: string

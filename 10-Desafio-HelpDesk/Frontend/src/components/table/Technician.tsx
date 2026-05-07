@@ -9,6 +9,7 @@ import { ProfilePicture } from '../ProfilePicture'
 import { TimeTag } from '../TimeTag'
 import { Button } from '../form/Button'
 import { useNavigate } from 'react-router'
+import type { User } from '../../dtos/user'
 
 export type ITechnician = Pick<
   User,

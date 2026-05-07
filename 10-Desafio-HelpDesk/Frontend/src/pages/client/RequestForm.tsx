@@ -9,6 +9,8 @@ import z, { ZodError } from 'zod'
 import { useNavigate } from 'react-router'
 import { Dialog } from '../../components/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
+import type { IndexServiceAPIResponse, Service } from '../../dtos/services'
+import type { CreateRequestFormErrors } from '../../types/forms'
 
 const createRequestSchema = z.object({
   title: z
