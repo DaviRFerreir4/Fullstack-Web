@@ -15,6 +15,11 @@ interface UserRequest {
   }[]
 }
 
+interface IndexRequestsQuery {
+  perPage?: number
+  page?: number
+}
+
 interface IndexRequestByUserAPIResponse {
   requests: UserRequest[]
   pagination: Pagination

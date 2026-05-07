@@ -39,8 +39,10 @@ export function RequestForm() {
 
   async function fetchServices() {
     try {
-      const servicesResponse =
-        await api.get<IndexServiceAPIResponse>('/services')
+      const servicesResponse = await api.get<IndexServiceAPIResponse>(
+        '/services',
+        { params: { is_active: true } }
+      )
 
       setServices(servicesResponse.data.services)
     } catch (error: any) {}
@@ -159,11 +161,9 @@ export function RequestForm() {
               id="service"
               options={
                 services
-                  ? services
-                      .filter((service) => service.isActive)
-                      .map((service) => {
-                        return { text: service.title, value: service.id }
-                      })
+                  ? services.map((service) => {
+                      return { text: service.title, value: service.id }
+                    })
                   : []
               }
               placeholder="Selecione a categoria de atendimento"

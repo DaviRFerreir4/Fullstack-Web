@@ -8,7 +8,10 @@ export class ServicesController {
   async index(request: Request, response: Response) {
     const querySchema = z.object({
       title: z.string().optional(),
-      isActive: z.coerce.boolean().optional(),
+      is_active: z
+        .enum(['true', 'false'], { error: 'Is Active must be true or false' })
+        .transform((isActive) => isActive === 'true')
+        .optional(),
       gt: z.coerce.number().optional(),
       lt: z.coerce.number().optional(),
       idsToIgnore: z.array(z.uuid()).optional(),
@@ -16,13 +19,21 @@ export class ServicesController {
       perPage: z.coerce.number().default(10),
     })
 
-    const { title, isActive, gt, lt, idsToIgnore, page, perPage } =
-      querySchema.parse(request.query)
+    const {
+      title,
+      is_active: isActive,
+      gt,
+      lt,
+      idsToIgnore,
+      page,
+      perPage,
+    } = querySchema.parse(request.query)
 
     const skip = (page - 1) * perPage
 
     const services = await prisma.service.findMany({
       skip,
+      take: perPage,
       where: {
         title: { contains: title, mode: 'insensitive' },
         isActive: { equals: isActive },

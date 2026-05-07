@@ -134,7 +134,7 @@ export function RequestDetails() {
           title: query,
           perPage: 5,
           idsToIgnore,
-          isActive: true,
+          is_active: true,
         },
       })
 
@@ -209,7 +209,7 @@ export function RequestDetails() {
         }
 
         const newServiceData = {
-          createdAt: serviceData.createdAt,
+          createdAt: new Date().toISOString(),
           service: {
             id: serviceData.id,
             isActive: serviceData.isActive,
@@ -223,7 +223,16 @@ export function RequestDetails() {
         })
 
         if (response.status === 201) {
-          request?.services.push(newServiceData)
+          setRequest({
+            ...request,
+            services: [
+              ...(request?.services as {
+                createdAt: string
+                service: Omit<Service, 'createdAt' | 'updatedAt'>
+              }[]),
+              newServiceData,
+            ],
+          } as Omit<UserRequest, 'assignedTo' | 'requestedBy'> | null)
         }
       } else {
         throw new Error('Nenhum campo informado')

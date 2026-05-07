@@ -28,6 +28,7 @@ export class UsersController {
 
     const users = await prisma.user.findMany({
       skip,
+      take: perPage,
       where: { role, name: { contains: name, mode: 'insensitive' } },
       omit: { password: true },
     })
@@ -115,6 +116,7 @@ export class UsersController {
 
     const requests = await prisma.request.findMany({
       skip,
+      take: perPage,
       where: {
         requestedBy: user.role === 'client' ? id : undefined,
         assignedTo: user.role === 'technician' ? id : undefined,

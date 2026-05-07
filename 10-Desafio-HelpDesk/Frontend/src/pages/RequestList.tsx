@@ -9,14 +9,18 @@ import { useEffect, useState } from 'react'
 import { api } from '../services/api'
 import { Dialog } from '../components/Dialog'
 import { useResultDialog } from '../hooks/useResultDialog'
+import { Pagination } from '../components/navigation/Pagination'
 
 export function RequestList() {
-  const [requests, setRequests] = useState<null | UserRequest[]>(null)
   const { session } = useAuth()
 
   if (!session) return
 
+  const [requests, setRequests] = useState<UserRequest[] | null>(null)
+  const [pagination, setPagination] = useState<Pagination | null>(null)
+
   const isMobile = useIsMobile()
+
   const {
     dialogRef,
     openDialog,
@@ -26,19 +30,25 @@ export function RequestList() {
     handleCloseDialog,
   } = useResultDialog()
 
-  async function fetchRequests() {
+  const adminAndClientPerPage = 7
+  const technicianPerPage = 3
+
+  async function fetchRequests(query?: IndexRequestsQuery) {
+    const isAdminUser = session?.user.role === 'admin'
+
     try {
       const response = await api.get<IndexRequestByUserAPIResponse>(
-        session?.user.role === 'admin'
-          ? '/requests'
-          : `/users/${session?.user.id}/requests`
+        isAdminUser ? '/requests' : `/users/${session?.user.id}/requests`,
+        { params: query }
       )
+
+      setPagination(response.data.pagination)
 
       setRequests(response.data.requests)
     } catch (error: any) {
       setCurrentAction({
         action: 'failure',
-        title: error.response?.data?.message ?? error.message,
+        title: error?.response?.data?.message ?? error.message,
         handleAction: handleCloseDialog,
       })
 
@@ -47,7 +57,12 @@ export function RequestList() {
   }
 
   useEffect(() => {
-    fetchRequests()
+    fetchRequests({
+      perPage:
+        session.user.role === 'technician'
+          ? technicianPerPage
+          : adminAndClientPerPage,
+    })
   }, [])
 
   return (
@@ -56,50 +71,74 @@ export function RequestList() {
         {session.user.role === 'admin' ? 'Chamados' : 'Meus chamados'}
       </h1>
       {['admin', 'client'].includes(session.user.role ?? '') ? (
-        <table className="w-full border border-gray-500 rounded-xl border-separate">
-          <thead>
-            <tr>
-              <TableHeader text="Atualizado em" />
-              <TableHeader text="Id" desktopOnly />
-              {session.user.role === 'client' ? (
-                <>
-                  <TableHeader text="Título" />
-                  <TableHeader text="Serviço" desktopOnly />
-                </>
-              ) : (
-                <TableHeader text="Título e Serviço" />
-              )}
-              <TableHeader text="Valor total" desktopOnly />
-              {session.user.role !== 'client' && (
-                <TableHeader text="Cliente" desktopOnly />
-              )}
-              <TableHeader text="Técnico" desktopOnly />
-              <TableHeader
-                text="Status"
-                className="lg:w-36.5"
-                textCenter={isMobile}
-              />
-              <TableHeader text="" />
-            </tr>
-          </thead>
-          <tbody>
-            {requests &&
-              requests.map((request) => (
-                <Request
-                  requestData={{
-                    id: request.id,
-                    title: request.title,
-                    updatedAt: request.updatedAt,
-                    services: request.services,
-                    status: request.status,
-                    client: request.client,
-                    technician: request.technician,
-                  }}
-                  key={request.id}
+        <>
+          <table className="w-full mb-4 border border-gray-500 rounded-xl border-separate">
+            <thead>
+              <tr>
+                <TableHeader text="Atualizado em" />
+                <TableHeader text="Id" desktopOnly />
+                {session.user.role === 'client' ? (
+                  <>
+                    <TableHeader text="Título" />
+                    <TableHeader text="Serviço" desktopOnly />
+                  </>
+                ) : (
+                  <TableHeader text="Título e Serviço" />
+                )}
+                <TableHeader text="Valor total" desktopOnly />
+                {session.user.role !== 'client' && (
+                  <TableHeader text="Cliente" desktopOnly />
+                )}
+                <TableHeader text="Técnico" desktopOnly />
+                <TableHeader
+                  text="Status"
+                  className="lg:w-36.5"
+                  textCenter={isMobile}
                 />
-              ))}
-          </tbody>
-        </table>
+                <TableHeader text="" />
+              </tr>
+            </thead>
+            <tbody>
+              {requests &&
+                requests.map((request) => (
+                  <Request
+                    requestData={{
+                      id: request.id,
+                      title: request.title,
+                      updatedAt: request.updatedAt,
+                      services: request.services,
+                      status: request.status,
+                      client: request.client,
+                      technician: request.technician,
+                    }}
+                    key={request.id}
+                  />
+                ))}
+            </tbody>
+          </table>
+          <Pagination
+            onNext={() => {
+              fetchRequests({
+                perPage: adminAndClientPerPage,
+                page: (pagination?.page ?? 0) + 1,
+              })
+            }}
+            onPrevious={() => {
+              fetchRequests({
+                perPage: adminAndClientPerPage,
+                page: (pagination?.page ?? 0) - 1,
+              })
+            }}
+            setPage={(page) => {
+              fetchRequests({
+                perPage: adminAndClientPerPage,
+                page,
+              })
+            }}
+            current={pagination?.page ?? 1}
+            total={pagination?.totalPages ?? 1}
+          />
+        </>
       ) : (
         <div className="grid gap-6">
           <div className="grid gap-4">

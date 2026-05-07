@@ -38,7 +38,7 @@ export function Button({
       className={`rounded-md flex justify-center items-center gap-2 text-sm font-bold transition disabled:opacity-75
         ${variants[variant]}
         ${size === 'custom' ? className : sizes[size]}
-        ${!Icon && 'w-full'}
+        ${!Icon && size !== 'custom' && 'w-full'}
         ${isLoading && 'disabled:cursor-progress'}
       `}
       {...rest}

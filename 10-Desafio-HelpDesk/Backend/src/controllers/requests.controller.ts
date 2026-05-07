@@ -18,6 +18,7 @@ export class RequestsController {
 
     const requests = await prisma.request.findMany({
       skip,
+      take: perPage,
       include: {
         client: {
           select: {
