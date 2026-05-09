@@ -16,6 +16,7 @@ type Props = React.ComponentProps<'dialog'> & {
   title?: string
   action?: DialogActions
   handleAction: (() => void) | ((payload: FormData) => void)
+  message?: string
   dialogRef: React.RefObject<null | HTMLDialogElement>
   closeDialog: () => void
   backAction?: () => void
@@ -44,6 +45,7 @@ export function Dialog({
   title,
   action = 'create',
   handleAction,
+  message,
   dialogRef,
   closeDialog,
   backAction,
@@ -105,15 +107,19 @@ export function Dialog({
           {action === 'success' ? (
             <div className="grid justify-center justify-items-center gap-4">
               <SuccessIcon className="w-12 h-12 text-feedback-done/70" />
-              <span>Ação realizada com sucesso!</span>
+              <div className="grid justify-center justify-items-center gap-1 text-center ">
+                <p>Ação realizada com sucesso!</p>
+                {message && <p>{message}</p>}
+              </div>
             </div>
           ) : action === 'failure' ? (
             <div className="grid justify-center justify-items-center gap-4">
               <FailureIcon className="w-12 h-12 text-feedback-danger/70" />
-              <div>
-                <p className="mb-1">Erro ao realizar a ação requisitada.</p>
+              <div className="grid justify-center justify-items-center gap-1 text-center">
+                <p>Erro ao realizar a ação requisitada</p>
                 <p>
-                  Por favor, corrija sua ação ou tente novamente mais tarde.
+                  {message ||
+                    'Por favor, corrija sua ação ou tente novamente mais tarde'}
                 </p>
               </div>
             </div>
@@ -135,11 +141,7 @@ export function Dialog({
               text={buttonText}
               type={wrapperType === 'div' ? 'button' : 'submit'}
               disabled={isFormLoading}
-              onClick={
-                handleAction.length > 0
-                  ? () => undefined
-                  : (handleAction as () => void)
-              }
+              onClick={handleAction as () => void}
             />
           </div>
         </div>

@@ -15,3 +15,7 @@ export interface SessionAPIResponse {
   token: string
   user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'profilePicture'>
 }
+
+export type CreateUserProps = Pick<User, 'name' | 'email' | 'password'> & {
+  confirmPassword: string
+}

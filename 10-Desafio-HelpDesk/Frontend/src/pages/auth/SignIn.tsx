@@ -1,23 +1,11 @@
 import { Input } from '../../components/form/Input'
 import { Button } from '../../components/form/Button'
-import { useActionState } from 'react'
-import z, { ZodError } from 'zod'
-import { api } from '../../services/api'
 import { useResultDialog } from '../../hooks/useResultDialog'
 import { Dialog } from '../../components/Dialog'
 import { useAuth } from '../../hooks/useAuth'
-import type { SignInFormErrors } from '../../types/forms'
-
-const signInSchema = z.object({
-  email: z.email({ error: 'Informe um e-mail válido' }).trim(),
-  password: z
-    .string({ error: 'Informe a senha' })
-    .min(8, { error: 'A senha deve conter no mínimo 8 caracteres' })
-    .trim(),
-})
+import { useSignInLogic } from '../../hooks/screens/auth/useSignInLogic'
 
 export function SignIn() {
-  const [state, formAction, isLoading] = useActionState(signIn, null)
   const {
     dialogRef,
     openDialog,
@@ -29,45 +17,17 @@ export function SignIn() {
 
   const auth = useAuth()
 
-  async function signIn(_: any, formData: FormData) {
-    const data = {
-      email: formData.get('email'),
-      password: formData.get('password'),
-    }
-
-    try {
-      const { email, password } = signInSchema.parse(data)
-
-      const response = await api.post('/sessions', {
-        email,
-        password,
-      })
-
-      auth.save(response.data)
-    } catch (error: any) {
-      if (error instanceof ZodError) {
-        const fieldErrors: SignInFormErrors = z.flattenError(error).fieldErrors
-        const formErrors: string[] = z.flattenError(error).formErrors
-
-        return { data, fieldErrors, formErrors }
-      }
-
-      setCurrentAction({
-        action: 'failure',
-        title: error.response?.data?.message ?? error.message,
-        handleAction: handleCloseDialog,
-      })
-
-      setOpenDialog(true)
-
-      return { data }
-    }
-  }
+  const { state, formAction, isLoading } = useSignInLogic({
+    auth,
+    setOpenDialog,
+    setCurrentAction,
+    handleCloseDialog,
+  })
 
   return (
     <div className="w-full">
       <form
-        action={formAction}
+        action={!isLoading ? formAction : () => {}}
         className="p-6 border border-gray-500 rounded-[0.625rem] grid gap-8"
       >
         <div>
@@ -127,9 +87,10 @@ export function SignIn() {
         </a>
       </div>
       <Dialog
-        title={currentAction?.title}
         open={openDialog}
         dialogRef={dialogRef}
+        title={currentAction?.title}
+        message={currentAction?.message}
         closeDialog={handleCloseDialog}
         action={currentAction?.action}
         handleAction={

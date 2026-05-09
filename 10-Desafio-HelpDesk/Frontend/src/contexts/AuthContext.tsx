@@ -2,7 +2,7 @@ import { createContext, useEffect, useState, type ReactNode } from 'react'
 import { api } from '../services/api'
 import type { SessionAPIResponse } from '../dtos/user'
 
-type TAuthContext = {
+export type TAuthContext = {
   session: null | SessionAPIResponse
   isLoading: boolean
   save: (data: SessionAPIResponse) => void
