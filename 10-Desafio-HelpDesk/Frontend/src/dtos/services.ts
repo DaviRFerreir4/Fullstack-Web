@@ -9,6 +9,16 @@ export interface Service {
   updatedAt: string
 }
 
+export interface IndexServiceQuery {
+  title?: string
+  is_active?: boolean
+  gt?: number
+  lt?: number
+  idsToIgnore?: string[]
+  page?: number
+  perPage?: number
+}
+
 export interface IndexServiceAPIResponse {
   services: Service[]
   pagination: TPagination

@@ -127,11 +127,11 @@ export function SignUp() {
         dialogRef={dialogRef}
         title={currentAction?.title}
         message={currentAction?.message}
-        closeDialog={handleCloseDialog}
         action={currentAction?.action}
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
+        closeDialog={handleCloseDialog}
       />
     </div>
   )

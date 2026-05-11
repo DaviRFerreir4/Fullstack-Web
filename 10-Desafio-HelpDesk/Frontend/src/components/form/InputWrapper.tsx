@@ -1,13 +1,13 @@
 // @ts-expect-error TS2307
 import AlertIcon from '../../assets/icons/circle-alert.svg?react'
 
-export interface IInputProps {
+export interface InputProps {
   label: string
   error?: boolean
   helperText?: string
 }
 
-type Props = IInputProps & {
+type Props = InputProps & {
   id?: string
   children: React.ReactNode
 }

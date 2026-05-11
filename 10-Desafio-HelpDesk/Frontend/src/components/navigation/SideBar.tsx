@@ -57,6 +57,7 @@ export function SideBar() {
   const [currentAction, setCurrentAction] = useState<null | {
     action: 'edit' | 'changePassword' | 'success' | 'failure'
     title: string
+    message?: string
     handleAction: () => void
   }>(null)
 
@@ -263,9 +264,15 @@ export function SideBar() {
         </div>
       </div>
       <Dialog
-        title={currentAction?.title}
         open={openDialog}
         dialogRef={dialogRef}
+        title={currentAction?.title}
+        message={currentAction?.message}
+        useSamePadding={false}
+        action={currentAction?.action}
+        handleAction={
+          currentAction ? currentAction.handleAction : handleCloseDialog
+        }
         closeDialog={handleCloseDialog}
         backAction={() =>
           userOperations({
@@ -273,11 +280,6 @@ export function SideBar() {
             title: 'Perfil',
           })
         }
-        action={currentAction?.action}
-        handleAction={
-          currentAction ? currentAction.handleAction : handleCloseDialog
-        }
-        useSamePadding={false}
       >
         {currentAction?.action === 'edit' ? (
           <div>

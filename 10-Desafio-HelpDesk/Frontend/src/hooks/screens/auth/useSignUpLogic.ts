@@ -46,9 +46,11 @@ export function useSignUpLogic({
   setCurrentAction,
   handleCloseDialog,
 }: UseSignInLogicProps) {
-  const navigate = useNavigate()
+  const { createUser } = useUserServices()
 
   const [state, formAction, isLoading] = useActionState(signUp, null)
+
+  const navigate = useNavigate()
 
   async function signUp(_: any, formData: FormData) {
     const data = {
@@ -61,8 +63,6 @@ export function useSignUpLogic({
     try {
       const { name, email, password, confirmPassword } =
         signUpSchema.parse(data)
-
-      const { createUser } = useUserServices()
 
       const response = await createUser({
         name,

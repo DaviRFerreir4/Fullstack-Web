@@ -33,6 +33,8 @@ export function useSignInLogic({
   setCurrentAction,
   handleCloseDialog,
 }: UseSignInLogicProps) {
+  const { createSession } = useSessionServices()
+
   const [state, formAction, isLoading] = useActionState(signIn, null)
 
   async function signIn(_: any, formData: FormData) {
@@ -44,11 +46,9 @@ export function useSignInLogic({
     try {
       const { email, password } = signInSchema.parse(data)
 
-      const { createSession } = useSessionServices()
-
       const response = await createSession({ email, password })
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         auth.save(response.data)
       } else {
         throw new Error('Erro Inesperado')

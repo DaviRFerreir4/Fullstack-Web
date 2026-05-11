@@ -33,7 +33,7 @@ export class ServicesController {
 
     const services = await prisma.service.findMany({
       skip,
-      take: perPage,
+      take: perPage !== -1 ? perPage : undefined,
       where: {
         title: { contains: title, mode: 'insensitive' },
         isActive: { equals: isActive },

@@ -31,6 +31,7 @@ export function ServiceList() {
   const [currentAction, setCurrentAction] = useState<null | {
     action: 'create' | 'edit' | 'disable' | 'enable' | 'success' | 'failure'
     title: string
+    message?: string
     handleAction: () => void
   }>(null)
 
@@ -163,14 +164,15 @@ export function ServiceList() {
         </tbody>
       </table>
       <Dialog
-        title={currentAction?.title}
         open={openDialog}
         dialogRef={dialogRef}
-        closeDialog={handleCloseDialog}
+        title={currentAction?.title}
+        message={currentAction?.message}
         action={currentAction?.action}
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
+        closeDialog={handleCloseDialog}
       >
         {currentAction?.action === 'create' ||
         currentAction?.action === 'edit' ? (

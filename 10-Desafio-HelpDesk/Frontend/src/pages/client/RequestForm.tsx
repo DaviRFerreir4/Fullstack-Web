@@ -1,35 +1,14 @@
-import { useActionState, useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Input } from '../../components/form/Input'
 import { Select } from '../../components/form/Select'
 import { Textarea } from '../../components/form/Textarea'
 import { InfoField } from '../../components/InfoField'
 import { Button } from '../../components/form/Button'
-import { api } from '../../services/api'
-import z, { ZodError } from 'zod'
-import { useNavigate } from 'react-router'
 import { Dialog } from '../../components/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
-import type { IndexServiceAPIResponse, Service } from '../../dtos/services'
-import type { CreateRequestFormErrors } from '../../types/forms'
-
-const createRequestSchema = z.object({
-  title: z
-    .string({ error: 'Informe o título' })
-    .min(8, { error: 'O título deve conter ao menos 8 digitos' }),
-  description: z
-    .string({ error: 'Informe a descrição' })
-    .min(12, { error: 'A descrição deve conter ao menos 12 digitos' }),
-  serviceId: z.uuid({ error: 'Informe um serviço válido' }),
-})
+import { useRequestFormLogic } from '../../hooks/screens/client/useRequestFormLogic'
 
 export function RequestForm() {
-  const [state, formAction, isLoading] = useActionState(createRequest, null)
-
-  const [services, setServices] = useState<null | Service[]>(null)
-  const [serviceId, setServiceId] = useState('')
-
-  const navigate = useNavigate()
-
   const {
     dialogRef,
     openDialog,
@@ -39,69 +18,29 @@ export function RequestForm() {
     handleCloseDialog,
   } = useResultDialog()
 
-  async function fetchServices() {
-    try {
-      const servicesResponse = await api.get<IndexServiceAPIResponse>(
-        '/services',
-        { params: { is_active: true } }
-      )
+  const {
+    state,
+    formAction,
+    isLoading,
+    services,
+    serviceId,
+    setServiceId,
+    fetchServices,
+  } = useRequestFormLogic({
+    setCurrentAction,
+    setOpenDialog,
+    handleCloseDialog,
+  })
 
-      setServices(servicesResponse.data.services)
-    } catch (error: any) {}
-  }
-
-  async function createRequest(_: any, formData: FormData) {
-    const data = {
-      title: formData.get('title'),
-      description: formData.get('description'),
-      serviceId: formData.get('service'),
-    }
-
-    try {
-      const parsedData = createRequestSchema.parse(data)
-
-      await api.post('/requests', parsedData)
-
-      setServiceId('')
-
-      setCurrentAction({
-        action: 'success',
-        title: 'Chamado criado com sucesso',
-        handleAction: () => navigate('/requests'),
-      })
-
-      setOpenDialog(true)
-    } catch (error: any) {
-      if (error instanceof ZodError) {
-        const fieldErrors: CreateRequestFormErrors =
-          z.flattenError(error).fieldErrors
-        const formErrors: string[] = z.flattenError(error).formErrors
-
-        return { data, fieldErrors, formErrors }
-      }
-
-      setServiceId('')
-
-      setCurrentAction({
-        action: 'failure',
-        title: error.response.data.message ?? error.message,
-        handleAction: handleCloseDialog,
-      })
-
-      setOpenDialog(true)
-
-      return { data }
-    }
-  }
+  const selectRef = useRef<HTMLSelectElement | null>(null)
 
   useEffect(() => {
-    fetchServices()
+    fetchServices({ query: { is_active: true, perPage: -1 } })
   }, [])
 
   useEffect(() => {
-    const select = document.querySelector('select')
-    if (select) {
-      select.value = state?.data.serviceId?.toString() ?? ''
+    if (selectRef.current) {
+      selectRef.current.value = state?.data.serviceId?.toString() ?? ''
     }
   }, [state])
 
@@ -158,6 +97,7 @@ export function RequestForm() {
               required
             />
             <Select
+              ref={selectRef}
               label="Categoria de serviço"
               name="service"
               id="service"
@@ -220,14 +160,15 @@ export function RequestForm() {
         </div>
       </form>
       <Dialog
-        title={currentAction?.title}
         open={openDialog}
         dialogRef={dialogRef}
-        closeDialog={handleCloseDialog}
+        title={currentAction?.title}
+        message={currentAction?.message}
         action={currentAction?.action}
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
+        closeDialog={handleCloseDialog}
       />
     </div>
   )

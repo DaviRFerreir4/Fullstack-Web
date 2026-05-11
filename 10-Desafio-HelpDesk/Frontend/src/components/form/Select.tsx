@@ -2,10 +2,10 @@
 import ArrowIcon from '../../assets/icons/chevron-down.svg?react'
 
 import { InputWrapper } from './InputWrapper'
-import { type IInputProps } from './InputWrapper'
+import { type InputProps } from './InputWrapper'
 
 type Props = React.ComponentProps<'select'> &
-  IInputProps & {
+  InputProps & {
     options: { text: string; value: string }[]
     placeholder: string
     selectValue?: string

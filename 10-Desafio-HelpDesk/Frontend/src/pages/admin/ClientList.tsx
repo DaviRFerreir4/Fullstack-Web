@@ -23,6 +23,7 @@ export function ClientList() {
   const [currentAction, setCurrentAction] = useState<null | {
     action: 'edit' | 'remove' | 'success' | 'failure'
     title: string
+    message?: string
     handleAction: () => void
   }>(null)
 
@@ -100,14 +101,15 @@ export function ClientList() {
         </tbody>
       </table>
       <Dialog
-        title={currentAction?.title}
         open={openDialog}
         dialogRef={dialogRef}
-        closeDialog={handleCloseDialog}
+        title={currentAction?.title}
+        message={currentAction?.message}
         action={currentAction?.action}
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
+        closeDialog={handleCloseDialog}
       >
         {currentAction?.action === 'edit' ? (
           <div>

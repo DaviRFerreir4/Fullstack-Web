@@ -610,14 +610,15 @@ export function RequestDetails() {
         )}
       </div>
       <Dialog
-        title={currentAction?.title}
         open={openDialog}
         dialogRef={dialogRef}
-        closeDialog={handleCloseDialog}
+        title={currentAction?.title}
+        message={currentAction?.message}
         action={currentAction?.action}
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
+        closeDialog={handleCloseDialog}
         isFormLoading={
           currentAction?.action === 'edit'
             ? formAddIsLoading

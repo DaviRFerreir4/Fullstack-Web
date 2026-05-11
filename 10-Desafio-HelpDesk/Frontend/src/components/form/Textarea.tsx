@@ -1,8 +1,8 @@
 import { InputWrapper } from './InputWrapper'
 
-import { type IInputProps } from './InputWrapper'
+import { type InputProps } from './InputWrapper'
 
-type Props = React.ComponentProps<'textarea'> & IInputProps
+type Props = React.ComponentProps<'textarea'> & InputProps
 
 export function Textarea({
   label,

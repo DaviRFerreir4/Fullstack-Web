@@ -1,3 +1,4 @@
+import type { SessionAPIResponse } from '../dtos/user'
 import { api } from './api'
 
 interface CreateSessionProps {
@@ -7,7 +8,10 @@ interface CreateSessionProps {
 
 export function useSessionServices() {
   async function createSession({ email, password }: CreateSessionProps) {
-    const response = await api.post('/sessions', { email, password })
+    const response = await api.post<SessionAPIResponse>('/sessions', {
+      email,
+      password,
+    })
     return response
   }
 
