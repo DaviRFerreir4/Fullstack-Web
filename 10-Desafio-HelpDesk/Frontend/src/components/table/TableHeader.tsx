@@ -1,4 +1,6 @@
-type Props = React.ComponentProps<'th'> & {
+import type { ComponentProps } from 'react'
+
+type Props = ComponentProps<'th'> & {
   text: string
   desktopOnly?: boolean
   textCenter?: boolean

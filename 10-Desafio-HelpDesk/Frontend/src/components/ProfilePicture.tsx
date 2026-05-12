@@ -1,4 +1,6 @@
-type Props = React.ComponentProps<'div'> & {
+import type { ComponentProps } from 'react'
+
+type Props = ComponentProps<'div'> & {
   profilePicture: string | undefined
   username: string
   size?: keyof typeof sizes

@@ -1,7 +1,9 @@
 // @ts-expect-error TS2307
 import CloseIcon from '../assets/icons/close.svg?react'
 
-type Props = React.ComponentProps<'input'> & {
+import type { ComponentProps } from 'react'
+
+type Props = ComponentProps<'input'> & {
   hour?: number
   excess?: number
 }
@@ -14,8 +16,8 @@ export function TimeTag({ hour, excess, disabled, checked, ...rest }: Props) {
           disabled
             ? 'border-gray-500 text-gray-400'
             : checked
-            ? 'border-blue-base text-gray-600 bg-blue-base'
-            : 'border-gray-400 text-gray-200 hover:bg-gray-500'
+              ? 'border-blue-base text-gray-600 bg-blue-base'
+              : 'border-gray-400 text-gray-200 hover:bg-gray-500'
         }
       `}
     >

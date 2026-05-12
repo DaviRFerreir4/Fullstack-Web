@@ -1,11 +1,11 @@
 import { createContext, useEffect, useState, type ReactNode } from 'react'
 import { api } from '../services/api'
-import type { SessionAPIResponse } from '../dtos/user'
+import type { CreateSessionAPIResponse } from '../dtos/user'
 
-export type TAuthContext = {
-  session: null | SessionAPIResponse
+export type AuthContextType = {
+  session: CreateSessionAPIResponse | null
   isLoading: boolean
-  save: (data: SessionAPIResponse) => void
+  save: (data: CreateSessionAPIResponse) => void
   remove: () => void
 }
 
@@ -14,17 +14,24 @@ const LOCAL_STORAGE_KEY = '@HelpDesk'
 const LOCAL_STORAGE_USER = `${LOCAL_STORAGE_KEY}:user`
 const LOCAL_STORAGE_TOKEN = `${LOCAL_STORAGE_KEY}:token`
 
-export const AuthContext = createContext({} as TAuthContext)
+export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<null | SessionAPIResponse>(null)
+  const [session, setSession] = useState<AuthContextType['session']>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  function save(data: SessionAPIResponse) {
-    setSession(data)
+  function save(data: CreateSessionAPIResponse) {
+    const { token, user } = data
 
-    localStorage.setItem(LOCAL_STORAGE_USER, JSON.stringify(data.user))
-    localStorage.setItem(LOCAL_STORAGE_TOKEN, data.token)
+    const session: CreateSessionAPIResponse = {
+      token,
+      user: { id: user.id, name: user.name, role: user.role },
+    }
+
+    setSession(session)
+
+    localStorage.setItem(LOCAL_STORAGE_USER, JSON.stringify(session.user))
+    localStorage.setItem(LOCAL_STORAGE_TOKEN, session.token)
 
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
   }

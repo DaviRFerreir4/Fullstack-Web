@@ -1,8 +1,14 @@
-import { useEffect, useState } from 'react'
+import {
+  useEffect,
+  useState,
+  type ComponentProps,
+  type Ref,
+  type RefObject,
+} from 'react'
 import { Input } from './Input'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
-type Props = React.ComponentProps<'input'> & {
+type Props = ComponentProps<'input'> & {
   label: string
   items: { title: string; value: string }[]
   selectedItem?: string
@@ -32,7 +38,7 @@ export function Autocomplete({
     if (value !== '' && !items.map((item) => item.title).includes(value)) {
       setError('Esse item não é uma opção')
     }
-  }, openAutocomplete) as React.RefObject<HTMLInputElement>
+  }, openAutocomplete) as RefObject<HTMLInputElement>
 
   useEffect(() => {
     const search = setTimeout(() => {
@@ -45,7 +51,7 @@ export function Autocomplete({
   }, [selectedItem, internalSelectedItem])
 
   return (
-    <div ref={ref as React.Ref<HTMLDivElement>}>
+    <div ref={ref as Ref<HTMLDivElement>}>
       <Input
         label={label}
         value={selectedItem ?? internalSelectedItem}

@@ -8,7 +8,7 @@ export type DialogActions =
   | 'success'
   | 'failure'
 
-export interface TPagination {
+export interface PaginationType {
   page: number
   perPage: number
   totalPages: number

@@ -1,10 +1,11 @@
 // @ts-expect-error TS2307
 import ArrowIcon from '../../assets/icons/chevron-down.svg?react'
 
+import type { ComponentProps } from 'react'
 import { InputWrapper } from './InputWrapper'
 import { type InputProps } from './InputWrapper'
 
-type Props = React.ComponentProps<'select'> &
+type Props = ComponentProps<'select'> &
   InputProps & {
     options: { text: string; value: string }[]
     placeholder: string

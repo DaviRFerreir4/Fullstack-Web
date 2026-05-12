@@ -5,9 +5,9 @@ import ClosedEyeIcon from '../../assets/icons/eye-closed.svg?react'
 
 import { InputWrapper } from './InputWrapper'
 import { type InputProps } from './InputWrapper'
-import { useState } from 'react'
+import { useState, type ComponentProps } from 'react'
 
-type Props = React.ComponentProps<'input'> &
+type Props = ComponentProps<'input'> &
   InputProps & {
     currency?: boolean
   }

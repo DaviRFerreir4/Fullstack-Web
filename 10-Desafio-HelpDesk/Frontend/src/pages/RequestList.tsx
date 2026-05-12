@@ -66,10 +66,7 @@ export function RequestList() {
     }
   }, [isMobile])
 
-  const technicianRequestsKeys = useMemo(
-    () => Object.keys(technicianRequests ?? {}) as Status[],
-    [technicianRequests]
-  )
+  const technicianRequestsKeys: Status[] = ['opened', 'in_progress', 'closed']
 
   return (
     <div>

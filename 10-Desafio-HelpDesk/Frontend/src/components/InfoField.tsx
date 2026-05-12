@@ -1,7 +1,9 @@
-type Props = React.ComponentProps<'div'> & {
+import type { ComponentProps, ReactNode } from 'react'
+
+type Props = ComponentProps<'div'> & {
   title: string
   spacing?: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function InfoField({

@@ -1,6 +1,8 @@
 // @ts-expect-error TS2307
 import AlertIcon from '../../assets/icons/circle-alert.svg?react'
 
+import type { ReactNode } from 'react'
+
 export interface InputProps {
   label: string
   error?: boolean
@@ -9,7 +11,7 @@ export interface InputProps {
 
 type Props = InputProps & {
   id?: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function InputWrapper({

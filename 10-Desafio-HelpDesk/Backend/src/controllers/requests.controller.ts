@@ -8,22 +8,31 @@ import { Status, User } from '@prisma/client'
 export class RequestsController {
   async index(request: Request, response: Response) {
     const querySchema = z.object({
+      status: z
+        .enum(Object.values(Status), {
+          error: `O status do chamado deve ser um dos seguintes: ${Object.keys(
+            Status
+          ).join(', ')}`,
+        })
+        .optional(),
       page: z.coerce.number().default(1),
       perPage: z.coerce.number().default(10),
     })
 
-    const { page, perPage } = querySchema.parse(request.query)
+    const { status, page, perPage } = querySchema.parse(request.query)
 
     const skip = (page - 1) * perPage
 
     const requests = await prisma.request.findMany({
       skip,
       take: perPage,
+      where: { status },
       include: {
         client: {
           select: {
             id: true,
             name: true,
+            email: true,
             profilePicture: true,
           },
         },
@@ -31,11 +40,9 @@ export class RequestsController {
           select: {
             createdAt: true,
             service: {
-              select: {
-                id: true,
-                title: true,
-                value: true,
-                isActive: true,
+              omit: {
+                createdAt: true,
+                updatedAt: true,
               },
             },
           },
@@ -44,6 +51,7 @@ export class RequestsController {
           select: {
             id: true,
             name: true,
+            email: true,
             profilePicture: true,
           },
         },
@@ -105,11 +113,9 @@ export class RequestsController {
           select: {
             createdAt: true,
             service: {
-              select: {
-                id: true,
-                title: true,
-                value: true,
-                isActive: true,
+              omit: {
+                createdAt: true,
+                updatedAt: true,
               },
             },
           },
@@ -118,6 +124,7 @@ export class RequestsController {
           select: {
             id: true,
             name: true,
+            email: true,
             profilePicture: true,
           },
         },
@@ -125,6 +132,7 @@ export class RequestsController {
           select: {
             id: true,
             name: true,
+            email: true,
             profilePicture: true,
           },
         },
@@ -154,22 +162,19 @@ export class RequestsController {
       request.body
     )
 
-    let technician: Pick<
-      User,
-      'id' | 'email' | 'name' | 'role' | 'createdAt' | 'updatedAt'
-    > | null
+    let technician: Pick<User, 'id' | 'name' | 'profilePicture'> | null
 
     if (assignedTo) {
       technician = await prisma.user.findUnique({
         where: { id: assignedTo, role: 'technician' },
-        omit: { password: true, profilePicture: true },
+        select: { id: true, name: true, profilePicture: true },
       })
     } else {
       const techniciansOrderedByRequests = await prisma.user.findMany({
         where: {
           role: 'technician',
         },
-        omit: { password: true, profilePicture: true },
+        select: { id: true, name: true, profilePicture: true },
         orderBy: {
           technicianRequest: { _count: 'asc' },
         },
@@ -190,6 +195,7 @@ export class RequestsController {
 
     const service = await prisma.service.findUnique({
       where: { id: serviceId },
+      omit: { createdAt: true, updatedAt: true },
     })
 
     if (!service) {
@@ -207,6 +213,7 @@ export class RequestsController {
         requestedBy: request.user.id,
         assignedTo: assignedTo ?? technician.id,
       },
+      omit: { requestedBy: true, assignedTo: true },
     })
 
     await prisma.requestService.create({
@@ -215,13 +222,13 @@ export class RequestsController {
 
     const user = await prisma.user.findUnique({
       where: { id: request.user.id },
-      omit: { password: true, profilePicture: true },
+      select: { id: true, name: true, profilePicture: true },
     })
 
     return response.status(201).json({
       ...userRequest,
-      assignedTo: technician,
-      requestedBy: user,
+      technician,
+      user,
       service,
     })
   }
@@ -284,12 +291,11 @@ export class RequestsController {
       include: {
         services: {
           select: {
+            createdAt: true,
             service: {
-              select: {
-                id: true,
-                title: true,
-                value: true,
-                isActive: true,
+              omit: {
+                createdAt: true,
+                updatedAt: true,
               },
             },
           },
@@ -298,12 +304,16 @@ export class RequestsController {
           select: {
             id: true,
             name: true,
+            email: true,
+            profilePicture: true,
           },
         },
         technician: {
           select: {
             id: true,
             name: true,
+            email: true,
+            profilePicture: true,
           },
         },
       },
@@ -366,12 +376,11 @@ export class RequestsController {
       include: {
         services: {
           select: {
+            createdAt: true,
             service: {
-              select: {
-                id: true,
-                title: true,
-                value: true,
-                isActive: true,
+              omit: {
+                createdAt: true,
+                updatedAt: true,
               },
             },
           },
@@ -380,12 +389,16 @@ export class RequestsController {
           select: {
             id: true,
             name: true,
+            email: true,
+            profilePicture: true,
           },
         },
         technician: {
           select: {
             id: true,
             name: true,
+            email: true,
+            profilePicture: true,
           },
         },
       },
@@ -435,6 +448,36 @@ export class RequestsController {
     const updatedRequest = await prisma.request.update({
       where: { id },
       data: { status },
+      omit: { requestedBy: true, assignedTo: true },
+      include: {
+        services: {
+          select: {
+            createdAt: true,
+            service: {
+              omit: {
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+        client: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            profilePicture: true,
+          },
+        },
+        technician: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            profilePicture: true,
+          },
+        },
+      },
     })
 
     return response.json({ ...updatedRequest })

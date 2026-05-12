@@ -1,4 +1,9 @@
-import { useActionState, useState } from 'react'
+import {
+  useActionState,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 import z, { ZodError } from 'zod'
 import type { IndexServiceQuery, Service } from '../../../dtos/services'
 import { api } from '../../../services/api'
@@ -8,9 +13,9 @@ import type { DialogActions } from '../../../types/utils'
 import { useServiceServices } from '../../../services/services'
 
 interface UseSignInLogicProps {
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
-  setCurrentAction: React.Dispatch<
-    React.SetStateAction<{
+  setOpenDialog: Dispatch<SetStateAction<boolean>>
+  setCurrentAction: Dispatch<
+    SetStateAction<{
       action: DialogActions
       title: string
       message?: string
@@ -35,7 +40,7 @@ export function useRequestFormLogic({
   setCurrentAction,
   handleCloseDialog,
 }: UseSignInLogicProps) {
-  const { index } = useServiceServices()
+  const { indexServices } = useServiceServices()
 
   const [state, formAction, isLoading] = useActionState(createRequest, null)
 
@@ -46,7 +51,7 @@ export function useRequestFormLogic({
 
   async function fetchServices({ query = {} }: { query: IndexServiceQuery }) {
     try {
-      const response = await index(query)
+      const response = await indexServices({ query })
 
       setServices(response.data.services)
     } catch (error: any) {}

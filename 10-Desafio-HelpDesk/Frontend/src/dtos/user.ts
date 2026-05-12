@@ -1,3 +1,5 @@
+import type { PaginationType } from '../types/utils'
+
 export type UserAPIRole = 'client' | 'technician' | 'admin'
 
 export interface User {
@@ -11,11 +13,41 @@ export interface User {
   updatedAt: string
 }
 
-export interface SessionAPIResponse {
+export type UserWithoutPassword = Omit<User, 'password'>
+
+export type CreateSessionBody = Pick<User, 'email' | 'password'>
+
+export interface CreateSessionAPIResponse {
   token: string
-  user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'profilePicture'>
+  user: Pick<User, 'id' | 'name' | 'role'>
 }
 
-export type CreateUserProps = Pick<User, 'name' | 'email' | 'password'> & {
-  confirmPassword: string
+export interface IndexUserQuery {
+  name: string
+  role: UserAPIRole
+  page: number
+  perPage: number
 }
+
+export interface IndexUserAPIResponse {
+  users: UserWithoutPassword
+  pagination: PaginationType
+}
+
+export type ShowUserAPIResponse = UserWithoutPassword
+
+export type CreateUserBody = Pick<User, 'name' | 'email' | 'password'> &
+  Partial<Pick<User, 'role'>> & {
+    confirmPassword: string
+    available_hours?: number[]
+  }
+
+export type CreateUserAPIResponse = UserWithoutPassword
+
+export type PutUserBody = Partial<CreateUserBody> & {
+  availableHours?: number[]
+}
+
+export type PutUserAPIResponse = UserWithoutPassword
+
+export type DeleteUserAPIResponse = UserWithoutPassword

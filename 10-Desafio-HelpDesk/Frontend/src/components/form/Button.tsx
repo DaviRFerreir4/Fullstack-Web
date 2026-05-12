@@ -1,6 +1,6 @@
-import type { ComponentType } from 'react'
+import type { ComponentProps, ComponentType } from 'react'
 
-type Props = React.ComponentProps<'button'> & {
+type Props = ComponentProps<'button'> & {
   text?: string
   variant?: keyof typeof variants
   size?: keyof typeof sizes | 'custom'

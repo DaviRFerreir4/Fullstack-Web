@@ -1,15 +1,15 @@
-import { useActionState } from 'react'
+import { useActionState, type Dispatch, type SetStateAction } from 'react'
 import z, { ZodError } from 'zod'
-import type { TAuthContext } from '../../../contexts/AuthContext'
+import type { AuthContextType } from '../../../contexts/AuthContext'
 import type { SignInFormErrors } from '../../../types/forms'
 import type { DialogActions } from '../../../types/utils'
 import { useSessionServices } from '../../../services/sessions'
 
 interface UseSignInLogicProps {
-  auth: TAuthContext
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
-  setCurrentAction: React.Dispatch<
-    React.SetStateAction<{
+  auth: AuthContextType
+  setOpenDialog: Dispatch<SetStateAction<boolean>>
+  setCurrentAction: Dispatch<
+    SetStateAction<{
       action: DialogActions
       title: string
       message?: string
@@ -46,7 +46,7 @@ export function useSignInLogic({
     try {
       const { email, password } = signInSchema.parse(data)
 
-      const response = await createSession({ email, password })
+      const response = await createSession({ body: { email, password } })
 
       if (response.status === 201) {
         auth.save(response.data)

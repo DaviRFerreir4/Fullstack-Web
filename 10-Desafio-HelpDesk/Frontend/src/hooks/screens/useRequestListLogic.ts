@@ -1,14 +1,14 @@
-import { useState } from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 import type { IndexRequestsQuery, UserRequest } from '../../dtos/requests'
-import type { SessionAPIResponse } from '../../dtos/user'
-import type { DialogActions, TPagination } from '../../types/utils'
+import type { CreateSessionAPIResponse } from '../../dtos/user'
+import type { DialogActions, PaginationType } from '../../types/utils'
 import { useRequestServices } from '../../services/requests'
 
 interface UseRequestListLogicProps {
-  session: SessionAPIResponse
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
-  setCurrentAction: React.Dispatch<
-    React.SetStateAction<{
+  session: CreateSessionAPIResponse
+  setOpenDialog: Dispatch<SetStateAction<boolean>>
+  setCurrentAction: Dispatch<
+    SetStateAction<{
       action: DialogActions
       title: string
       message?: string
@@ -24,10 +24,10 @@ export function useRequestListLogic({
   setOpenDialog,
   handleCloseDialog,
 }: UseRequestListLogicProps) {
-  const { index } = useRequestServices()
+  const { indexRequests } = useRequestServices()
 
   const [requests, setRequests] = useState<UserRequest[] | null>(null)
-  const [pagination, setPagination] = useState<TPagination | null>(null)
+  const [pagination, setPagination] = useState<PaginationType | null>(null)
 
   const [technicianRequests, setTechnicianRequests] = useState<{
     opened?: UserRequest[]
@@ -35,9 +35,9 @@ export function useRequestListLogic({
     closed?: UserRequest[]
   } | null>(null)
   const [technicianPagination, setTechnicianPagination] = useState<{
-    opened?: TPagination
-    in_progress?: TPagination
-    closed?: TPagination
+    opened?: PaginationType
+    in_progress?: PaginationType
+    closed?: PaginationType
   } | null>(null)
 
   async function fetchRequests({ query = {} }: { query?: IndexRequestsQuery }) {
@@ -45,7 +45,7 @@ export function useRequestListLogic({
     const isTechnicianUser = session?.user.role === 'technician'
 
     try {
-      const response = await index({
+      const response = await indexRequests({
         query,
         endpoint: isAdminUser
           ? '/requests'

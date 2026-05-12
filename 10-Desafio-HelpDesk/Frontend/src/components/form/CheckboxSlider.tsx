@@ -1,4 +1,6 @@
-type Props = React.ComponentProps<'input'> & {
+import type { ComponentProps } from 'react'
+
+type Props = ComponentProps<'input'> & {
   text?: string
 }
 

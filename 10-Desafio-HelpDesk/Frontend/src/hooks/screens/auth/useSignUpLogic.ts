@@ -1,14 +1,14 @@
 import z, { ZodError } from 'zod'
-import { useActionState } from 'react'
+import { useActionState, type Dispatch, type SetStateAction } from 'react'
 import type { SignUpFormErrors } from '../../../types/forms'
 import type { DialogActions } from '../../../types/utils'
 import { useNavigate } from 'react-router'
 import { useUserServices } from '../../../services/users'
 
 interface UseSignInLogicProps {
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
-  setCurrentAction: React.Dispatch<
-    React.SetStateAction<{
+  setOpenDialog: Dispatch<SetStateAction<boolean>>
+  setCurrentAction: Dispatch<
+    SetStateAction<{
       action: DialogActions
       title: string
       message?: string
@@ -65,10 +65,13 @@ export function useSignUpLogic({
         signUpSchema.parse(data)
 
       const response = await createUser({
-        name,
-        email,
-        password,
-        confirmPassword,
+        body: {
+          name,
+          email,
+          password,
+          confirmPassword,
+        },
+        endpoint: '/users',
       })
 
       if (response.status === 201) {

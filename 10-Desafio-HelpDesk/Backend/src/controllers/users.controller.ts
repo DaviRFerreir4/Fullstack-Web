@@ -131,15 +131,17 @@ export class UsersController {
       },
       include: {
         technician: user.role === 'client' && {
-          omit: { password: true },
+          select: { id: true, name: true, email: true, profilePicture: true },
         },
         client: user.role === 'technician' && {
-          omit: { password: true },
+          select: { id: true, name: true, email: true, profilePicture: true },
         },
         services: {
           select: {
             createdAt: true,
-            service: true,
+            service: {
+              omit: { createdAt: true, updatedAt: true },
+            },
           },
         },
       },
@@ -237,6 +239,7 @@ export class UsersController {
 
     const user = await prisma.user.create({
       data: { name, email, password: hashedPassword, role },
+      omit: { password: true },
     })
 
     if (role === 'technician') {
@@ -245,9 +248,7 @@ export class UsersController {
       })
     }
 
-    const { password: _, ...userWithoutPassword } = user
-
-    return response.status(201).json({ ...userWithoutPassword })
+    return response.status(201).json(user)
   }
 
   async update(request: Request, response: Response) {
@@ -339,12 +340,13 @@ export class UsersController {
 
     const hashedPassword = password ? await hash(password, 10) : undefined
 
-    await prisma.user.update({
+    const userUpdated = await prisma.user.update({
       where: { id },
       data: { name, email, password: hashedPassword },
+      omit: { password: true },
     })
 
-    return response.json()
+    return response.json({ ...userUpdated })
   }
 
   async remove(request: Request, response: Response) {
@@ -424,8 +426,11 @@ export class UsersController {
       diskStorage.deleteFile(user.profilePicture, 'uploads')
     }
 
-    await prisma.user.delete({ where: { id } })
+    const userRemoved = await prisma.user.delete({
+      where: { id },
+      omit: { password: true },
+    })
 
-    return response.json()
+    return response.json({ ...userRemoved })
   }
 }

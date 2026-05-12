@@ -1,6 +1,6 @@
-import type { ComponentType } from 'react'
+import type { ComponentProps, ComponentType } from 'react'
 
-type Props = React.ComponentProps<'a'> & {
+type Props = ComponentProps<'a'> & {
   Icon: ComponentType<{ className?: string }>
   text: string
   selected?: boolean

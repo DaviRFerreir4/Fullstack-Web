@@ -1,4 +1,4 @@
-import type { TPagination } from '../types/utils'
+import type { PaginationType } from '../types/utils'
 
 export interface Service {
   id: string
@@ -21,5 +21,17 @@ export interface IndexServiceQuery {
 
 export interface IndexServiceAPIResponse {
   services: Service[]
-  pagination: TPagination
+  pagination: PaginationType
 }
+
+export type CreateServiceBody = Pick<Service, 'title' | 'value'>
+
+export type CreateServiceAPIResponse = Service
+
+export type PutServiceBody = Pick<Service, 'title' | 'value'>
+
+export type PutServiceAPIResponse = Service
+
+export type PatchServiceIsActiveBody = Pick<Service, 'isActive'>
+
+export type PatchServiceIsActiveAPIResponse = Service

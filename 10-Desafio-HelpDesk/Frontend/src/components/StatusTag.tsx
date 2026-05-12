@@ -7,7 +7,9 @@ import CheckIcon from '../assets/icons/circle-check-big.svg?react'
 // @ts-expect-error TS2307
 import BanIcon from '../assets/icons/ban.svg?react'
 
-type Props = React.ComponentProps<'label'> & {
+import type { ComponentProps } from 'react'
+
+type Props = ComponentProps<'label'> & {
   status: keyof typeof statusData
   includeText?: boolean
 }

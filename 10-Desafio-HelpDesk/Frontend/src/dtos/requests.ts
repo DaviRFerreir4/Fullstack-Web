@@ -1,4 +1,4 @@
-import type { TPagination } from '../types/utils'
+import type { PaginationType } from '../types/utils'
 import type { Service } from './services'
 import type { User } from './user'
 
@@ -9,12 +9,10 @@ export interface UserRequest {
   title: string
   description: string
   status: Status
-  requestedBy: string
-  assignedTo: string
   createdAt: string
   updatedAt: string
-  technician?: Omit<User, 'password'>
-  client?: Omit<User, 'password'>
+  technician?: Pick<User, 'id' | 'name' | 'email' | 'profilePicture'>
+  client?: Pick<User, 'id' | 'name' | 'email' | 'profilePicture'>
   services: {
     createdAt: string
     service: Omit<Service, 'createdAt' | 'updatedAt'>
@@ -27,7 +25,30 @@ export interface IndexRequestsQuery {
   page?: number
 }
 
-export interface IndexRequestByUserAPIResponse {
+export interface IndexRequestAPIResponse {
   requests: UserRequest[]
-  pagination: TPagination
+  pagination: PaginationType
 }
+
+export type ShowRequestAPIResponse = UserRequest
+
+export type CreateRequestBody = Pick<UserRequest, 'title' | 'description'> & {
+  serviceId: string
+  assignedTo?: string
+}
+
+export type CreateRequestAPIResponse = UserRequest
+
+export interface CreateRequestServiceBody {
+  serviceId: string
+}
+
+export type CreateRequestServiceAPIResponse = UserRequest
+
+export type DeleteRequestServiceBody = CreateRequestServiceBody
+
+export type DeleteRequestServiceAPIResponse = UserRequest
+
+export type PatchRequestStatusBody = Pick<UserRequest, 'status'>
+
+export type PatchRequestStatusAPIResponse = UserRequest
