@@ -2,20 +2,13 @@ import { useActionState, type Dispatch, type SetStateAction } from 'react'
 import z, { ZodError } from 'zod'
 import type { AuthContextType } from '../../../contexts/AuthContext'
 import type { SignInFormErrors } from '../../../types/forms'
-import type { DialogActions } from '../../../types/utils'
 import { useSessionServices } from '../../../services/sessions'
+import type { CurrentAction } from '../../../types/dialog'
 
 interface UseSignInLogicProps {
   auth: AuthContextType
   setOpenDialog: Dispatch<SetStateAction<boolean>>
-  setCurrentAction: Dispatch<
-    SetStateAction<{
-      action: DialogActions
-      title: string
-      message?: string
-      handleAction: (() => void) | ((payload: FormData) => void)
-    } | null>
-  >
+  setCurrentAction: Dispatch<SetStateAction<CurrentAction>>
   handleCloseDialog: () => void
 }
 

@@ -23,7 +23,7 @@ import { Dialog } from '../components/dialogs/Dialog'
 import { useAuth } from '../hooks/useAuth'
 import { useResultDialog } from '../hooks/useResultDialog'
 import { RemoveRequestServiceDialog } from '../components/dialogs/pages/RequestDetails/RemoveRequestServiceDialog'
-import { useRequestDetailsLogic } from '../hooks/screens/useRequestDetailsLogic'
+import { useRequestDetailsLogic } from '../hooks/pages/useRequestDetailsLogic'
 import { EditRequestServiceDialog } from '../components/dialogs/pages/RequestDetails/EditRequestServiceDialog'
 
 export function RequestDetails() {

@@ -140,7 +140,7 @@ export function ServiceList() {
           }
         />
       </div>
-      <table className="w-full border border-gray-500 rounded-xl border-separate table-fixed">
+      <table className="w-full mb-4 border border-gray-500 rounded-xl border-separate table-fixed">
         <thead>
           <tr>
             <TableHeader text="Título" />

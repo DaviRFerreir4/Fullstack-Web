@@ -10,7 +10,7 @@ import { Dialog } from '../components/dialogs/Dialog'
 import { useResultDialog } from '../hooks/useResultDialog'
 import { Pagination } from '../components/navigation/Pagination'
 import type { Status } from '../dtos/requests'
-import { useRequestListLogic } from '../hooks/screens/useRequestListLogic'
+import { useRequestListLogic } from '../hooks/pages/useRequestListLogic'
 
 export function RequestList() {
   const { session } = useAuth()
@@ -28,20 +28,20 @@ export function RequestList() {
     handleCloseDialog,
   } = useResultDialog()
 
-  const adminAndClientPerPage = 7
-  const technicianPerPage = isMobile ? 1 : 3
-
   const {
-    fetchRequests,
     requests,
     pagination,
+    adminAndClientPerPage,
     technicianRequests,
     technicianPagination,
+    technicianPerPage,
+    fetchRequests,
     changeRequestStatus,
     areRequestCardLoading,
     setAreRequestCardLoading,
   } = useRequestListLogic({
     session,
+    isMobile,
     setCurrentAction,
     setOpenDialog,
     handleCloseDialog,
