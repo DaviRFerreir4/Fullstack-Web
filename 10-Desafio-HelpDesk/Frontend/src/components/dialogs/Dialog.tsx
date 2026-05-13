@@ -1,28 +1,34 @@
 // @ts-expect-error TS2307
-import CloseIcon from '../assets/icons/close.svg?react'
+import CloseIcon from '../../assets/icons/close.svg?react'
 // @ts-expect-error TS2307
-import BackIcon from '../assets/icons/arrow-left.svg?react'
+import BackIcon from '../../assets/icons/arrow-left.svg?react'
 // @ts-expect-error TS2307
-import SuccessIcon from '../assets/icons/circle-check-big.svg?react'
+import SuccessIcon from '../../assets/icons/circle-check-big.svg?react'
 // @ts-expect-error TS2307
-import FailureIcon from '../assets/icons/circle-alert.svg?react'
+import FailureIcon from '../../assets/icons/circle-alert.svg?react'
 
-import { Button } from '../components/form/Button'
-import { useEffect } from 'react'
-import type { DialogActions } from '../types/utils'
+import { Button } from '../form/Button'
+import {
+  useEffect,
+  type ComponentProps,
+  type ReactNode,
+  type RefObject,
+} from 'react'
+import type { DialogActions } from '../../types/utils'
 
-type Props = React.ComponentProps<'dialog'> & {
+type Props = ComponentProps<'dialog'> & {
   open?: boolean
   title?: string
   action?: DialogActions
   handleAction: (() => void) | ((payload: FormData) => void)
   message?: string
-  dialogRef: React.RefObject<null | HTMLDialogElement>
+  dialogRef: RefObject<null | HTMLDialogElement>
   closeDialog: () => void
+  disableCloseAction?: boolean
   backAction?: () => void
   useSamePadding?: boolean
   isFormLoading?: boolean
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
 function Wrapper({
@@ -30,7 +36,7 @@ function Wrapper({
   handleSubmit,
   children,
 }: {
-  children: React.ReactNode
+  children: ReactNode
   handleSubmit?: (() => void) | ((payload: FormData) => void)
   wrapperType: 'div' | 'form'
 }) {
@@ -48,6 +54,7 @@ export function Dialog({
   message,
   dialogRef,
   closeDialog,
+  disableCloseAction,
   backAction,
   isFormLoading,
   children,
@@ -85,8 +92,8 @@ export function Dialog({
         <div className="px-7 pb-5 flex justify-between items-center gap-3">
           {action === 'changePassword' && (
             <BackIcon
-              className="w-4.5 h-4.5 text-gray-300 cursor-pointer"
-              onClick={backAction}
+              className={`w-4.5 h-4.5 text-gray-300 cursor-pointer ${!disableCloseAction ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+              onClick={!disableCloseAction ? backAction : () => {}}
             />
           )}
           <h1
@@ -95,8 +102,8 @@ export function Dialog({
             {title}
           </h1>
           <CloseIcon
-            className="text-gray-300 w-4.5 h-4.5 cursor-pointer"
-            onClick={closeDialog}
+            className={`text-gray-300 w-4.5 h-4.5 ${!disableCloseAction ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+            onClick={!disableCloseAction ? closeDialog : () => {}}
           />
         </div>
         <div
@@ -141,7 +148,11 @@ export function Dialog({
               text={buttonText}
               type={wrapperType === 'div' ? 'button' : 'submit'}
               disabled={isFormLoading}
-              onClick={handleAction as () => void}
+              onClick={
+                wrapperType === 'div'
+                  ? (handleAction as () => void)
+                  : () => undefined
+              }
             />
           </div>
         </div>

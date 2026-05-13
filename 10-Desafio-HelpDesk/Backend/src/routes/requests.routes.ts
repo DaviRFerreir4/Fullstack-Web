@@ -27,11 +27,6 @@ requestsRoutes.patch(
   verifyUserAuthorization(['technician']),
   requestsController.removeRequestService
 )
-requestsRoutes.post(
-  '/:id',
-  verifyUserAuthorization(['technician']),
-  requestsController.createRequestService
-)
 requestsRoutes.patch(
   '/:id/status',
   verifyUserAuthorization(['technician', 'admin']),

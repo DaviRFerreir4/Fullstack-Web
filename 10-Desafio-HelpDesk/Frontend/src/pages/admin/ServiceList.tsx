@@ -8,7 +8,7 @@ import {
   type IService,
   type IServiceAction,
 } from '../../components/table/Service'
-import { Dialog } from '../../components/Dialog'
+import { Dialog } from '../../components/dialogs/Dialog'
 import { Input } from '../../components/form/Input'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useState, useRef } from 'react'
@@ -33,6 +33,7 @@ export function ServiceList() {
     title: string
     message?: string
     handleAction: () => void
+    disableCloseAction?: boolean
   }>(null)
 
   function createService() {
@@ -173,6 +174,7 @@ export function ServiceList() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
       >
         {currentAction?.action === 'create' ||
         currentAction?.action === 'edit' ? (

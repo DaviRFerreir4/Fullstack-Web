@@ -1,6 +1,6 @@
 import { Input } from '../../components/form/Input'
 import { Button } from '../../components/form/Button'
-import { Dialog } from '../../components/Dialog'
+import { Dialog } from '../../components/dialogs/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
 import { useSignUpLogic } from '../../hooks/screens/auth/useSignUpLogic'
 
@@ -132,6 +132,7 @@ export function SignUp() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
       />
     </div>
   )

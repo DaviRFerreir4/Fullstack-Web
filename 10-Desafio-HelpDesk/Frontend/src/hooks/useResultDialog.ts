@@ -10,6 +10,7 @@ export function useResultDialog() {
     title: string
     message?: string
     handleAction: (() => void) | ((payload: FormData) => void)
+    disableCloseAction?: boolean
   }>(null)
 
   function handleCloseDialog() {

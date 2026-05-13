@@ -18,71 +18,22 @@ import { ProfilePicture } from '../components/ProfilePicture'
 
 import { useNavigate, useParams } from 'react-router'
 import dayjs from 'dayjs'
-import { useActionState, useEffect, useState } from 'react'
-import { Dialog } from '../components/Dialog'
-import { Input } from '../components/form/Input'
+import { useEffect } from 'react'
+import { Dialog } from '../components/dialogs/Dialog'
 import { useAuth } from '../hooks/useAuth'
 import { useResultDialog } from '../hooks/useResultDialog'
-import { api } from '../services/api'
-import { CheckboxSlider } from '../components/form/CheckboxSlider'
-import { Select } from '../components/form/Select'
-import { Autocomplete } from '../components/form/Autocomplete'
-import z, { ZodError } from 'zod'
-import { AxiosError } from 'axios'
-import type { Service } from '../dtos/services'
-import type { UserRequest } from '../dtos/requests'
-import type { AddServiceFormErrors } from '../types/forms'
-
-interface IServiceActions {
-  action: 'edit' | 'remove'
-  title: string
-}
-
-const useSelect = false
-
-const addServiceSchema = z.object({
-  title: z
-    .string({ error: 'Informe o título' })
-    .min(8, { error: 'O título deve conter ao menos 8 digitos' })
-    .nullable(),
-  value: z.coerce
-    .number({ error: 'Valor inválido' })
-    .gt(0, { error: 'O valor deve ser maior que 0' })
-    .nullable(),
-  service: z.uuid({ error: 'Informe um serviço válido' }).nullable(),
-  serviceName: z.string({ error: 'Informe o serviço' }).nullable(),
-})
+import { RemoveRequestServiceDialog } from '../components/dialogs/pages/RequestDetails/RemoveRequestServiceDialog'
+import { useRequestDetailsLogic } from '../hooks/screens/useRequestDetailsLogic'
+import { EditRequestServiceDialog } from '../components/dialogs/pages/RequestDetails/EditRequestServiceDialog'
 
 export function RequestDetails() {
   const { session } = useAuth()
 
-  if (!session) return
-
-  const [formAddState, formAddAction, formAddIsLoading] = useActionState(
-    addService,
-    null
-  )
-
-  const [isRmvServiceLoading, setIsRmvServiceLoading] = useState(false)
-
-  const [isNewService, setIsNewService] = useState(false)
-
-  const [serviceName, setServiceName] = useState('')
-
-  const [serviceValue, setServiceValue] = useState('')
-
-  const [services, setServices] = useState<null | Service[]>(null)
-
-  const [serviceId, setServiceId] = useState('')
-
-  const [request, setRequest] = useState<null | Omit<
-    UserRequest,
-    'assignedTo' | 'requestedBy'
-  >>(null)
+  if (!session) return <div>User not logged in</div>
 
   const navigate = useNavigate()
   const params = useParams()
-  const id = params.id
+  const id = Number(params.id)
 
   const {
     dialogRef,
@@ -93,262 +44,36 @@ export function RequestDetails() {
     handleCloseDialog,
   } = useResultDialog()
 
-  function clearFields() {
-    if (!isNewService) {
-      setServiceId('')
-    }
-    if (serviceName !== '') {
-      setServiceName('')
-    }
-    if (serviceValue !== '') {
-      setServiceValue('')
-    }
-  }
+  if (isNaN(id) || id <= 0) return <div>Invalid Id</div>
 
-  async function fetchRequest() {
-    try {
-      const response = await api.get<
-        Omit<UserRequest, 'assignedTo' | 'requestedBy'>
-      >(`/requests/${id}`)
-
-      setRequest(response.data)
-    } catch (error: any) {
-      setCurrentAction({
-        action: 'failure',
-        title: error.response?.data?.message ?? error.message,
-        handleAction: handleCloseDialog,
-      })
-
-      setOpenDialog(true)
-    }
-  }
-
-  async function fetchServices(query?: string) {
-    try {
-      const idsToIgnore = request?.services.map(
-        (serviceInfo) => serviceInfo.service.id
-      )
-
-      const response = await api.get<{ services: Service[] }>('/services', {
-        params: {
-          title: query,
-          perPage: 5,
-          idsToIgnore,
-          is_active: true,
-        },
-      })
-
-      const servicesFound = response.data.services
-
-      setServices(servicesFound.length > 0 ? servicesFound : null)
-    } catch (error: any) {
-      console.log(error)
-    }
-  }
-
-  async function changeRequestStatus(data: Pick<UserRequest, 'status'>) {
-    try {
-      const response = await api.patch(`/requests/${request?.id}/status`, data)
-
-      console.log(response)
-
-      if (response.status === 200) {
-        setRequest((prev) => ({
-          ...(prev as Omit<UserRequest, 'requestedBy' | 'assignedTo'>),
-          status: data.status,
-        }))
-
-        setCurrentAction({
-          action: 'success',
-          title: 'Status do chamado alterado com sucesso!',
-          handleAction: handleCloseDialog,
-        })
-
-        setOpenDialog(true)
-      }
-    } catch (error: any) {
-      let message = 'Não foi possível alterar o status do chamado'
-
-      if (error instanceof AxiosError) {
-        message = error.response?.data.message
-      }
-
-      setCurrentAction({
-        action: 'failure',
-        title: message,
-        handleAction: handleCloseDialog,
-      })
-
-      setOpenDialog(true)
-    }
-  }
-
-  async function addService(_: any, formData: FormData) {
-    const data = {
-      title: formData.get('title'),
-      value: formData.get('value'),
-      service: formData.get('service'),
-      serviceName: formData.get('serviceName'),
-    }
-
-    try {
-      const { title, value, service, serviceName } =
-        addServiceSchema.parse(data)
-
-      if (title && value) {
-        console.log(title, value)
-      } else if (service) {
-        console.log(service)
-      } else if (serviceName) {
-        const serviceData = services?.filter(
-          (service) => service.title === serviceName
-        )[0]
-
-        if (!serviceData) {
-          return { data }
-        }
-
-        const newServiceData = {
-          createdAt: new Date().toISOString(),
-          service: {
-            id: serviceData.id,
-            isActive: serviceData.isActive,
-            title: serviceData.title,
-            value: serviceData.value,
-          },
-        }
-
-        const response = await api.post(`/requests/${request?.id}/service`, {
-          serviceId: serviceData.id,
-        })
-
-        if (response.status === 201) {
-          setRequest({
-            ...request,
-            services: [
-              ...(request?.services as {
-                createdAt: string
-                service: Omit<Service, 'createdAt' | 'updatedAt'>
-              }[]),
-              newServiceData,
-            ],
-          } as Omit<UserRequest, 'assignedTo' | 'requestedBy'> | null)
-        }
-      } else {
-        throw new Error('Nenhum campo informado')
-      }
-
-      setCurrentAction({
-        action: 'success',
-        title: 'Serviço adicionado com sucesso!',
-        handleAction: handleCloseDialog,
-      })
-
-      clearFields()
-    } catch (error: any) {
-      if (error instanceof ZodError) {
-        const fieldErrors: AddServiceFormErrors =
-          z.flattenError(error).fieldErrors
-        const formErrors: string[] = z.flattenError(error).formErrors
-
-        return { data, fieldErrors, formErrors }
-      }
-
-      let message = 'Erro ao adicionar o serviço ao chamado'
-
-      if (error instanceof AxiosError) {
-        message = error.response?.data.message
-      }
-
-      clearFields()
-
-      setCurrentAction({
-        action: 'failure',
-        title: message,
-        handleAction: handleCloseDialog,
-      })
-
-      return { data }
-    }
-
-    return {}
-  }
-
-  async function removeService(
-    service: Omit<Service, 'createdAt' | 'updatedAt'>
-  ) {
-    setIsRmvServiceLoading(true)
-    try {
-      const response = await api.patch(`/requests/${request?.id}/service`, {
-        serviceId: service.id,
-      })
-
-      if (response.status === 200 && request) {
-        const updatedServices = [...request.services]
-
-        updatedServices.splice(
-          updatedServices.findIndex(
-            (serviceInfo) => serviceInfo.service.title === service?.title
-          ),
-          1
-        )
-
-        setRequest({
-          ...request,
-          services: updatedServices,
-        })
-      }
-
-      setCurrentAction({
-        action: 'success',
-        title: 'Serviço removido do chamado com sucesso!',
-        handleAction: handleCloseDialog,
-      })
-    } catch (error: any) {
-      console.log(error)
-
-      let message = 'Erro ao remover o serviço do chamado'
-
-      if (error instanceof AxiosError) {
-        message = error.response?.data.message
-      }
-
-      setCurrentAction({
-        action: 'failure',
-        title: message,
-        handleAction: handleCloseDialog,
-      })
-    } finally {
-      clearFields()
-      setIsRmvServiceLoading(false)
-    }
-  }
-
-  async function serviceOperations(
-    service: Omit<Service, 'createdAt' | 'updatedAt'> | null,
-    serviceAction: IServiceActions
-  ) {
-    if (serviceAction.action === 'edit') {
-      await fetchServices()
-    }
-
-    if (serviceAction.action === 'remove') {
-      setServiceName(service?.title ?? '')
-    }
-
-    setCurrentAction({
-      action: serviceAction.action,
-      title: serviceAction.title,
-      handleAction:
-        serviceAction.action === 'edit'
-          ? formAddAction
-          : service
-            ? () => removeService(service)
-            : () => {},
-    })
-
-    setOpenDialog(true)
-  }
+  const {
+    formAddIsLoading,
+    isRmvServiceLoading,
+    serviceName,
+    setServiceName,
+    serviceValue,
+    setServiceValue,
+    services,
+    request,
+    clearFields,
+    fetchRequest,
+    fetchServices,
+    changeRequestStatus,
+    serviceOperations,
+    // useNewService,
+    // useSelect,
+    // formAddState,
+    // isNewService,
+    // setIsNewService,
+    // serviceId,
+    // setServiceId,
+  } = useRequestDetailsLogic({
+    requestId: id,
+    navigate,
+    setOpenDialog,
+    setCurrentAction,
+    handleCloseDialog,
+  })
 
   useEffect(() => {
     fetchRequest()
@@ -619,6 +344,7 @@ export function RequestDetails() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
         isFormLoading={
           currentAction?.action === 'edit'
             ? formAddIsLoading
@@ -626,123 +352,26 @@ export function RequestDetails() {
         }
       >
         {currentAction?.action === 'edit' ? (
-          <div className="grid gap-4">
-            <CheckboxSlider
-              text="Serviço novo"
-              defaultChecked={isNewService}
-              onChange={(event) => {
-                setIsNewService(event.target.checked)
-                delete formAddState?.data
-                delete formAddState?.fieldErrors
-                delete formAddState?.formErrors
-                clearFields()
-              }}
-            />
-            {isNewService ? (
-              <div className="grid gap-4">
-                <Input
-                  label="Título"
-                  name="title"
-                  id="title"
-                  placeholder="Nome do serviço"
-                  error={!!formAddState?.fieldErrors?.title}
-                  helperText={
-                    formAddState?.fieldErrors?.title
-                      ? formAddState?.fieldErrors?.title[0]
-                      : undefined
-                  }
-                  defaultValue={
-                    formAddState?.data?.title
-                      ? formAddState?.data.title?.toString()
-                      : ''
-                  }
-                  required
-                />
-                <Input
-                  key="key-new"
-                  label="Valor"
-                  name="value"
-                  id="value"
-                  type="number"
-                  currency
-                  placeholder="0,00"
-                  error={!!formAddState?.fieldErrors?.value}
-                  helperText={
-                    formAddState?.fieldErrors?.value
-                      ? formAddState?.fieldErrors?.value[0]
-                      : undefined
-                  }
-                  defaultValue={
-                    formAddState?.data?.value
-                      ? formAddState?.data.value?.toString()
-                      : ''
-                  }
-                  required
-                />
-              </div>
-            ) : useSelect ? (
-              <div className="grid gap-4">
-                <Select
-                  label="Serviço"
-                  name="service"
-                  placeholder="Indique o serviço a ser adicionado"
-                  options={
-                    services
-                      ?.filter((service) => service.isActive)
-                      .map((service) => {
-                        return { text: service.title, value: service.id }
-                      }) ?? []
-                  }
-                  defaultValue={serviceId}
-                  selectValue={serviceId}
-                  onChange={(event) => setServiceId(event.target.value)}
-                  required
-                />
-              </div>
-            ) : (
-              <div className="grid gap-4">
-                <Autocomplete
-                  label="Serviços"
-                  placeholder="Pesquise o serviço"
-                  items={
-                    services?.map((service) => ({
-                      title: service.title,
-                      value: service.id,
-                    })) ?? [{ title: 'Nenhum item encontrado', value: '' }]
-                  }
-                  selectedItem={serviceName}
-                  setSelectedItem={setServiceName}
-                  name="serviceName"
-                  id="serviceName"
-                  autoComplete="off"
-                  required
-                  updateItems={fetchServices}
-                />
-                <Input
-                  key="key-existing"
-                  label="Valor"
-                  type="number"
-                  currency
-                  placeholder="0,00"
-                  required
-                  disabled
-                  value={serviceValue}
-                />
-              </div>
-            )}
-          </div>
+          <EditRequestServiceDialog
+            clearFields={clearFields}
+            services={services}
+            fetchServices={fetchServices}
+            serviceName={serviceName}
+            setServiceName={setServiceName}
+            serviceValue={serviceValue}
+            // useNewService={useNewService}
+            // useSelect={useSelect}
+            // isNewService={isNewService}
+            // setIsNewService={setIsNewService}
+            // formAddState={formAddState}
+            // serviceId={serviceId}
+            // setServiceId={setServiceId}
+          />
         ) : currentAction?.action === 'remove' ? (
-          <div className="grid gap-5">
-            <p>
-              Deseja realmente remover o serviço <strong>{serviceName}</strong>{' '}
-              do chamado de nº {request?.id}?
-            </p>
-
-            <p>
-              Ao remove-lo, ele deixará de ser considerado no cálculo de valor
-              total do chamado.
-            </p>
-          </div>
+          <RemoveRequestServiceDialog
+            requestId={request?.id}
+            serviceName={serviceName}
+          />
         ) : (
           ''
         )}

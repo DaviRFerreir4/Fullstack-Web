@@ -8,7 +8,7 @@ import {
   type ITechnician,
   type ITechnicianAction,
 } from '../../components/table/Technician'
-import { Dialog } from '../../components/Dialog'
+import { Dialog } from '../../components/dialogs/Dialog'
 import { useState, useRef } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
@@ -33,6 +33,7 @@ export function TechnicianList() {
     title: string
     message?: string
     handleAction: () => void
+    disableCloseAction?: boolean
   }>(null)
 
   function removeTechnician() {
@@ -119,6 +120,7 @@ export function TechnicianList() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
       >
         <div className="grid gap-5">
           <p>

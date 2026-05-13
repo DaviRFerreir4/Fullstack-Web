@@ -4,7 +4,7 @@ import {
   type IClient,
   type IClientAction,
 } from '../../components/table/Client'
-import { Dialog } from '../../components/Dialog'
+import { Dialog } from '../../components/dialogs/Dialog'
 import { ProfilePicture } from '../../components/ProfilePicture'
 import { Input } from '../../components/form/Input'
 import { useState, useRef } from 'react'
@@ -25,6 +25,7 @@ export function ClientList() {
     title: string
     message?: string
     handleAction: () => void
+    disableCloseAction?: boolean
   }>(null)
 
   function editClient() {
@@ -110,6 +111,7 @@ export function ClientList() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
       >
         {currentAction?.action === 'edit' ? (
           <div>

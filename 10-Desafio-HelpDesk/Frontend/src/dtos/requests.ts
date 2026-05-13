@@ -43,6 +43,8 @@ export interface CreateRequestServiceBody {
   serviceId: string
 }
 
+export type PatchRequestServiceBody = CreateRequestServiceBody
+
 export type CreateRequestServiceAPIResponse = UserRequest
 
 export type DeleteRequestServiceBody = CreateRequestServiceBody

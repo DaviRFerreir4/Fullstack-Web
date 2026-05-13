@@ -5,6 +5,7 @@ import type {
   CreateRequestServiceBody,
   IndexRequestAPIResponse,
   IndexRequestsQuery,
+  PatchRequestServiceBody,
   PatchRequestStatusAPIResponse,
   PatchRequestStatusBody,
   ShowRequestAPIResponse,
@@ -28,7 +29,7 @@ export function useRequestServices() {
     return response
   }
 
-  async function showRequest({ id }: { id: string }) {
+  async function showRequest({ id }: { id: number }) {
     const response = await api.get<ShowRequestAPIResponse>(`/requests/${id}`)
 
     return response
@@ -57,9 +58,23 @@ export function useRequestServices() {
     const { serviceId } = body
 
     const response = await api.post<CreateRequestServiceAPIResponse>(
-      `/requests/${id}`,
+      `/requests/${id}/service`,
       { serviceId }
     )
+
+    return response
+  }
+
+  async function patchRequestService({
+    id,
+    body,
+  }: {
+    id: number
+    body: PatchRequestServiceBody
+  }) {
+    const { serviceId } = body
+
+    const response = await api.patch(`/requests/${id}/service`, { serviceId })
 
     return response
   }
@@ -68,7 +83,7 @@ export function useRequestServices() {
     id,
     body,
   }: {
-    id: string
+    id: number
     body: PatchRequestStatusBody
   }) {
     const { status } = body
@@ -86,6 +101,7 @@ export function useRequestServices() {
     showRequest,
     createRequest,
     createRequestService,
+    patchRequestService,
     patchRequestStatus,
   }
 }

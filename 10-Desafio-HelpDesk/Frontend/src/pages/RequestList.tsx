@@ -5,8 +5,8 @@ import { RequestCard } from '../components/RequestCard'
 
 import { useIsMobile } from '../hooks/useIsMobile'
 import { useAuth } from '../hooks/useAuth'
-import { useEffect, useMemo } from 'react'
-import { Dialog } from '../components/Dialog'
+import { useEffect } from 'react'
+import { Dialog } from '../components/dialogs/Dialog'
 import { useResultDialog } from '../hooks/useResultDialog'
 import { Pagination } from '../components/navigation/Pagination'
 import type { Status } from '../dtos/requests'
@@ -209,6 +209,7 @@ export function RequestList() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
       />
     </div>
   )

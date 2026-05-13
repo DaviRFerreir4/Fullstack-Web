@@ -4,7 +4,7 @@ import { Select } from '../../components/form/Select'
 import { Textarea } from '../../components/form/Textarea'
 import { InfoField } from '../../components/InfoField'
 import { Button } from '../../components/form/Button'
-import { Dialog } from '../../components/Dialog'
+import { Dialog } from '../../components/dialogs/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
 import { useRequestFormLogic } from '../../hooks/screens/client/useRequestFormLogic'
 
@@ -169,6 +169,7 @@ export function RequestForm() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
       />
     </div>
   )

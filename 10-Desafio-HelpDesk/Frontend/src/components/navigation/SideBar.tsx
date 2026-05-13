@@ -25,7 +25,7 @@ import TrashIcon from '../../assets/icons/trash.svg?react'
 
 import { SubMenu } from './SubMenu'
 import { ProfilePicture } from '../ProfilePicture'
-import { Dialog } from '../Dialog'
+import { Dialog } from '../dialogs/Dialog'
 import { Input } from '../form/Input'
 import { TimeTag } from '../TimeTag'
 
@@ -34,11 +34,8 @@ import { useLocation } from 'react-router'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAuth } from '../../hooks/useAuth'
 import { Button } from '../form/Button'
-
-interface IUserActions {
-  action: 'edit' | 'changePassword'
-  title: string
-}
+import { useResultDialog } from '../../hooks/useResultDialog'
+import { useSideBarLogic } from '../../hooks/components/useSideBarLogic'
 
 export function SideBar() {
   const { session, remove } = useAuth()
@@ -51,45 +48,21 @@ export function SideBar() {
   const popoverRef = useRef<HTMLDivElement | null>(null)
   const [isScreenMenuOpen, setIsScreenMenuOpen] = useState(false)
 
-  const dialogRef = useRef<null | HTMLDialogElement>(null)
-  const [openDialog, setOpenDialog] = useState(false)
+  const {
+    dialogRef,
+    openDialog,
+    setOpenDialog,
+    currentAction,
+    setCurrentAction,
+    handleCloseDialog,
+  } = useResultDialog()
 
-  const [currentAction, setCurrentAction] = useState<null | {
-    action: 'edit' | 'changePassword' | 'success' | 'failure'
-    title: string
-    message?: string
-    handleAction: () => void
-  }>(null)
-
-  function editUser() {
-    setCurrentAction({
-      action: 'success',
-      title: 'Usuário editado com sucesso',
-      handleAction: handleCloseDialog,
-    })
-  }
-
-  function changePassword() {
-    setCurrentAction({
-      action: 'failure',
-      title: 'Não foi possível alterar a senha',
-      handleAction: handleCloseDialog,
-    })
-  }
-
-  function userOperations(serviceAction: IUserActions) {
-    setCurrentAction({
-      action: serviceAction.action,
-      title: serviceAction.title,
-      handleAction: serviceAction.action === 'edit' ? editUser : changePassword,
-    })
-    if (!openDialog) setOpenDialog(true)
-  }
-
-  function handleCloseDialog() {
-    dialogRef.current?.close()
-    setOpenDialog(false)
-  }
+  const { user, fetchUser, userOperations } = useSideBarLogic({
+    openDialog,
+    setCurrentAction,
+    setOpenDialog,
+    handleCloseDialog,
+  })
 
   useEffect(() => {
     // bom revisar
@@ -103,6 +76,10 @@ export function SideBar() {
     popover.addEventListener('toggle', handleToggle)
 
     return () => popover.removeEventListener('toggle', handleToggle)
+  }, [])
+
+  useEffect(() => {
+    fetchUser({ id: session.user.id })
   }, [])
 
   return (
@@ -224,13 +201,13 @@ export function SideBar() {
           style={{ anchorName: '--user-menu' }}
         >
           <ProfilePicture
-            username={session.user.name}
-            profilePicture={session.user.profilePicture}
+            username={user?.name ?? ''}
+            profilePicture={user?.profilePicture}
             size="lg"
           />
           <div className="hidden lg:grid">
-            <span className="text-sm text-gray-600">{session.user.name}</span>
-            <span className="text-xs text-gray-400">{session.user.email}</span>
+            <span className="text-sm text-gray-600">{user?.name}</span>
+            <span className="text-xs text-gray-400">{user?.email}</span>
           </div>
         </button>
         <div
@@ -274,6 +251,7 @@ export function SideBar() {
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
         closeDialog={handleCloseDialog}
+        disableCloseAction={currentAction?.disableCloseAction}
         backAction={() =>
           userOperations({
             action: 'edit',
@@ -285,8 +263,8 @@ export function SideBar() {
           <div>
             <div className="mb-5 px-7 flex items-center gap-3">
               <ProfilePicture
-                username={session.user.name}
-                profilePicture={session.user.profilePicture}
+                username={user?.name ?? ''}
+                profilePicture={user?.profilePicture}
                 size="xl"
               />
               <div className="h-8 flex items-center gap-1">
@@ -297,7 +275,7 @@ export function SideBar() {
                   size="custom"
                   className="h-full px-2"
                 />
-                {session.user.profilePicture && (
+                {user?.profilePicture && (
                   <Button
                     variant="secondary"
                     Icon={TrashIcon}
@@ -309,17 +287,12 @@ export function SideBar() {
               </div>
             </div>
             <div className="px-7 grid gap-4">
-              <Input
-                label="Nome"
-                id="name"
-                value={session.user.name}
-                required
-              />
+              <Input label="Nome" id="name" value={user?.name} required />
               <Input
                 label="E-mail"
                 id="email"
                 type="email"
-                value={session.user.email}
+                value={user?.email}
                 required
               />
               <div className="relative">
@@ -346,7 +319,7 @@ export function SideBar() {
                 </div>
               </div>
             </div>
-            {session.user.role === 'technician' && (
+            {user?.role === 'technician' && (
               <div className="mt-8">
                 <hr className="mb-5 border-gray-500" />
                 <div className="px-7 grid gap-3">
