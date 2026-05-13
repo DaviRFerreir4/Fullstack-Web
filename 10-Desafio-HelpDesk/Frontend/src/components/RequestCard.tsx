@@ -9,14 +9,31 @@ import { StatusTag } from './StatusTag'
 
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
-import type { UserRequest } from '../dtos/requests'
+import type { Status, UserRequest } from '../dtos/requests'
 
 type Props = {
   request: UserRequest
   className?: string
+  isLoading: boolean
+  callback: (newStatus: Status) => void
+  changeStatus: ({
+    id,
+    status,
+    callback,
+  }: {
+    id: number
+    status: Status
+    callback: () => void
+  }) => Promise<void>
 }
 
-export function RequestCard({ request, className }: Props) {
+export function RequestCard({
+  request,
+  className,
+  isLoading,
+  callback,
+  changeStatus,
+}: Props) {
   const navigate = useNavigate()
 
   return (
@@ -42,6 +59,25 @@ export function RequestCard({ request, className }: Props) {
             <Button
               Icon={CheckIcon}
               text={request.status === 'opened' ? 'Iniciar' : 'Encerrar'}
+              onClick={
+                !isLoading
+                  ? () =>
+                      changeStatus({
+                        id: request.id,
+                        status:
+                          request.status === 'opened'
+                            ? 'in_progress'
+                            : 'closed',
+                        callback: () =>
+                          callback(
+                            request.status === 'opened'
+                              ? 'in_progress'
+                              : 'closed'
+                          ),
+                      })
+                  : () => {}
+              }
+              disabled={isLoading}
               size="sm"
             />
           )}

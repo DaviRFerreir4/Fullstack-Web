@@ -2,6 +2,7 @@ import { useState, type Dispatch, type SetStateAction } from 'react'
 import type { UserWithoutPassword } from '../../dtos/user'
 import { useUserServices } from '../../services/users'
 import type { DialogActions } from '../../types/utils'
+import { useAuth } from '../useAuth'
 
 interface UseSideBarLogicProps {
   openDialog: boolean
@@ -12,6 +13,7 @@ interface UseSideBarLogicProps {
       title: string
       message?: string
       handleAction: (() => void) | ((payload: FormData) => void)
+      disableCloseAction?: boolean
     } | null>
   >
   handleCloseDialog: () => void
@@ -29,6 +31,7 @@ export function useSideBarLogic({
   handleCloseDialog,
 }: UseSideBarLogicProps) {
   const { showUser } = useUserServices()
+  const { remove } = useAuth()
 
   const [user, setUser] = useState<UserWithoutPassword | null>(null)
 
@@ -40,8 +43,10 @@ export function useSideBarLogic({
     } catch (error: any) {
       setCurrentAction({
         action: 'failure',
-        title: error?.response?.data?.message ?? error.message,
-        handleAction: handleCloseDialog,
+        title: 'Erro ao buscar usuário',
+        message: error?.response?.data?.message ?? error.message,
+        handleAction: remove,
+        disableCloseAction: true,
       })
 
       setOpenDialog(true)

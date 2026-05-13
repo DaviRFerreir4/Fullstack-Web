@@ -109,9 +109,9 @@ export function useRequestDetailsLogic({
       setCurrentAction({
         action: 'failure',
         title: 'Erro ao buscar chamado',
-        disableCloseAction: true,
         message: error.response?.data?.message ?? error.message,
         handleAction: () => navigate('/requests'),
+        disableCloseAction: true,
       })
 
       setOpenDialog(true)

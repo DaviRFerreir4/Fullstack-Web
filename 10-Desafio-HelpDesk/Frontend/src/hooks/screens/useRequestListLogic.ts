@@ -1,5 +1,9 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
-import type { IndexRequestsQuery, UserRequest } from '../../dtos/requests'
+import type {
+  IndexRequestsQuery,
+  Status,
+  UserRequest,
+} from '../../dtos/requests'
 import type { CreateSessionAPIResponse } from '../../dtos/user'
 import type { DialogActions, PaginationType } from '../../types/utils'
 import { useRequestServices } from '../../services/requests'
@@ -24,7 +28,7 @@ export function useRequestListLogic({
   setOpenDialog,
   handleCloseDialog,
 }: UseRequestListLogicProps) {
-  const { indexRequests } = useRequestServices()
+  const { indexRequests, patchRequestStatus } = useRequestServices()
 
   const [requests, setRequests] = useState<UserRequest[] | null>(null)
   const [pagination, setPagination] = useState<PaginationType | null>(null)
@@ -39,6 +43,8 @@ export function useRequestListLogic({
     in_progress?: PaginationType
     closed?: PaginationType
   } | null>(null)
+
+  const [areRequestCardLoading, setAreRequestCardLoading] = useState(false)
 
   async function fetchRequests({ query = {} }: { query?: IndexRequestsQuery }) {
     const isAdminUser = session?.user.role === 'admin'
@@ -78,11 +84,42 @@ export function useRequestListLogic({
     }
   }
 
+  async function changeRequestStatus({
+    id,
+    status,
+    callback,
+  }: {
+    id: number
+    status: Status
+    callback: () => void
+  }) {
+    setAreRequestCardLoading(true)
+    try {
+      const response = await patchRequestStatus({ id, body: { status } })
+
+      if (response.status === 200) {
+        callback()
+      }
+    } catch (error: any) {
+      setCurrentAction({
+        action: 'failure',
+        title: 'Erro ao atualizar o status do chamado',
+        message: error?.response?.data?.message ?? error.message,
+        handleAction: handleCloseDialog,
+      })
+
+      setOpenDialog(true)
+    }
+  }
+
   return {
     requests,
     pagination,
     technicianRequests,
     technicianPagination,
     fetchRequests,
+    changeRequestStatus,
+    areRequestCardLoading,
+    setAreRequestCardLoading,
   }
 }
