@@ -9,19 +9,12 @@ import type { IndexServiceQuery, Service } from '../../../dtos/services'
 import { api } from '../../../services/api'
 import { useNavigate } from 'react-router'
 import type { CreateRequestFormErrors } from '../../../types/forms'
-import type { DialogActions } from '../../../types/utils'
 import { useServiceServices } from '../../../services/services'
+import type { CurrentAction } from '../../../types/dialog'
 
 interface UseSignInLogicProps {
   setOpenDialog: Dispatch<SetStateAction<boolean>>
-  setCurrentAction: Dispatch<
-    SetStateAction<{
-      action: DialogActions
-      title: string
-      message?: string
-      handleAction: (() => void) | ((payload: FormData) => void)
-    } | null>
-  >
+  setCurrentAction: Dispatch<SetStateAction<CurrentAction>>
   handleCloseDialog: () => void
 }
 

@@ -1,21 +1,13 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
 import type { UserWithoutPassword } from '../../dtos/user'
 import { useUserServices } from '../../services/users'
-import type { DialogActions } from '../../types/utils'
 import { useAuth } from '../useAuth'
+import type { CurrentAction } from '../../types/dialog'
 
 interface UseSideBarLogicProps {
   openDialog: boolean
   setOpenDialog: Dispatch<SetStateAction<boolean>>
-  setCurrentAction: Dispatch<
-    SetStateAction<{
-      action: DialogActions
-      title: string
-      message?: string
-      handleAction: (() => void) | ((payload: FormData) => void)
-      disableCloseAction?: boolean
-    } | null>
-  >
+  setCurrentAction: Dispatch<SetStateAction<CurrentAction>>
   handleCloseDialog: () => void
 }
 

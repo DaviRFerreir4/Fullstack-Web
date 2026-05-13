@@ -23,14 +23,16 @@ export interface CreateSessionAPIResponse {
 }
 
 export interface IndexUserQuery {
-  name: string
-  role: UserAPIRole
-  page: number
-  perPage: number
+  name?: string
+  role?: UserAPIRole
+  page?: number
+  perPage?: number
 }
 
 export interface IndexUserAPIResponse {
-  users: UserWithoutPassword
+  users: (UserWithoutPassword & {
+    _count: { clientRequest: number; technicianRequest: number }
+  })[]
   pagination: PaginationType
 }
 

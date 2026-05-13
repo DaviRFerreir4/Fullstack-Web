@@ -2,7 +2,7 @@ import { Input } from '../../components/form/Input'
 import { Button } from '../../components/form/Button'
 import { Dialog } from '../../components/dialogs/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
-import { useSignUpLogic } from '../../hooks/screens/auth/useSignUpLogic'
+import { useSignUpLogic } from '../../hooks/pages/auth/useSignUpLogic'
 
 export function SignUp() {
   const {

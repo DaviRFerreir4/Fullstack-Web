@@ -5,30 +5,29 @@ import type {
   UserRequest,
 } from '../../dtos/requests'
 import type { CreateSessionAPIResponse } from '../../dtos/user'
-import type { DialogActions, PaginationType } from '../../types/utils'
+import type { PaginationType } from '../../types/utils'
 import { useRequestServices } from '../../services/requests'
+import type { CurrentAction } from '../../types/dialog'
 
 interface UseRequestListLogicProps {
   session: CreateSessionAPIResponse
+  isMobile: boolean
   setOpenDialog: Dispatch<SetStateAction<boolean>>
-  setCurrentAction: Dispatch<
-    SetStateAction<{
-      action: DialogActions
-      title: string
-      message?: string
-      handleAction: (() => void) | ((payload: FormData) => void)
-    } | null>
-  >
+  setCurrentAction: Dispatch<SetStateAction<CurrentAction>>
   handleCloseDialog: () => void
 }
 
 export function useRequestListLogic({
   session,
+  isMobile,
   setCurrentAction,
   setOpenDialog,
   handleCloseDialog,
 }: UseRequestListLogicProps) {
   const { indexRequests, patchRequestStatus } = useRequestServices()
+
+  const adminAndClientPerPage = 7
+  const technicianPerPage = isMobile ? 1 : 3
 
   const [requests, setRequests] = useState<UserRequest[] | null>(null)
   const [pagination, setPagination] = useState<PaginationType | null>(null)
@@ -115,8 +114,10 @@ export function useRequestListLogic({
   return {
     requests,
     pagination,
+    adminAndClientPerPage,
     technicianRequests,
     technicianPagination,
+    technicianPerPage,
     fetchRequests,
     changeRequestStatus,
     areRequestCardLoading,

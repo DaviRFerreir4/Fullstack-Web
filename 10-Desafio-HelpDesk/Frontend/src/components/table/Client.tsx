@@ -7,16 +7,18 @@ import { ProfilePicture } from '../ProfilePicture'
 import { Button } from '../form/Button'
 import type { User } from '../../dtos/user'
 
-export type IClient = Pick<User, 'id' | 'name' | 'email' | 'profilePicture'>
+export type Client = Pick<User, 'id' | 'name' | 'email' | 'profilePicture'> & {
+  requestsCount: number
+}
 
-export interface IClientAction {
+export interface ClientActions {
   action: 'edit' | 'remove'
   title: string
 }
 
 type Props = {
-  clientData: IClient
-  clientOperations: (client: IClient, clientAction: IClientAction) => void
+  clientData: Client
+  clientOperations: (client: Client, clientAction: ClientActions) => void
 }
 
 export function Client({ clientData, clientOperations }: Props) {
@@ -42,15 +44,10 @@ export function Client({ clientData, clientOperations }: Props) {
             size="sm"
             iconColor="text-feedback-danger"
             onClick={() =>
-              clientOperations(
-                {
-                  name: clientData.name,
-                  email: clientData.email,
-                  id: clientData.id,
-                  profilePicture: clientData.profilePicture,
-                },
-                { action: 'remove', title: 'Excluir cliente' }
-              )
+              clientOperations(clientData, {
+                action: 'remove',
+                title: 'Excluir cliente',
+              })
             }
           />
           <Button
@@ -58,15 +55,7 @@ export function Client({ clientData, clientOperations }: Props) {
             variant="secondary"
             size="sm"
             onClick={() =>
-              clientOperations(
-                {
-                  name: clientData.name,
-                  email: clientData.email,
-                  id: clientData.id,
-                  profilePicture: clientData.profilePicture,
-                },
-                { action: 'edit', title: 'Cliente' }
-              )
+              clientOperations(clientData, { action: 'edit', title: 'Cliente' })
             }
           />
         </div>

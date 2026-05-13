@@ -9,23 +9,15 @@ import type { Service } from '../../dtos/services'
 import type { UserRequest } from '../../dtos/requests'
 import { useRequestServices } from '../../services/requests'
 import { useServiceServices } from '../../services/services'
-import type { DialogActions } from '../../types/utils'
 import { AxiosError } from 'axios'
 import type { AddServiceFormErrors } from '../../types/forms'
 import type { NavigateFunction } from 'react-router'
+import type { CurrentAction } from '../../types/dialog'
 
 interface UseRequestDetailsLogicProps {
   requestId: number
   setOpenDialog: Dispatch<SetStateAction<boolean>>
-  setCurrentAction: Dispatch<
-    SetStateAction<{
-      action: DialogActions
-      title: string
-      message?: string
-      handleAction: (() => void) | ((payload: FormData) => void)
-      disableCloseAction?: boolean
-    } | null>
-  >
+  setCurrentAction: Dispatch<SetStateAction<CurrentAction>>
   handleCloseDialog: () => void
   navigate: NavigateFunction
 }

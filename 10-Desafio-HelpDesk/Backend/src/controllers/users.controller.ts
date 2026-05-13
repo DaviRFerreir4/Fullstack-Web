@@ -30,6 +30,9 @@ export class UsersController {
       skip,
       take: perPage,
       where: { role, name: { contains: name, mode: 'insensitive' } },
+      include: {
+        _count: { select: { clientRequest: true, technicianRequest: true } },
+      },
       omit: { password: true },
     })
 

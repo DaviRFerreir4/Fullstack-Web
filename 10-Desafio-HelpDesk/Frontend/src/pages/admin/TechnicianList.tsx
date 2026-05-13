@@ -81,7 +81,7 @@ export function TechnicianList() {
           onClick={() => navigate('/technicians/create')}
         />
       </div>
-      <table className="w-full border border-gray-500 rounded-xl border-separate">
+      <table className="w-full mb-4 border border-gray-500 rounded-xl border-separate">
         <thead>
           <tr>
             <TableHeader text="Nome" />

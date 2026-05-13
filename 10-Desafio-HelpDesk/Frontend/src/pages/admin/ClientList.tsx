@@ -1,80 +1,48 @@
 import { TableHeader } from '../../components/table/TableHeader'
-import {
-  Client,
-  type IClient,
-  type IClientAction,
-} from '../../components/table/Client'
 import { Dialog } from '../../components/dialogs/Dialog'
-import { ProfilePicture } from '../../components/ProfilePicture'
-import { Input } from '../../components/form/Input'
-import { useState, useRef } from 'react'
+import { useResultDialog } from '../../hooks/useResultDialog'
+import { useClientListLogic } from '../../hooks/pages/admin/useClientListLogic'
+import { useEffect } from 'react'
+import { Client } from '../../components/table/Client'
+import { Pagination } from '../../components/navigation/Pagination'
+import { EditClientDialog } from '../../components/dialogs/pages/ClientList/EditClientDialog'
+import { RemoveClientDialog } from '../../components/dialogs/pages/ClientList/RemoveClientDialog'
 
 export function ClientList() {
-  const dialogRef = useRef<null | HTMLDialogElement>(null)
-  const [openDialog, setOpenDialog] = useState(false)
+  const {
+    dialogRef,
+    openDialog,
+    setOpenDialog,
+    currentAction,
+    setCurrentAction,
+    handleCloseDialog,
+  } = useResultDialog()
 
-  const [client, setClient] = useState<IClient>({
-    name: '',
-    email: '',
-    id: '',
-    profilePicture: '',
+  const {
+    clients,
+    pagination,
+    perPage,
+    isDialogLoading,
+    fetchClients,
+    clientOperations,
+    client,
+    setClient,
+  } = useClientListLogic({
+    setOpenDialog,
+    setCurrentAction,
+    handleCloseDialog,
   })
 
-  const [currentAction, setCurrentAction] = useState<null | {
-    action: 'edit' | 'remove' | 'success' | 'failure'
-    title: string
-    message?: string
-    handleAction: () => void
-    disableCloseAction?: boolean
-  }>(null)
-
-  function editClient() {
-    setCurrentAction({
-      action: 'success',
-      title: 'Cliente editado com sucesso!',
-      handleAction: handleCloseDialog,
-    })
-    // setCurrentAction({
-    //   action: 'failure',
-    //   title: 'Erro ao editar o cliente',
-    //   handleAction: handleCloseDialog,
-    // })
-  }
-
-  function removeClient() {
-    // setCurrentAction({
-    //   action: 'success',
-    //   title: 'Cliente removido',
-    //   handleAction: handleCloseDialog,
-    // })
-    setCurrentAction({
-      action: 'failure',
-      title: 'Erro ao remover o cliente',
-      handleAction: handleCloseDialog,
-    })
-  }
-
-  function clientOperations(client: IClient, clientAction: IClientAction) {
-    setCurrentAction({
-      action: clientAction.action,
-      title: clientAction.title,
-      handleAction: clientAction.action === 'edit' ? editClient : removeClient,
-    })
-    setClient(client)
-    setOpenDialog(true)
-  }
-
-  function handleCloseDialog() {
-    dialogRef.current?.close()
-    setOpenDialog(false)
-  }
+  useEffect(() => {
+    fetchClients({ query: { role: 'client' } })
+  }, [])
 
   return (
     <div>
       <h1 className="mb-4 lg:mb-6 text-lg lg:text-xl font-bold text-blue-dark">
         Clientes
       </h1>
-      <table className="w-full border border-gray-500 rounded-xl border-separate">
+      <table className="w-full mb-4 border border-gray-500 rounded-xl border-separate">
         <thead>
           <tr>
             <TableHeader text="Nome" />
@@ -83,24 +51,55 @@ export function ClientList() {
           </tr>
         </thead>
         <tbody>
-          {/* {users
-            .filter((user) => {
-              return user.role === 'client'
-            })
-            .map((user) => (
+          {clients &&
+            clients.map((user) => (
               <Client
                 clientData={{
                   id: user.id,
                   name: user.name,
                   email: user.email,
                   profilePicture: user.profilePicture,
+                  requestsCount: user._count.clientRequest,
                 }}
                 clientOperations={clientOperations}
                 key={user.id}
               />
-            ))} */}
+            ))}
         </tbody>
       </table>
+      {pagination?.totalRecords && pagination.totalRecords > 0 ? (
+        <Pagination
+          onNext={() => {
+            fetchClients({
+              query: {
+                role: 'client',
+                perPage,
+                page: (pagination?.page ?? 0) + 1,
+              },
+            })
+          }}
+          onPrevious={() => {
+            fetchClients({
+              query: {
+                role: 'client',
+                perPage,
+                page: (pagination?.page ?? 0) - 1,
+              },
+            })
+          }}
+          setPage={(page) => {
+            fetchClients({
+              query: {
+                role: 'client',
+                perPage,
+                page,
+              },
+            })
+          }}
+          current={pagination?.page ?? 1}
+          total={pagination?.totalPages ?? 1}
+        />
+      ) : null}
       <Dialog
         open={openDialog}
         dialogRef={dialogRef}
@@ -110,51 +109,14 @@ export function ClientList() {
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
+        isFormLoading={isDialogLoading}
         closeDialog={handleCloseDialog}
         disableCloseAction={currentAction?.disableCloseAction}
       >
-        {currentAction?.action === 'edit' ? (
-          <div>
-            <ProfilePicture
-              username={client.name}
-              size="xl"
-              profilePicture={client.profilePicture}
-            />
-            <div className="mt-5 grid gap-4">
-              <Input
-                label="Nome"
-                id="name"
-                value={client.name}
-                placeholder="Nome completo"
-                onChange={(event) =>
-                  setClient({ ...client, name: event.target.value })
-                }
-                required
-              />
-              <Input
-                label="E-mail"
-                id="email"
-                type="email"
-                value={client.email}
-                placeholder="exemplo@mail.com"
-                onChange={(event) =>
-                  setClient({ ...client, email: event.target.value })
-                }
-                required
-              />
-            </div>
-          </div>
-        ) : currentAction?.action === 'remove' ? (
-          <div className="grid gap-5">
-            <p>
-              Deseja realmente excluir <strong>{client.name}</strong>?
-            </p>
-
-            <p>
-              Ao exclui-lo, todos os chamados deste cliente serão removidos e
-              esta ação não poderá ser desfeita.
-            </p>
-          </div>
+        {currentAction?.action === 'edit' && client && setClient ? (
+          <EditClientDialog client={client} setClient={setClient} />
+        ) : currentAction?.action === 'remove' && client ? (
+          <RemoveClientDialog client={client} />
         ) : (
           ''
         )}

@@ -3,7 +3,7 @@ import { Button } from '../../components/form/Button'
 import { useResultDialog } from '../../hooks/useResultDialog'
 import { Dialog } from '../../components/dialogs/Dialog'
 import { useAuth } from '../../hooks/useAuth'
-import { useSignInLogic } from '../../hooks/screens/auth/useSignInLogic'
+import { useSignInLogic } from '../../hooks/pages/auth/useSignInLogic'
 
 export function SignIn() {
   const {

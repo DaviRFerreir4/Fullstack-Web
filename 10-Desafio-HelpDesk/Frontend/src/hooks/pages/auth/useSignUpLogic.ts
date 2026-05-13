@@ -1,20 +1,13 @@
 import z, { ZodError } from 'zod'
 import { useActionState, type Dispatch, type SetStateAction } from 'react'
 import type { SignUpFormErrors } from '../../../types/forms'
-import type { DialogActions } from '../../../types/utils'
 import { useNavigate } from 'react-router'
 import { useUserServices } from '../../../services/users'
+import type { CurrentAction } from '../../../types/dialog'
 
 interface UseSignInLogicProps {
   setOpenDialog: Dispatch<SetStateAction<boolean>>
-  setCurrentAction: Dispatch<
-    SetStateAction<{
-      action: DialogActions
-      title: string
-      message?: string
-      handleAction: (() => void) | ((payload: FormData) => void)
-    } | null>
-  >
+  setCurrentAction: Dispatch<SetStateAction<CurrentAction>>
   handleCloseDialog: () => void
 }
 

@@ -6,7 +6,7 @@ import { InfoField } from '../../components/InfoField'
 import { Button } from '../../components/form/Button'
 import { Dialog } from '../../components/dialogs/Dialog'
 import { useResultDialog } from '../../hooks/useResultDialog'
-import { useRequestFormLogic } from '../../hooks/screens/client/useRequestFormLogic'
+import { useRequestFormLogic } from '../../hooks/pages/client/useRequestFormLogic'
 
 export function RequestForm() {
   const {
