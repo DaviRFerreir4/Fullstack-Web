@@ -93,6 +93,7 @@ export function Request({ requestData }: Props) {
         <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
           <div className="flex items-center gap-2">
             <ProfilePicture
+              userId={requestData.client?.id}
               username={requestData.client?.name ?? ''}
               profilePicture={requestData.client?.profilePicture}
             />
@@ -103,6 +104,7 @@ export function Request({ requestData }: Props) {
       <td className="px-3 border-t border-gray-500 text-sm hidden lg:table-cell">
         <div className="flex items-center gap-2">
           <ProfilePicture
+            userId={requestData.technician?.id ?? ''}
             username={requestData.technician?.name ?? ''}
             profilePicture={requestData.technician?.profilePicture}
           />

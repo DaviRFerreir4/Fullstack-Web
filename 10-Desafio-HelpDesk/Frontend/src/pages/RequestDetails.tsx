@@ -200,6 +200,7 @@ export function RequestDetails() {
             <InfoField title="Cliente" spacing="gap-2">
               <div className="flex items-center gap-2">
                 <ProfilePicture
+                  userId={request?.client?.id ?? ''}
                   username={request?.client?.name ?? ''}
                   profilePicture={request?.client?.profilePicture}
                 />
@@ -212,6 +213,7 @@ export function RequestDetails() {
           <InfoField title="Técnico Responsável" spacing="gap-2">
             <div className="flex items-center gap-2">
               <ProfilePicture
+                userId={request?.technician?.id ?? ''}
                 username={request?.technician?.name ?? ''}
                 profilePicture={request?.technician?.profilePicture}
                 size="md"

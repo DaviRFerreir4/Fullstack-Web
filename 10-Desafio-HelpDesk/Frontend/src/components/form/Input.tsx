@@ -46,8 +46,6 @@ export function Input({
                     parts[1] = parts[1].slice(0, 2)
                     value = parts.join('.')
 
-                    console.log(value)
-
                     event.target.value = value
                   }
                 }

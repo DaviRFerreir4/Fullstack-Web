@@ -1,8 +1,8 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
-import type { UserWithoutPassword } from '../../dtos/user'
-import { useUserServices } from '../../services/users'
-import { useAuth } from '../useAuth'
-import type { CurrentAction } from '../../types/dialog'
+import type { UserWithoutPassword } from '../../../dtos/user'
+import { useUserServices } from '../../../services/users'
+import { useAuth } from '../../useAuth'
+import type { CurrentAction } from '../../../types/dialog'
 
 interface UseSideBarLogicProps {
   openDialog: boolean

@@ -35,7 +35,7 @@ import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAuth } from '../../hooks/useAuth'
 import { Button } from '../form/Button'
 import { useResultDialog } from '../../hooks/useResultDialog'
-import { useSideBarLogic } from '../../hooks/components/useSideBarLogic'
+import { useSideBarLogic } from '../../hooks/components/navigation/useSideBarLogic.ts'
 
 export function SideBar() {
   const { session, remove } = useAuth()
@@ -201,6 +201,7 @@ export function SideBar() {
           style={{ anchorName: '--user-menu' }}
         >
           <ProfilePicture
+            userId={user?.id}
             username={user?.name ?? ''}
             profilePicture={user?.profilePicture}
             size="lg"
@@ -263,6 +264,7 @@ export function SideBar() {
           <div>
             <div className="mb-5 px-7 flex items-center gap-3">
               <ProfilePicture
+                userId={user?.id}
                 username={user?.name ?? ''}
                 profilePicture={user?.profilePicture}
                 size="xl"

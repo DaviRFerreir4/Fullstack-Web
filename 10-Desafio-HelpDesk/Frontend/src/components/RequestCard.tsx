@@ -115,6 +115,7 @@ export function RequestCard({
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1.5">
             <ProfilePicture
+              userId={request.client?.id ?? ''}
               username={request.client?.name ?? ''}
               profilePicture={request.client?.profilePicture}
             />

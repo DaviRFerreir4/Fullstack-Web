@@ -1,7 +1,9 @@
-import type { ComponentProps } from 'react'
+import { useEffect, type ComponentProps } from 'react'
+import { useProfilePictureLogic } from '../hooks/components/useProfilePictureLogic'
 
 type Props = ComponentProps<'div'> & {
-  profilePicture: string | undefined
+  userId?: string
+  profilePicture?: string
   username: string
   size?: keyof typeof sizes
 }
@@ -14,11 +16,14 @@ const sizes = {
 }
 
 export function ProfilePicture({
+  userId,
   profilePicture,
   username,
   size = 'sm',
   ...rest
 }: Props) {
+  const { imageURL, fetchImage } = useProfilePictureLogic()
+
   const names = username?.split(' ')
   const initials = names
     ?.map((name) => {
@@ -26,13 +31,17 @@ export function ProfilePicture({
     })
     .slice(0, 2)
 
+  useEffect(() => {
+    fetchImage({ userId, profilePicture })
+  }, [profilePicture])
+
   return (
     <div
       className={`flex rounded-full overflow-hidden ${sizes[size]}`}
       {...rest}
     >
-      {profilePicture ? (
-        <img src={profilePicture} />
+      {profilePicture && imageURL ? (
+        <img src={imageURL} />
       ) : (
         <span className="w-full h-full flex justify-center items-center bg-blue-dark text-gray-600">
           {initials?.map((initial) => initial.toUpperCase())}

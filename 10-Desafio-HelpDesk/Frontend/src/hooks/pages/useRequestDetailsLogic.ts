@@ -294,8 +294,6 @@ export function useRequestDetailsLogic({
         handleAction: handleCloseDialog,
       })
     } catch (error: any) {
-      console.log(error)
-
       let message = 'Erro ao remover o serviço do chamado'
 
       if (error instanceof AxiosError) {

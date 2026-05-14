@@ -70,6 +70,7 @@ export function TechnicianForm() {
           {editionAvailable && (
             <div>
               <ProfilePicture
+                userId={technicianData.id}
                 username={technicianData.name}
                 profilePicture={technicianData.profilePicture}
                 size="xl"

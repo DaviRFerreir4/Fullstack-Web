@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, type ReactNode } from 'react'
 import { api } from '../services/api'
 import type { CreateSessionAPIResponse } from '../dtos/user'
+import { clearProfilePicturesCache } from '../hooks/components/useProfilePictureLogic'
 
 export type AuthContextType = {
   session: CreateSessionAPIResponse | null
@@ -36,7 +37,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
   }
 
-  function remove() {
+  async function remove() {
+    await clearProfilePicturesCache()
+
     setSession(null)
 
     localStorage.removeItem(LOCAL_STORAGE_USER)

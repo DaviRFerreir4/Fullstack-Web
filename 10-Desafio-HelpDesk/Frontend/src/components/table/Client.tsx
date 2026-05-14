@@ -27,6 +27,7 @@ export function Client({ clientData, clientOperations }: Props) {
       <td className="px-3 border-t border-gray-500 text-sm font-bold">
         <div className="flex items-center gap-2">
           <ProfilePicture
+            userId={clientData?.id}
             username={clientData.name}
             profilePicture={clientData.profilePicture}
           />
