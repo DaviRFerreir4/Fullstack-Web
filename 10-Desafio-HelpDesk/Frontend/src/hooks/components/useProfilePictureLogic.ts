@@ -3,7 +3,21 @@ import { api } from '../../services/api'
 
 const cache: Record<string, Promise<string> | undefined> = {}
 
-export async function clearProfilePicturesCache() {
+export async function clearProfilePicturesCache(id?: string) {
+  if (id) {
+    if (cache[id]) {
+      try {
+        const cachedURL = await cache[id]
+        URL.revokeObjectURL(cachedURL)
+      } catch (e) {
+      } finally {
+        delete cache[id]
+      }
+    }
+
+    return
+  }
+
   for (const key in cache) {
     const promise = cache[key]
 

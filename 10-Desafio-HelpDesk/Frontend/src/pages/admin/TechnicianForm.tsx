@@ -1,3 +1,4 @@
+// todo modularizar tudo, criar e editar técnicos
 // @ts-expect-error TS2307
 import BackIcon from '../../assets/icons/arrow-left.svg?react'
 

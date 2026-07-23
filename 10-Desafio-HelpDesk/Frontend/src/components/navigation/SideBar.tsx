@@ -1,3 +1,4 @@
+// todo edição de perfil e alteração de senha
 // @ts-expect-error TS2307
 import Logo from '../../assets/logo-dark.svg?react'
 // @ts-expect-error TS2307

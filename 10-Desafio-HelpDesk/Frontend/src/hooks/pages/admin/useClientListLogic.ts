@@ -1,4 +1,9 @@
-import { useState, type Dispatch, type SetStateAction } from 'react'
+import {
+  useActionState,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 import { Client, type ClientActions } from '../../../components/table/Client'
 import { useUserServices } from '../../../services/users'
 import type {
@@ -8,6 +13,10 @@ import type {
 } from '../../../dtos/user'
 import type { CurrentAction } from '../../../types/dialog'
 import type { PaginationType } from '../../../types/utils'
+import z, { ZodError } from 'zod'
+import type { EditClientFormErrors } from '../../../types/forms'
+import { useUploadServices } from '../../../services/uploads'
+import { clearProfilePicturesCache } from '../../components/useProfilePictureLogic'
 
 interface useClientListLogicProps {
   setOpenDialog: Dispatch<SetStateAction<boolean>>
@@ -15,12 +24,22 @@ interface useClientListLogicProps {
   handleCloseDialog: () => void
 }
 
+const editClientSchema = z.object({
+  name: z
+    .string({ error: 'Informe o nome' })
+    .trim()
+    .min(3, { error: 'Informe o nome' }),
+  email: z.email({ error: 'Informe um e-mail válido' }).trim(),
+  image: z.file(),
+})
+
 export function useClientListLogic({
   setOpenDialog,
   setCurrentAction,
   handleCloseDialog,
 }: useClientListLogicProps) {
-  const { indexUsers, deleteUser } = useUserServices()
+  const { indexUsers, putUser, deleteUser } = useUserServices()
+  const { createUpload, deleteUpload } = useUploadServices()
 
   const perPage = 7
 
@@ -33,6 +52,10 @@ export function useClientListLogic({
   >([])
   const [pagination, setPagination] = useState<null | PaginationType>(null)
 
+  const [formEditstate, formEditAction, formEditIsLoading] = useActionState(
+    editClient,
+    null
+  )
   const [client, setClient] = useState<Client | null>(null)
 
   async function fetchClients({ query = {} }: { query: IndexUserQuery }) {
@@ -56,23 +79,80 @@ export function useClientListLogic({
     }
   }
 
-  function editClient({ id, body }: { id: string; body: PutUserBody }) {
-    setIsDialogLoading(true)
-    console.log({ id, body })
+  async function editClient(_: any, formData: FormData) {
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      image: formData.get('image'),
+    }
     try {
+      const { name, email, image } = editClientSchema.parse(data)
+
+      let imageString: string
+
+      if (image.size > 0) {
+        imageString = (
+          await createUpload({ id: client?.id ?? '', body: image })
+        ).data
+
+        clearProfilePicturesCache(client?.id)
+      }
+
+      if (image.name === 'none') {
+        await deleteUpload({ id: client?.id ?? '' })
+
+        imageString = 'none'
+
+        clearProfilePicturesCache(client?.id)
+      }
+
+      await putUser({
+        id: client?.id ?? '',
+        body: {
+          name,
+          email: email !== client?.email ? email : undefined,
+        },
+      })
+
+      setClients((prev) =>
+        prev.map((clientArr) =>
+          clientArr.id === client?.id
+            ? {
+                ...clientArr,
+                name,
+                email,
+                profilePicture:
+                  imageString !== 'none'
+                    ? imageString || clientArr.profilePicture
+                    : undefined,
+              }
+            : clientArr
+        )
+      )
+
       setCurrentAction({
         action: 'success',
         title: 'Cliente editado com sucesso!',
         handleAction: handleCloseDialog,
       })
     } catch (error: any) {
+      if (error instanceof ZodError) {
+        const fieldErrors: EditClientFormErrors =
+          z.flattenError(error).fieldErrors
+        const formErrors: string[] = z.flattenError(error).formErrors
+
+        return { data, fieldErrors, formErrors }
+      }
+
       setCurrentAction({
         action: 'failure',
-        title: 'Erro ao editar o cliente',
+        title: error.response.data.message ?? error.message,
         handleAction: handleCloseDialog,
       })
-    } finally {
-      setIsDialogLoading(false)
+
+      setOpenDialog(true)
+
+      return { data }
     }
   }
 
@@ -110,11 +190,7 @@ export function useClientListLogic({
       title: clientAction.title,
       handleAction:
         clientAction.action === 'edit'
-          ? () =>
-              editClient({
-                id: client.id,
-                body: { name: client.name, email: client.email },
-              })
+          ? formEditAction
           : () => removeClient({ id: client.id }),
     })
     setClient(client)
@@ -130,5 +206,7 @@ export function useClientListLogic({
     clientOperations,
     client,
     setClient,
+    formEditstate,
+    formEditIsLoading,
   }
 }

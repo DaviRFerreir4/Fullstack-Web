@@ -6,6 +6,7 @@ type Props = ComponentProps<'div'> & {
   profilePicture?: string
   username: string
   size?: keyof typeof sizes
+  customUrl?: string
 }
 
 const sizes = {
@@ -20,6 +21,7 @@ export function ProfilePicture({
   profilePicture,
   username,
   size = 'sm',
+  customUrl,
   ...rest
 }: Props) {
   const { imageURL, fetchImage } = useProfilePictureLogic()
@@ -40,8 +42,8 @@ export function ProfilePicture({
       className={`flex rounded-full overflow-hidden ${sizes[size]}`}
       {...rest}
     >
-      {profilePicture && imageURL ? (
-        <img src={imageURL} />
+      {customUrl !== 'none' && ((profilePicture && imageURL) || customUrl) ? (
+        <img src={customUrl || imageURL} />
       ) : (
         <span className="w-full h-full flex justify-center items-center bg-blue-dark text-gray-600">
           {initials?.map((initial) => initial.toUpperCase())}

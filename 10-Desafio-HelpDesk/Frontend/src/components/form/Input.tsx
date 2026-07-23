@@ -23,6 +23,14 @@ export function Input({
 }: Props) {
   const [showPassword, setShowPassword] = useState(false)
 
+  if (type === 'file') {
+    return (
+      <div className="hidden">
+        <input type={type} {...rest} accept="image/*" />
+      </div>
+    )
+  }
+
   return (
     <InputWrapper label={label} error={error} helperText={helperText} id={id}>
       <div className="relative">

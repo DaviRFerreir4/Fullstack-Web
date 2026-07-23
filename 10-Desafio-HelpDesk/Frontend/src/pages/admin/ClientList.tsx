@@ -27,6 +27,8 @@ export function ClientList() {
     clientOperations,
     client,
     setClient,
+    formEditstate,
+    formEditIsLoading,
   } = useClientListLogic({
     setOpenDialog,
     setCurrentAction,
@@ -109,12 +111,18 @@ export function ClientList() {
         handleAction={
           currentAction ? currentAction.handleAction : handleCloseDialog
         }
-        isFormLoading={isDialogLoading}
+        isFormLoading={
+          currentAction?.action === 'edit' ? formEditIsLoading : isDialogLoading
+        }
         closeDialog={handleCloseDialog}
         disableCloseAction={currentAction?.disableCloseAction}
       >
         {currentAction?.action === 'edit' && client && setClient ? (
-          <EditClientDialog client={client} setClient={setClient} />
+          <EditClientDialog
+            client={client}
+            setClient={setClient}
+            state={formEditstate}
+          />
         ) : currentAction?.action === 'remove' && client ? (
           <RemoveClientDialog client={client} />
         ) : (

@@ -76,7 +76,7 @@ export function SignIn() {
       <div className="my-3 p-6 border border-gray-500 rounded-[0.625rem] grid gap-5">
         <div>
           <h3 className="text-gray-200 font-bold">Ainda não tem uma conta?</h3>
-          <p className="text-xs text-gray-300">Cadastre agora mesmo</p>
+          <p className="text-xs text-gray-300">Cadastre-se agora mesmo</p>
         </div>
         <a
           href="/signup"

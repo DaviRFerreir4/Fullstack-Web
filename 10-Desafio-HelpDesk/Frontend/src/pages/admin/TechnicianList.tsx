@@ -1,3 +1,4 @@
+// todo modularizar tudo, listar e excluir técnicos
 // @ts-expect-error TS2307
 import PlusIcon from '../../assets/icons/plus.svg?react'
 

@@ -22,3 +22,22 @@ export interface AddServiceFormErrors {
   service?: string[]
   serviceName?: string[]
 }
+
+export interface EditClientFormErrors {
+  name?: string[]
+  email?: string[]
+}
+
+export type EditClientFormActionReturn =
+  | {
+      data: Record<keyof EditClientFormErrors, FormDataEntryValue | null>
+      fieldErrors: EditClientFormErrors
+      formErrors: string[]
+    }
+  | {
+      data: Record<keyof EditClientFormErrors, FormDataEntryValue | null>
+      fieldErrors?: undefined
+      formErrors?: undefined
+    }
+  | null
+  | undefined
